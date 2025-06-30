@@ -53,15 +53,27 @@ class controllerartiestories extends Controller
                 return back()->withErrors(['alert' => 'Durasi video tidak boleh lebih dari 60 detik!']);
             }
         }
+        //$storagePath = session('username') . '/artiestories/' . $randomString;
+        //foreach ($files as $index => $file) {
+        //    $extension = $file->getClientOriginalExtension();
+        //    $filename = session('username') . '_' . date('Ymd_His') . '_' . $index . '.' . $extension;
+        //    Storage::disk('public')->putFileAs($storagePath, $file, $filename);
+        //    $filepath = 'storage/' . $storagePath . '/' . $filename;
+        //    ArtiestoriesIMG::create([
+        //        'artiestoriesid' => $post->artiestoriesid,
+        //        'konten' => $filepath,
+        //    ]);
+        //}
+        // Anda tetap bisa menggunakan variabel ini untuk mendefinisikan struktur folder
         $storagePath = session('username') . '/artiestories/' . $randomString;
         foreach ($files as $index => $file) {
             $extension = $file->getClientOriginalExtension();
             $filename = session('username') . '_' . date('Ymd_His') . '_' . $index . '.' . $extension;
-            Storage::disk('public')->putFileAs($storagePath, $file, $filename);
-            $filepath = 'storage/' . $storagePath . '/' . $filename;
+            $path = $file->storeAs($storagePath, $filename, 'azure');
+            $url = Storage::disk('azure')->url($path);
             ArtiestoriesIMG::create([
                 'artiestoriesid' => $post->artiestoriesid,
-                'konten' => $filepath,
+                'konten' => $url,
             ]);
         }
         return redirect()->route('artieses')->with(['alert' => 'Artiestories mu sudah di publish!']);
