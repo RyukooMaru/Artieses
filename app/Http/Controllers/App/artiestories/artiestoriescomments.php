@@ -47,7 +47,6 @@ class artiestoriescomments extends Controller
         $username = session('username');
         $reqplat = $request->input('comentses1');
         $message = $request->input('message1');
-        
         broadcast(new BroadcastTyping1($username, $reqplat, $message));
         return response()->json([
             'status' => 'broadcasted',
