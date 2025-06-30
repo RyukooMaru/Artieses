@@ -1,0 +1,37 @@
+server {
+    listen 8080;
+    listen [::]:8080;
+
+    root /home/site/wwwroot/public;
+    index index.php;
+    client_max_body_size 100M;
+
+    # BLOK BARU YANG DISEMPURNAKAN UNTUK ASET STATIS
+    location ~* \.(css|js|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, no-transform";
+        access_log off;
+        # Coba cari file, jika tidak ada, kembalikan error 404
+        try_files $uri =404;
+    }
+
+    # Aturan URL Rewriting untuk Laravel
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # Aturan untuk memproses file PHP
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+
+    # Blokir akses ke file .htaccess
+    location ~ /\.ht {
+        deny all;
+    }
+}

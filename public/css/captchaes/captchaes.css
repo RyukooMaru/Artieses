@@ -1,0 +1,126 @@
+.captcha-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    transform: translate(-50%, -50%);
+    background: black;
+    padding: 20px;
+    z-index: 9999;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.captcha-form h2 {
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    width: 100%;
+}
+.img-rot{
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Beri jarak antara tombol */
+}
+.img-rotasi {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.input-group {
+    margin-bottom: 1em;
+    text-align: left;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 0.2em;
+    font-size: 0.9rem;
+    color: #ddd;
+}
+.input-group input {
+    width: 100%;
+    padding: 0.7em;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+    background: white;
+    color: black;
+    transition: background 0.3s;
+    box-sizing: border-box;
+}
+.input-group input:focus {
+    background: #FAF1E6;
+}
+.close-btnes {
+    position:relative;
+    top: -35px;
+    left: 265px;
+    border: none;
+    font-size: 18px;
+    width: 20px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.btn-captcha {
+    width: 100%;
+    padding: 0.8em;
+    background: #ffa700;
+    border: none;
+    border-radius: 5px;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.btn-captcha:hover {
+    background: #ff8100;
+}
+.btn-rotasi-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Beri jarak antara tombol */
+}
+.btn-rotasi {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+.btn-rotasi:hover {
+    background-color: #2980b9;
+    transform: scale(1.1);
+}
+.btn-rotasi:active {
+    background-color: #1c6ea4;
+    transform: scale(0.95);
+}
+.feedback {
+    margin-bottom: 1em;
+    padding: 0.8em;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+.feedback.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+@media (max-width: 767px) {
+    .captcha-form{
+        width: 250px;
+        justify-content: center;
+        align-items: center;
+    }
+}

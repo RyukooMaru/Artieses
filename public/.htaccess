@@ -1,0 +1,27 @@
+# Aktifkan mod_rewrite (biasanya sudah aktif di Laravel)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Laravel default rules (biar route Laravel tetap jalan)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Support Range Requests untuk video agar bisa seek
+<IfModule mod_headers.c>
+    Header set Accept-Ranges "bytes"
+</IfModule>
+
+# Set MIME type untuk mp4 agar browser paham
+<FilesMatch "\.(mp4)$">
+    Header set Content-Type video/mp4
+</FilesMatch>
+
+# Contoh membatasi akses file mp4 hanya dari localhost (opsional)
+# Kalau mau izinkan semua, bisa dikomentari blok ini
+# <FilesMatch "\.(mp4)$">
+#     Order deny,allow
+#     Deny from all
+#     Allow from 127.0.0.1
+# </FilesMatch>

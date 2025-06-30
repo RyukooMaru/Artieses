@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  body.dark-mode {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  }
+  .hidden {
+    display: none;
+  }

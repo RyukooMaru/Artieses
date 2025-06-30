@@ -1,0 +1,126 @@
+.artiekeles-card1 {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 505px;
+  margin-left: 155%;
+}
+.close {
+  float: right; 
+  background: transparent; 
+  border: none; 
+  font-size: 20px; 
+  color: white; 
+  cursor: pointer;
+}
+.closes {
+  float: right; 
+  background: transparent; 
+  border: none; 
+  font-size: 20px; 
+  margin-top: 10px;
+  color: #444; 
+  cursor: pointer;
+}
+.pilihkategori {
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  width: 500px;
+  height: 100px;
+  background-color: #000;
+  border-radius: 12px;
+}
+.artiekeles-card1 {
+  top: 3%;
+}
+#close-artiekeles {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+.artiekeles-card {
+  background-color: #666;
+  border-radius: 5%;
+  padding: 30px 40px;
+  height: 60%;
+  max-height: 90%;
+  width: 100%;
+}
+h2 {
+  margin-bottom: 2px;
+  margin-top: -10px;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+}
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.input-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #fff;
+}
+.input-group input[type="text"] {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+.uploades {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+#uploadfile {
+  display: none;
+}
+.uploades:hover {
+  background-color: #0056b3;
+}
+.uploadfiles {
+  margin-top: 10px;
+}
+.hidden {
+  display: none !important;
+}
+.show {
+  display: block !important;
+}
+.drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 30px;
+  text-align: center;
+  background-color: #fafafa;
+  transition: border-color 0.3s ease;
+}
+.drop-area:hover {
+  border-color: #007bff;
+}
+.drop-area img {
+  max-width: 80px;
+  margin-bottom: 10px;
+}
+.drop-area p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
