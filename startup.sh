@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "--- Custom Startup: Overwriting default Nginx site config... ---"
-
-# Hanya menyalin file konfigurasi kustom kita untuk menimpa file default.
-# Platform Azure akan menangani sisanya (memulai/me-reload nginx).
+echo "Starting custom nginx configuration..."
+# Salin file konfigurasi kustom kita ke lokasi konfigurasi Nginx yang aktif
 cp /home/site/wwwroot/nginx/default /etc/nginx/sites-enabled/default
 
-echo "--- Custom Nginx config is in place. Handing over to platform entrypoint. ---"
+# Muat ulang Nginx untuk menerapkan konfigurasi baru
+service nginx reload
+echo "Nginx reloaded with custom configuration."
