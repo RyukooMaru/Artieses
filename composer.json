@@ -9,7 +9,7 @@
         "php": "^8.2",
         "azure-oss/storage-blob-flysystem": "^1.0",
         "cloudinary-labs/cloudinary-laravel": "^3.0",
-        "google/apiclient": "*",
+        "google/apiclient": "^2.18",
         "guzzlehttp/guzzle": "^7.2",
         "james-heinrich/getid3": "^1.9",
         "laravel/framework": "^12.0",
