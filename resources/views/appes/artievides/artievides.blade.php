@@ -7,15 +7,18 @@
   </div><br>
   <div class="cabot-artievides">
     @php
-      $username = $video->usericonVides->username ?? 'defaultuser';
-      $improfil = $video->usericonVides->improfil ?? 'default.png';
-      $path = $username . '/profil/' . $improfil;
-      $ext = pathinfo($improfil, PATHINFO_EXTENSION);
+      $username = $video->usericonVides->username;
+      $improfil = $video->usericonVides->improfil;
+      $path = $improfil;
+      $matches = [];
+      preg_match('/\/d\/(.*?)\//', $path, $matches);
+      $fileId = $matches[1] ?? null;
+      $imgSrc = "https://drive.google.com/uc?export=view&id=$fileId";
     @endphp
-    @if(in_array(strtolower($ext), ['gif', 'png', 'jpg', 'jpeg', 'webp']))
+    @if(imgSrc)
       <div class="creator-1">
         <a href="{{ route('profiles.show', ['username' => $username]) }}">
-            <img src="{{ asset($path) }}" class="creatorvides">
+            <img src="{{ url($imgSrc) }}" class="creatorvides">
         </a>
       </div>
     @endif

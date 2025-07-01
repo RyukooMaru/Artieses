@@ -15,7 +15,6 @@ class registeres extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
         $password_confirmation = $request->input('password_confirmation');
-        $defaultImage = "users/" . $username . "/profil/defaultuser.png";
         $existingUser = Users::where('username', $username)->first();
         $existingEmail = Users::where('email', $email)->first();
 
@@ -35,7 +34,6 @@ class registeres extends Controller
             'nameuse' => $nameuse,
             'email' => $email,
             'password' => $password,
-            'improfil' => $defaultImage,
         ]);
         return redirect()->route('authes')->with(['alert' => 'Selesaikan captcha terlebih dahulu!', 'form' => 'captcha']);
     }

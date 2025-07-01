@@ -9,6 +9,10 @@ use App\Models\Artievides;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Google_Client;
+use Google_Service_Drive;
+use Google_Service_Drive_DriveFile;
+use Google_Service_Drive_Permission;
 
 class profilcontroller extends Controller
 {
@@ -104,16 +108,47 @@ class profilcontroller extends Controller
         ]);
         $user = Users::where('username', $username)->firstOrFail();
         $file = $request->file('foto');
-        $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-        $url = 'users/' .$username . '/profil';
-        $destination = public_path($url);
-        if (!File::exists($destination)) {
-            File::makeDirectory($destination, 0755, true);
+        $credentialsPath = storage_path('app/google/credentials.json');
+        $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
+        $client = new Google_Client();
+        $client->setAuthConfig($credentialsPath);
+        $client->addScope(Google_Service_Drive::DRIVE);
+        $service = new Google_Service_Drive($client);
+        if ($user->improfil) {
+            $oldFileId = $user->improfil;
+            try {
+                $service->files->delete($oldFileId);
+            } catch (\Exception $e) {
+            }
         }
-        $file->move($destination, $filename);
-        $user->improfil = $url . '/' . $filename;
+        $tempName = 'temp_' . time() . '.' . $file->getClientOriginalExtension();
+        $fileMetadata = new Google_Service_Drive_DriveFile([
+            'name' => $tempName,
+            'parents' => [$mainFolderId],
+        ]);
+
+        $content = file_get_contents($file->getPathname());
+        $mimeType = $file->getMimeType();
+
+        $uploadedFile = $service->files->create($fileMetadata, [
+            'data' => $content,
+            'mimeType' => $mimeType,
+            'uploadType' => 'multipart',
+            'fields' => 'id',
+        ]);
+        $newName = $uploadedFile->id . '.' . $file->getClientOriginalExtension();
+        $updateMetadata = new Google_Service_Drive_DriveFile([
+            'name' => $newName
+        ]);
+        $service->files->update($uploadedFile->id, $updateMetadata);
+        $permission = new Google_Service_Drive_Permission([
+            'type' => 'anyone',
+            'role' => 'reader',
+        ]);
+        $service->permissions->create($uploadedFile->id, $permission);
+        $user->improfil = $uploadedFile->id;
         $user->save();
-        session(['improfil' => $url . '/' . $filename]);
+        session(['improfil' => $uploadedFile->id]);
         return response()->json(['success' => true]);
     }
 }

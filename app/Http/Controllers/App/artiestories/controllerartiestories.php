@@ -100,7 +100,6 @@ class controllerartiestories extends Controller
         }
         return $this->createDriveFolder($service, $folderName, $parentId);
     }
-
     private function uploadToGoogleDrive($file, $filename, $subFolderPath = null)
     {
         $credentialsPath = storage_path('app/google/credentials.json');

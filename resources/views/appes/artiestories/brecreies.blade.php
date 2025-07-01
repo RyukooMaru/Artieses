@@ -1,12 +1,14 @@
 @php
-    $username = $story->usericonStories->username ?? 'defaultuser';
-    $improfil = $story->usericonStories->improfil ?? 'default.png';
+    $username = $story->usericonStories->username;
+    $improfil = $story->usericonStories->improfil;
     $path = $improfil;
-    $ext = strtolower(pathinfo($improfil, PATHINFO_EXTENSION));
-    $validExt = in_array($ext, ['gif', 'png', 'jpg', 'jpeg', 'webp']);
+    $matches = [];
+    preg_match('/\/d\/(.*?)\//', $path, $matches);
+    $fileId = $matches[1] ?? null;
+    $imgSrc = "https://drive.google.com/uc?export=view&id=$fileId";
 @endphp
-@if($validExt)
+@if($imgSrc)
     <a href="{{ route('profiles.show', ['username' => $username]) }}">
-        <img src="{{ asset($path) }}" class="creatorstories" alt="{{ asset($path) }}">
+        <img src="{{ url($imgSrc) }}" class="creatorstories">
     </a>
 @endif
