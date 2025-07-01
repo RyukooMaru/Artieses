@@ -7,29 +7,57 @@ use Illuminate\Http\Request;
 use App\Models\Users;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Google_Client;
+use Google_Service_Drive;
+use Google_Service_Drive_DriveFile;
+use Google_Service_Drive_Permission;
 
 class captchaesR2 extends Controller
 {
+    private function uploadToGoogleDrive($localPath, $finalFileName)
+    {
+        $credentialsPath = storage_path('app/google/credentials.json');
+        $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
+        $client = new \Google_Client();
+        $client->setAuthConfig($credentialsPath);
+        $client->addScope(\Google_Service_Drive::DRIVE);
+        $service = new \Google_Service_Drive($client);
+        $fileMetadata = new \Google_Service_Drive_DriveFile([
+            'name' => $finalFileName,
+            'parents' => [$mainFolderId],
+        ]);
+        $content = file_get_contents($localPath);
+        $mimeType = mime_content_type($localPath);
+
+        $uploadedFile = $service->files->create($fileMetadata, [
+            'data' => $content,
+            'mimeType' => $mimeType,
+            'uploadType' => 'multipart',
+            'fields' => 'id',
+        ]);
+        $permission = new \Google_Service_Drive_Permission([
+            'type' => 'anyone',
+            'role' => 'reader',
+        ]);
+        $service->permissions->create($uploadedFile->id, $permission);
+        return $uploadedFile->id;
+    }
+
     public function captcha1(Request $request){
         $kodeinput = $request->input('kodeinputes');
         $kodecapt = session('captcha_verified');
         if (session('regis')){
             if ($kodeinput === $kodecapt){
-                $defaultImage = "defaultuser.png";
-                $source = public_path('partses/' . $defaultImage);
-                $destinationDir = public_path('users/' . session('username') . '/profil');
-                $destination = $destinationDir . '/' . $defaultImage;
-                if (!File::exists($destinationDir)) {
-                    File::makeDirectory($destinationDir, 0755, true);
-                }
-                File::copy($source, $destination);
+                $source = public_path('partses/defaultuser.png');
+                $finalFileName = session('username') . '.png';
+                $uploadedFileId = $this->uploadToGoogleDrive($source, $finalFileName);
                 Users::create([
                     'username' => session('username'),
                     'bio' => session('bio'),
                     'nameuse' => session('nameuse'),
                     'email' => session('email'),
                     'password' => bcrypt(session('password')),
-                    'improfil' => session('improfil'),
+                    'improfil' => $uploadedFileId,
                 ]);
                 session()->flush();
                 return redirect()->route('authes')->with(['alert' => 'Yey akun mu sudah jadi!', 'form' => 'login']);
