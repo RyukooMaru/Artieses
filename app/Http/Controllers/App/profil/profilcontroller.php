@@ -108,7 +108,7 @@ class profilcontroller extends Controller
         ]);
         $user = Users::where('username', $username)->firstOrFail();
         $file = $request->file('foto');
-        $credentialsPath = storage_path('app/google/artieses-464604-ae12a40dadae.json.json');
+        $credentialsPath = base_path(env('GOOGLE_CREDENTIAL_PATH'));
         $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
         $client = new Google_Client();
         $client->setAuthConfig($credentialsPath);
