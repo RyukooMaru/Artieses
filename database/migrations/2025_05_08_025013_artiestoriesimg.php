@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('artiestoriesimg', function (Blueprint $table) {
-            $table->id('artiestoriesimgid');
+        Schema::create('artiestoristype', function (Blueprint $table) {
+            $table->id('artiestoriestypeid');
             $table->unsignedBigInteger('artiestoriesid');
             $table->foreign('artiestoriesid')->references('artiestoriesid')->on('artiestories')->onDelete('cascade');
             $table->text('konten');
+            $table->text('type');
             $table->timestamp('deltime')->nullable();
             $table->string('delmode')->nullable();
             $table->timestamps();
