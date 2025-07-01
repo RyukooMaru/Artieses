@@ -6,7 +6,7 @@ use App\Helpers\AuthHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Artiestories;
-use App\Models\ArtiestoriesIMG;
+use App\Models\ArtiestoriesType;
 use getID3;
 use Google_Client;
 use Google_Service_Drive;
@@ -58,79 +58,47 @@ class controllerartiestories extends Controller
         }
         foreach ($files as $index => $file) {
             $extension = $file->getClientOriginalExtension();
-            $filename = session('username') . '_' . date('Ymd_His') . '_' . $index . '.' . $extension;
-            $pathgoogle = session('username') . "/artiestories/" . $randomString;
-            $googleDriveUrl = $this->uploadToGoogleDrive($file, $filename, $pathgoogle);
-            ArtiestoriesIMG::create([
+            $googleDriveUrl = $this->uploadToGoogleDrive($file);
+            ArtiestoriesType::create([
                 'artiestoriesid' => $post->artiestoriesid,
                 'konten' => $googleDriveUrl,
+                'type' => $extension
             ]);
         }
         return redirect()->route('artieses')->with(['alert' => 'Artiestories mu sudah di publish!']);
     }
-    private function createDriveFolder($service, $folderName, $parentId)
-    {
-        $fileMetadata = new \Google_Service_Drive_DriveFile([
-            'name' => $folderName,
-            'mimeType' => 'application/vnd.google-apps.folder',
-            'parents' => [$parentId]
-        ]);
-
-        $folder = $service->files->create($fileMetadata, [
-            'fields' => 'id'
-        ]);
-
-        return $folder->id;
-    }
-    private function findOrCreateFolder($service, $folderName, $parentId)
-    {
-        $query = sprintf(
-            "mimeType='application/vnd.google-apps.folder' and name='%s' and '%s' in parents and trashed=false",
-            addslashes($folderName),
-            $parentId
-        );
-        $response = $service->files->listFiles([
-            'q' => $query,
-            'spaces' => 'drive',
-            'fields' => 'files(id, name)',
-            'pageSize' => 1,
-        ]);
-        if (count($response->files) > 0) {
-            return $response->files[0]->id;
-        }
-        return $this->createDriveFolder($service, $folderName, $parentId);
-    }
-    private function uploadToGoogleDrive($file, $filename, $subFolderPath = null)
+    private function uploadToGoogleDrive($file)
     {
         $credentialsPath = storage_path('app/google/credentials.json');
-        $mainFolderId = '1A2B3C4D5E6F7G8H9';
+        $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
         $client = new \Google_Client();
         $client->setAuthConfig($credentialsPath);
         $client->addScope(\Google_Service_Drive::DRIVE);
         $service = new \Google_Service_Drive($client);
-        $parentId = $mainFolderId;
-        if ($subFolderPath) {
-            $parts = explode('/', $subFolderPath);
-            foreach ($parts as $part) {
-                $parentId = $this->findOrCreateFolder($service, $part, $parentId);
-            }
-        }
+        $tempName = 'temp_' . time() . '.' . $file->getClientOriginalExtension();
         $fileMetadata = new \Google_Service_Drive_DriveFile([
-            'name' => $filename,
-            'parents' => [$parentId],
+            'name' => $tempName,
+            'parents' => [$mainFolderId],
         ]);
         $content = file_get_contents($file->getPathname());
+        $mimeType = $file->getMimeType();
+
         $uploadedFile = $service->files->create($fileMetadata, [
             'data' => $content,
-            'mimeType' => $file->getMimeType(),
+            'mimeType' => $mimeType,
             'uploadType' => 'multipart',
             'fields' => 'id',
         ]);
+        $newName = $uploadedFile->id . '.' . $file->getClientOriginalExtension();
+        $updateMetadata = new \Google_Service_Drive_DriveFile([
+            'name' => $newName
+        ]);
+        $service->files->update($uploadedFile->id, $updateMetadata);
         $permission = new \Google_Service_Drive_Permission([
             'type' => 'anyone',
             'role' => 'reader',
         ]);
         $service->permissions->create($uploadedFile->id, $permission);
-        return 'https://drive.google.com/file/d/' . $uploadedFile->id . '/view';
+        return $uploadedFile->id;
     }
 }

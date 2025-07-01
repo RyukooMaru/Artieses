@@ -55,6 +55,41 @@ class artiestoriescomments extends Controller
             'message' =>  $message
         ]);
     }
+    
+    private function uploadToGoogleDrive($file)
+    {
+        $credentialsPath = storage_path('app/google/credentials.json');
+        $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
+        $client = new \Google_Client();
+        $client->setAuthConfig($credentialsPath);
+        $client->addScope(\Google_Service_Drive::DRIVE);
+        $service = new \Google_Service_Drive($client);
+        $tempName = 'temp_' . time() . '.' . $file->getClientOriginalExtension();
+        $fileMetadata = new \Google_Service_Drive_DriveFile([
+            'name' => $tempName,
+            'parents' => [$mainFolderId],
+        ]);
+        $content = file_get_contents($file->getPathname());
+        $mimeType = $file->getMimeType();
+
+        $uploadedFile = $service->files->create($fileMetadata, [
+            'data' => $content,
+            'mimeType' => $mimeType,
+            'uploadType' => 'multipart',
+            'fields' => 'id',
+        ]);
+        $newName = $uploadedFile->id . '.' . $file->getClientOriginalExtension();
+        $updateMetadata = new \Google_Service_Drive_DriveFile([
+            'name' => $newName
+        ]);
+        $service->files->update($uploadedFile->id, $updateMetadata);
+        $permission = new \Google_Service_Drive_Permission([
+            'type' => 'anyone',
+            'role' => 'reader',
+        ]);
+        $service->permissions->create($uploadedFile->id, $permission);
+        return $uploadedFile->id;
+    }
     public function storeGG(Request $request)
     {
         if (session()->has('username')) {
@@ -65,17 +100,8 @@ class artiestoriescomments extends Controller
             $filename = null;
             if (!$request->input('message') && $request->hasFile('fileInput')) {
                 $file = $request->file('fileInput');
-                $storagePath = session('username') . '/artiestoriescomments/';
-                $path1 = 'storage/' . $storagePath;
-                $existingImages = glob($path1 . '/imgcomment0*.png');
-                $count = count($existingImages) + 1;
-                $filename = "imgcomment0{$count}-{$coderies}-{$requscom}.png";
-                $path = 'storage/' . $storagePath . '/' . $filename;
-                if (!file_exists($path)) {
-                    mkdir($path, 0755, true);
-                }
-                Storage::disk('public')->putFileAs($storagePath, $file, $filename);
-                $inputcomments = '<img src="' . url('/Artiestoriescom/' . $filename . '?GetContent=' . $coderies) . '" class="imgcom">';
+                $fileid = $this->uploadToGoogleDrive($file);
+                $inputcomments = '<img src="' . $fileid . '" class="imgcom">';
             }
             if (!$request->hasFile('fileInput')) {
                 $inputcomments = $request->input('message');
@@ -131,20 +157,9 @@ class artiestoriescomments extends Controller
             $inputcomments = '';
             $filename = null;
             if (!$request->input('message1') && $request->hasFile('fileInput1')) {
-                $reqplat = $request->input('storyCode1');
-                $code = $request->input('code');
                 $file = $request->file('fileInput1');
-                $storagePath = session('username') . '/artiestoriescomments/';
-                $path1 = 'storage/' . $storagePath;
-                $existingImages = glob($path1 . '/imgcomment*.png');
-                $count = count($existingImages) + 1;
-                $filename = "imgcomment1{$count}-{$code}-{$requscom}.png";
-                $path = 'storage/' . $storagePath . '/' . $filename;
-                if (!file_exists($path)) {
-                    mkdir($path, 0755, true);
-                }
-                Storage::disk('public')->putFileAs($storagePath, $file, $filename);
-                $inputcomments = '<img src="' . url('/Artiestoriescom/' . $filename . '?GetContent=' . $code) . '" class="imgcom">';
+                $fileid = $this->uploadToGoogleDrive($file);
+                $inputcomments = '<img src="' . $fileid . '" class="imgcom">';
             }
             if (!$request->hasFile('fileInput1')) {
                 $reqplat = $request->input('storyCode1');
