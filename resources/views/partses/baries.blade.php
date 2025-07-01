@@ -29,7 +29,7 @@
             $fileId = $matches[1] ?? null;
             $imgSrc = "https://drive.google.com/uc?export=view&id=$fileId";
         @endphp
-        <img src="{{ url($imgSrc) }}" alt="Profile" class="improfiles" loading="lazy" data-light="{{ asset($path) ?? asset('partses/logincon.png') }}" data-dark="{{ asset($path) ?? asset('partses/loginconlm.png') }}"/>
+        <img src="{{ url($imgSrc) }}" alt="Profile" class="improfiles" loading="lazy" data-light="{{ url($imgSrc) ?? asset('partses/logincon.png') }}" data-dark="{{ url($imgSrc) ?? asset('partses/loginconlm.png') }}"/>
     @else
         <img src="{{ asset('partses/logincon.png') }}" alt="Profile" class="improfiles" loading="lazy" data-light="{{ asset('partses/logincon.png') }}" data-dark="{{ asset('partses/loginconlm.png') }}"/>
     @endif
@@ -46,7 +46,7 @@
                             $fileId = $matches[1] ?? null;
                             $imgSrc = "https://drive.google.com/uc?export=view&id=$fileId";
                         @endphp
-                        <img src="{{ asset($path) }}" alt="Profile" style="width:40px; height:40px;">
+                        <img src="{{ url($imgSrc) }}" alt="Profile" style="width:40px; height:40px;">
                     </button>
                 @else
                     <button class="button-group" onclick="window.location.href='/logineses'">
