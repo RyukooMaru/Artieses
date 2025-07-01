@@ -23,12 +23,13 @@
     <a href="javascript:void(0);" id="profile-icon">
     @if(session('isLoggedIn'))
         @php
-            $path = session('improfil');
-            $ext = pathinfo($path, PATHINFO_EXTENSION);
+            $viewUrl = session('improfil');
+            $matches = [];
+            preg_match('/\/d\/(.*?)\//', $viewUrl, $matches);
+            $fileId = $matches[1] ?? null;
+            $imgSrc = "https://drive.google.com/uc?export=view&id=$fileId";
         @endphp
-        @if(in_array($ext, ['gif', 'png', 'jpg', 'jpeg', 'webp']))
-            <img src="{{ asset($path) ?? asset('partses/logincon.png') }}" alt="Profile" class="improfiles" loading="lazy" data-light="{{ asset($path) ?? asset('partses/logincon.png') }}" data-dark="{{ asset($path) ?? asset('partses/loginconlm.png') }}"/>
-        @endif
+        <img src="{{ url($imgSrc) }}" alt="Profile" class="improfiles" loading="lazy" data-light="{{ asset($path) ?? asset('partses/logincon.png') }}" data-dark="{{ asset($path) ?? asset('partses/loginconlm.png') }}"/>
     @else
         <img src="{{ asset('partses/logincon.png') }}" alt="Profile" class="improfiles" loading="lazy" data-light="{{ asset('partses/logincon.png') }}" data-dark="{{ asset('partses/loginconlm.png') }}"/>
     @endif
@@ -39,13 +40,13 @@
                     <button class="button-group" onclick="window.location.href='{{ route('profiles.show', ['username' => session('username')]) }}'">
                         <span>{{ session('username') }}</span>
                         @php
-                            $path = session('improfil');
-                            $ext = pathinfo($path, PATHINFO_EXTENSION);
+                            $viewUrl = session('improfil');
+                            $matches = [];
+                            preg_match('/\/d\/(.*?)\//', $viewUrl, $matches);
+                            $fileId = $matches[1] ?? null;
+                            $imgSrc = "https://drive.google.com/uc?export=view&id=$fileId";
                         @endphp
-
-                        @if(in_array($ext, ['gif', 'png', 'jpg', 'jpeg', 'webp']))
-                            <img src="{{ asset($path) }}" alt="Profile" style="width:40px; height:40px;">
-                        @endif
+                        <img src="{{ asset($path) }}" alt="Profile" style="width:40px; height:40px;">
                     </button>
                 @else
                     <button class="button-group" onclick="window.location.href='/logineses'">
