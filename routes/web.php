@@ -231,7 +231,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
         $user = $konten->usericonStories->username;
         $path = storage_path('app/public/' . $user . '/artiestories/' . $reqplat . '/' . $filename);
         if (!file_exists($path)) {
-            abort(404);
+            abort(404); 
         }
         return new BinaryFileResponse($path, 200, [
             'Content-Type' => mime_content_type($path),
