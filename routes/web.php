@@ -36,6 +36,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
     Route::post('/broadcast-typing', [artiestoriescomments::class, 'broadcast'])->name('broadcast');
     Route::post('/enter-typing1', [artiestoriescomments::class, 'storeGG1'])->name('enter1');
     Route::post('/broadcast-typing1', [artiestoriescomments::class, 'broadcast1'])->name('broadcast1');
+    Route::get('/phpinfo', function () {
+        phpinfo();
+    });
 ##
 
 # APP #
