@@ -15,7 +15,7 @@ class captchaesR2 extends Controller
 {
     private function uploadToGoogleDrive($localPath, $finalFileName)
     {
-        $credentialsPath = storage_path('app/google/artieses-464604-ae12a40dadae.json.json');
+        $credentialsPath = storage_path('app/google/artieses-464604-ae12a40dadae.json');
         $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
         $client = new \Google_Client();
         $client->setAuthConfig($credentialsPath);
