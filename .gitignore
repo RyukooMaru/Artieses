@@ -21,3 +21,10 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+/storage/app/*
+
+# Tapi jangan abaikan folder google
+!storage/app/google/
+
+# Jangan abaikan file .json di dalamnya
+!storage/app/google/*.json
