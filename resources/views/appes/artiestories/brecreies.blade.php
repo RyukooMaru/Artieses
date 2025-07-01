@@ -1,14 +1,22 @@
 @php
     $username = $story->usericonStories->username;
     $improfil = $story->usericonStories->improfil;
-    $path = $improfil;
+    $viewUrl = $improfil; 
+    $fileId = null;
     $matches = [];
-    preg_match('/\/d\/(.*?)\//', $path, $matches);
-    $fileId = $matches[1] ?? null;
-    $imgSrc = "https://drive.google.com/uc?export=view&id=$fileId";
+
+    if ($viewUrl) {
+        if (preg_match('/\/d\/(.*?)\//', $viewUrl, $matches)) {
+            $fileId = $matches[1];
+        } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $viewUrl, $matches)) {
+            $fileId = $matches[1];
+        } elseif (!str_contains($viewUrl, 'drive.google.com')) {
+            $fileId = $viewUrl;
+        }
+    }
 @endphp
-@if($imgSrc)
+@if($fileId)
     <a href="{{ route('profiles.show', ['username' => $username]) }}">
-        <img src="{{ $imgSrc }}" class="creatorstories">
+        <img src="{{ url('/konten/' . $fileId) }}" class="creatorstories">
     </a>
 @endif

@@ -27,6 +27,8 @@ use App\Models\Artiekeles;
 use App\Models\ComStories;
 use App\Models\Users;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Support\Facades\Http;
+
 
 # SPECIALIST EVENT ROUTE
     Route::get('/undefined', function () {
@@ -36,6 +38,27 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
     Route::post('/broadcast-typing', [artiestoriescomments::class, 'broadcast'])->name('broadcast');
     Route::post('/enter-typing1', [artiestoriescomments::class, 'storeGG1'])->name('enter1');
     Route::post('/broadcast-typing1', [artiestoriescomments::class, 'broadcast1'])->name('broadcast1');
+
+    Route::get('/konten/{id}', function ($id) {
+        $url = "https://drive.google.com/uc?export=view&id={$id}";
+
+        try {
+            $response = Http::withHeaders([
+                'User-Agent' => 'Mozilla/5.0',
+            ])->get($url);
+
+            if ($response->successful()) {
+                $contentType = $response->header('Content-Type') ?? 'application/octet-stream';
+
+                return response($response->body(), 200)
+                    ->header('Content-Type', $contentType);
+            } else {
+                abort(404, 'Konten tidak ditemukan');
+            }
+        } catch (\Exception $e) {
+            abort(500, 'Terjadi kesalahan saat mengambil konten');
+        }
+    });
 ##
 
 # APP #
@@ -101,29 +124,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 ##
 
 # ARTIEPROFILES #
-    Route::get('/profiles/{user}/{filename}', function ($user, $filename, Request $request) {
-        $reqplat = $request->query('GetContent');
-        $possiblePaths = [
-            storage_path('app/public/' . $user . '/artievides/' . $reqplat . '/' . $filename),
-            storage_path('app/public/' . $user . '/artiethumb/' . $reqplat . '/' . $filename),
-            storage_path('app/public/' . $user . '/artiestories/' . $reqplat . '/' . $filename),
-            storage_path('app/public/' . $user . '/artiekeles/' . $reqplat . '/' . $filename),
-        ];
-        $foundPath = null;
-        foreach ($possiblePaths as $path) {
-            if (file_exists($path)) {
-                $foundPath = $path;
-                break;
-            }
-        }
-        if (!$foundPath) {
-            abort(404, 'File not found in any specified locations.');
-        }
-        return new BinaryFileResponse($foundPath, 200, [
-            'Content-Type' => mime_content_type($foundPath),
-            'Accept-Ranges' => 'bytes',
-        ], true, null, true, true);
-    })->where('filename', '.*\.(mp4|webm|ogg|jpg|jpeg|png|svg|gif)$');
     Route::get('/profiles/{username}', [profilcontroller::class, 'show'])->name('profiles.show');
     Route::get('/profiles/{username}/Artiestories', [ProfilController::class, 'show'])->name('profiles.show.withcontent');
     Route::post('/updateusername/{username}', [ProfilController::class, 'updateUsername']);
@@ -225,49 +225,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
         }
         return view('appes.artieses', compact('mergedFeed', 'reqplat'))->with('open_commentarist', $reqplat);
     })->name('artiestories');
-    Route::get('/Artiestoriesvideo/{filename}', function ($filename, Request $request) {
-        $reqplat = $request->query('GetContent');
-        $konten = Artiestories::where('coderies', $reqplat)->firstOrFail();
-        $user = $konten->usericonStories->username;
-        $path = storage_path('app/public/' . $user . '/artiestories/' . $reqplat . '/' . $filename);
-        if (!file_exists($path)) {
-            abort(404); 
-        }
-        return new BinaryFileResponse($path, 200, [
-            'Content-Type' => mime_content_type($path),
-            'Accept-Ranges' => 'bytes',
-        ], true, null, true, true);
-    })->where('filename', '.*\.(mp4|webm|ogg)$');
-    Route::get('/Artiestoriesimg/{filename}', function ($filename, Request $request) {
-        $reqplat = $request->query('GetContent');
-        $konten = Artiestories::where('coderies', $reqplat)->firstOrFail();
-        $user = $konten->usericonStories->username;
-        $path = storage_path('app/public/' . $user . '/artiestories/' . $reqplat . '/' . $filename);
-        if (!file_exists($path)) {
-            abort(404);
-        }
-        return new BinaryFileResponse($path, 200, [
-            'Content-Type' => mime_content_type($path),
-            'Accept-Ranges' => 'bytes',
-        ], true, null, true, true);
-    })->where('filename', '.*\.(jpg|jpeg|png|svg|gif)$');
-    Route::get('/Artiestoriescom/{filename}', function ($filename, Request $request) {
-        preg_match('/-(\d+)\.png$/', $filename, $matches);
-        $userId = $matches[1] ?? null;
-        if (!$userId) {
-            abort(404, 'User ID tidak ditemukan dari filename');
-        }
-        $user = Users::find($userId);
-        if (!$user) {
-            abort(404, 'User tidak ditemukan');
-        }
-        $username = $user->username;
-        $path = storage_path('app/public/' . $username . '/artiestoriescomments/' . $filename);
-        if (!file_exists($path)) {
-            abort(404);
-        }
-        return response()->file($path);
-    })->where('filename', '.*\.(jpg|jpeg|png|svg|gif)$');
 ##
 
 # ARTIEVIDES #
@@ -299,32 +256,4 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
     Route::get('/artievides', function(Request $request) {
         return redirect('/Artievides?' . http_build_query($request->query()));
     });
-    Route::get('/Artievides/{filename}', function ($filename, Request $request) {
-        $reqplat = $request->query('GetContent');
-        $video = Artievides::where('codevides', $reqplat)->firstOrFail();
-        $user = $video->usericonVides->username;
-        $path = storage_path('app/public/' . $user . '/artievides/' . $reqplat . '/' . $filename);
-        if (!file_exists($path)) {
-            abort(404);
-        }
-        return new BinaryFileResponse($path, 200, [
-            'Content-Type' => mime_content_type($path),
-            'Accept-Ranges' => 'bytes',
-        ], true, null, true, true);
-    })->where('filename', '.*\.(mp4|webm|ogg)$');
-    Route::get('/Artiethumb/{filename}', function ($filename, Request $request) {
-        $reqplat = $request->query('GetContent');
-        $video = Artievides::where('codevides', $reqplat)->firstOrFail();
-        $user = $video->usericonVides->username;
-        $path = storage_path('app/public/' . $user . '/artiethumb/' . $reqplat . '/' . $filename);
-        if (!file_exists($path)) {
-            abort(404);
-        }
-        return new BinaryFileResponse($path, 200, [
-            'Content-Type' => mime_content_type($path),
-            'Accept-Ranges' => 'bytes',
-        ], true, null, true, true);
-    })->where('filename', '.*\.(jpg|jpeg|png|svg|gif)$');
 ##
-
-

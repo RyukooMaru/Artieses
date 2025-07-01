@@ -16,20 +16,19 @@
                     $imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
                     $fileId = $img->konten;
-                    $fileUrl = "https://drive.google.com/uc?export=view&id=$fileId";
 
                     $isVideo = in_array(strtolower($img->type), $videoTypes);
                     $isImage = in_array(strtolower($img->type), $imageTypes);
                 @endphp
                 @if ($isImage)
-                    <img src="{{ $fileUrl }}"
+                    <img src="{{ url('/konten/'. $fileId) }}"
                         class="cardstories-awal cardstories-{{ $storyCode }} {{ $index !== 0 ? 'hidden' : '' }}"
                         id="cbtnry1-{{ $storyCode }}-{{ $index }}">
                 @elseif ($isVideo)
                     <video controls
                         class="cardstories-awal cardstories-{{ $storyCode }} {{ $index !== 0 ? 'hidden' : '' }} cbtnry1vid-{{ $storyCode }}-{{ $index }}"
                         id="cbtnry1-{{ $storyCode }}-{{ $index }}">
-                        <source src="{{ $fileUrl }}" type="video/mp4">
+                        <source src="{{ url('/konten/'. $fileId) }}" type="video/mp4">
                         Browsermu tidak mendukung video.
                     </video>
                 @endif

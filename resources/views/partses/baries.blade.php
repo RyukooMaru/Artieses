@@ -25,20 +25,20 @@
         @php
             $viewUrl = session('improfil');
             $fileId = null;
+
             if ($viewUrl) {
                 if (preg_match('/\/d\/(.*?)\//', $viewUrl, $matches)) {
                     $fileId = $matches[1];
                 } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $viewUrl, $matches)) {
-                    // fallback kalau formatnya pakai ?id=...
                     $fileId = $matches[1];
                 } elseif (!str_contains($viewUrl, 'drive.google.com')) {
-                    // jika bukan link Drive, mungkin memang ID langsung
                     $fileId = $viewUrl;
                 }
             }
-            $imgSrc = $fileId ? "https://drive.google.com/uc?export=view&id=$fileId" : asset('partses/logincon.png');
         @endphp
-        <img src="{{ $imgSrc }}" alt="Profile" class="improfiles" loading="lazy" data-light="{{ $imgSrc ?? asset('partses/logincon.png') }}" data-dark="{{ $imgSrc ?? asset('partses/loginconlm.png') }}"/>
+        @if($fileId)
+            <img src="{{ url('/konten/' . $fileId) }}" alt="Profile" class="improfiles" loading="lazy" data-light="{{ url('/konten/' . $fileId) ?? asset('partses/logincon.png') }}" data-dark="{{ url('/konten/' . $fileId) ?? asset('partses/loginconlm.png') }}"/>
+        @endif
     @else
         <img src="{{ asset('partses/logincon.png') }}" alt="Profile" class="improfiles" loading="lazy" data-light="{{ asset('partses/logincon.png') }}" data-dark="{{ asset('partses/loginconlm.png') }}"/>
     @endif
@@ -51,20 +51,20 @@
                         @php
                             $viewUrl = session('improfil');
                             $fileId = null;
+
                             if ($viewUrl) {
                                 if (preg_match('/\/d\/(.*?)\//', $viewUrl, $matches)) {
                                     $fileId = $matches[1];
                                 } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $viewUrl, $matches)) {
-                                    // fallback kalau formatnya pakai ?id=...
                                     $fileId = $matches[1];
                                 } elseif (!str_contains($viewUrl, 'drive.google.com')) {
-                                    // jika bukan link Drive, mungkin memang ID langsung
                                     $fileId = $viewUrl;
                                 }
                             }
-                            $imgSrc = $fileId ? "https://drive.google.com/uc?export=view&id=$fileId" : asset('partses/logincon.png');
                         @endphp
-                        <img src="{{ url($imgSrc) }}" alt="Profile" style="width:40px; height:40px;">
+                        @if($fileId)
+                            <img src="{{ url('/konten/' . $fileId) }}" alt="Profile" style="width:40px; height:40px;">
+                        @endif
                     </button>
                 @else
                     <button class="button-group" onclick="window.location.href='/logineses'">

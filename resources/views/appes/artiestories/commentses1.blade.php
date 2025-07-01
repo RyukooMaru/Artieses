@@ -20,7 +20,7 @@
         'senang' => $getreactsenang,
     ];
     use Illuminate\Support\Str;
-    $prefix = '<img src="' . url('/Artiestoriescom/');
+    $prefix = '<img src="' . url('/konten/');
     
     $now = \Carbon\Carbon::now();
     $waktunya = $comment->created_at;
@@ -104,13 +104,25 @@
                         @php
                             $username = $reply->userBalcom->username ?? 'defaultuser';
                             $improfil = $reply->userBalcom->improfil ?? 'default.png';
-                            $path = $improfil;
-                            $ext = pathinfo($improfil, PATHINFO_EXTENSION);
+                            
+                            $viewUrl = $improfil;
+                            $fileId = null;
+                            $matches = [];
+
+                            if ($viewUrl) {
+                                if (preg_match('/\/d\/(.*?)\//', $viewUrl, $matches)) {
+                                    $fileId = $matches[1];
+                                } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $viewUrl, $matches)) {
+                                    $fileId = $matches[1];
+                                } elseif (!str_contains($viewUrl, 'drive.google.com')) {
+                                    $fileId = $viewUrl;
+                                }
+                            }
                         @endphp
-                        @if(in_array(strtolower($ext), ['gif', 'png', 'jpg', 'jpeg', 'webp']))
-                        <a href="{{ route('profiles.show', ['username' => $reply->userBalcom->username]) }}">
-                            <img src="{{ asset($path) }}" class="creatorstories">
-                        </a>
+                        @if($fileId)
+                            <a href="{{ route('profiles.show', ['username' => $reply->userBalcom->username]) }}">
+                                <img src="{{ url('/konten/' . $fileId) }}" class="creatorstories">
+                            </a>
                         @endif
                         <div class="dispcard">
                             <a href="{{ route('profiles.show', ['username' => $reply->userBalcom->username]) }}">

@@ -1,13 +1,33 @@
 @php
   $konten = $video->video;
   $thumbnail = $video->thumbnail;
-  $thumbnailurl = "https://drive.google.com/uc?export=view&id=$thumbnail";
-  $videourl = "https://drive.google.com/uc?export=view&id=$konten";
+  $kontenurl = $konten;
+  thumburl = $thumbnail
+  $kontenId = null;
+  $thumbId = null;
+  if ($kontenurl) {
+      if (preg_match('/\/d\/(.*?)\//', $kontenurl, $matches)) {
+          $kontenId = $matches[1];
+      } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $kontenurl, $matches)) {
+          $kontenId = $matches[1];
+      } elseif (!str_contains($kontenurl, 'drive.google.com')) {
+          $kontenId = $kontenurl;
+      }
+  }
+  if ($thumburl) {
+      if (preg_match('/\/d\/(.*?)\//', $thumburl, $matches)) {
+        $thumbId = $matches[1];
+      } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $thumburl, $matches)) {
+        $thumbId = $matches[1];
+      } elseif (!str_contains($thumburl, 'drive.google.com')) {
+        $thumbId = $thumburl;
+      }
+  }
 @endphp
 <a href="/Artievides?GetContent={{ $video->codevides }}" class="">
   <div class="video-container video-container-{{ $video->codevides }}">
-    <video width="100%" muted class="hover-video" id="hover-video-{{$video->codevides}}" poster="{{ $thumbnailurl }}">
-      <source src="{{ $videourl }}" type="video/mp4">
+    <video width="100%" muted class="hover-video" id="hover-video-{{$video->codevides}}" poster="{{ url('konten' . $thumbId }}">
+      <source src="{{ url('konten' . $kontenId) }}" type="video/mp4">
     </video>
     <div class="video-timer" id="video-timer-{{$video->codevides}}">00:00 / 00:00</div>
   </div><br>
@@ -15,16 +35,22 @@
     @php
       $username = $video->usericonVides->username;
       $improfil = $video->usericonVides->improfil;
-      $path = $improfil;
-      $matches = [];
-      preg_match('/\/d\/(.*?)\//', $path, $matches);
-      $fileId = $matches[1] ?? null;
-      $imgSrc = "https://drive.google.com/uc?export=view&id=$fileId";
-    @endphp
-    @if($imgSrc)
+      $viewUrl = $improfil;
+      $fileId = null;
+      if ($viewUrl) {
+          if (preg_match('/\/d\/(.*?)\//', $viewUrl, $matches)) {
+              $fileId = $matches[1];
+          } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $viewUrl, $matches)) {
+              $fileId = $matches[1];
+          } elseif (!str_contains($viewUrl, 'drive.google.com')) {
+              $fileId = $viewUrl;
+          }
+      }
+  @endphp
+  @if($fileId)
       <div class="creator-1">
         <a href="{{ route('profiles.show', ['username' => $username]) }}">
-            <img src="{{ $imgSrc }}" class="creatorvides">
+            <img src="{{ url('konten' . $fileId }}" class="creatorvides">
         </a>
       </div>
     @endif

@@ -41,13 +41,12 @@
         @php
             $username = $user->username ?? 'defaultuser';
             $improfil = $user->improfil;
-            $improfilurl = "https://drive.google.com/uc?export=view&id=$improfil";
         @endphp
         <div class="card-name">
-            @if($improfilurl)
+            @if($improfil)
                 @if($user->username == session('username'))
                     <div class="profile-container">
-                        <img src="{{ $improfilurl }}" class="creatorprofile" alt="Foto Profil">
+                        <img src="{{ url('/konten/' . $improfil) }}" class="creatorprofile" alt="Foto Profil">
                         <img id="edit-photo-btn"
                             src="{{ asset('partses/editingdm.png') }}"
                             data-light="{{ asset('partses/editinglm.png') }}"
@@ -69,7 +68,7 @@
                         <button id="cancel-photo">Batal</button>
                     </div>
                 @else
-                    <img src="{{ $improfilurl }}" class="creatorprofile">
+                    <img src="{{ url('/konten/' . $improfil) }}" class="creatorprofile">
                 @endif
             @endif
             <div class="text-section">
