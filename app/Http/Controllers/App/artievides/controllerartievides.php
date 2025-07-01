@@ -6,10 +6,43 @@ use App\Helpers\AuthHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Artievides;
-use Illuminate\Support\Facades\Storage;
+use Google_Client;
+use Google_Service_Drive;
+use Google_Service_Drive_DriveFile;
+use Google_Service_Drive_Permission;
 
 class controllerartievides extends Controller
 {
+    private function uploadToGoogleDriveDirect($file, $finalFileName)
+    {
+        $credentialsPath = storage_path('app/google/credentials.json');
+        $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
+        $client = new \Google_Client();
+        $client->setAuthConfig($credentialsPath);
+        $client->addScope(\Google_Service_Drive::DRIVE);
+        
+        $service = new \Google_Service_Drive($client);
+
+        $fileMetadata = new \Google_Service_Drive_DriveFile([
+            'name' => $finalFileName,
+            'parents' => [$mainFolderId],
+        ]);
+        $content = file_get_contents($file->getPathname());
+        $mimeType = $file->getMimeType();
+        $uploadedFile = $service->files->create($fileMetadata, [
+            'data' => $content,
+            'mimeType' => $mimeType,
+            'uploadType' => 'multipart',
+            'fields' => 'id',
+        ]);
+        $permission = new \Google_Service_Drive_Permission([
+            'type' => 'anyone',
+            'role' => 'reader',
+        ]);
+        $service->permissions->create($uploadedFile->id, $permission);
+        return $uploadedFile->id;
+    }
+
     public function uploadFile(Request $request)
     {
         if (!AuthHelper::check()) {
@@ -34,31 +67,22 @@ class controllerartievides extends Controller
             return $randomString;
         }
         $randomString = generateUniqueCodevides();
-        $videoFile = $request->file('video');
-        if ($videoFile == null) {
-            return redirect()->route('artieses')->with(['alert' => 'Thumbnail harus berupa mp4,avi,mov,wmv,mkv,flv,mpeg,3gp!']);
-        }
-        $videoName = time() . '_' . $videoFile->getClientOriginalName();
-        $videoPath = session('username') . '/artievides/' . $randomString;
-        Storage::disk('public')->putFileAs($videoPath, $videoFile, $videoName);
-        $videoPathRelatif = session('username') . '/artievides/' . $randomString . '/' . $videoName;
-        $thumbFile = $request->file('thumbnail');
-        if ($thumbFile == null) {
-            return redirect()->route('artieses')->with(['alert' => 'Thumbnail harus berupa jpeg,png,jpg,svg!']);
-        }
-        $thumbName = time() . '_' . $thumbFile->getClientOriginalName();
-        $thumbPath = session('username') . '/artiethumb/' . $randomString;
-        if (!file_exists($thumbPath)) mkdir($thumbPath, 0755, true);
-        Storage::disk('public')->putFileAs($thumbPath, $thumbFile, $thumbName);
-        $thumbPathRelatif = session('username') . '/artiethumb/' . $randomString . '/' . $thumbName;
+        $video = $request->file('video');
+        $thumbnail = $request->file('thumbnail');
+        $videoFilename = session('username') . '_video_' . time() . '.' . $video->getClientOriginalExtension();
+        $thumbnailFilename = session('username') . '_thumbnail_' . time() . '.' . $thumbnail->getClientOriginalExtension();
+        $videoPath = "Video/" . session('username');
+        $thumbPath = "Thumbnail/" . session('username');
+        $videoFileId = $this->uploadToGoogleDriveDirect($videoPath, $videoFilename);
+        $thumbFileId = $this->uploadToGoogleDriveDirect($thumbPath, $thumbnailFilename);
         Artievides::create([
             'userid' => session('userid'),
             'codevides' => $randomString,
             'judul' => $judul,
             'lseo' => $lseo,
             'kseo' => $kseo,
-            'video' => $videoPathRelatif,
-            'thumbnail' => $thumbPathRelatif,
+            'video' => $videoFileId,
+            'thumbnail' => $thumbFileId,
         ]);
         return redirect()->route('artieses')->with(['alert' => 'Artievides mu sudah di publish!']);
     }
