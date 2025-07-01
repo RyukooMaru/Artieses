@@ -21,7 +21,4 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-<<<<<<< HEAD
-
-=======
->>>>>>> ef7f8762 (u)
+/storage/app/google/*.json
