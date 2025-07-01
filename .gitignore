@@ -21,8 +21,12 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-# Ignore semua file json credential
-/storage/app/google/*.json
+# Ignore all contents of storage/app
+/storage/app/*
 
-# Tapi tetap simpan foldernya di repo
+# But keep the google folder
+!storage/app/google/
+
+# Allow files inside google folder (like .gitkeep or .json)
+/storage/app/google/*
 !storage/app/google/.gitkeep
