@@ -40,14 +40,14 @@
         @endif
         @php
             $username = $user->username ?? 'defaultuser';
-            $improfil = $user->improfil ?? 'default.png';
-            $ext = pathinfo($improfil, PATHINFO_EXTENSION);
+            $improfil = $user->improfil;
+            $improfilurl = "https://drive.google.com/uc?export=view&id=$improfil";
         @endphp
         <div class="card-name">
             @if(in_array(strtolower($ext), ['gif', 'png', 'jpg', 'jpeg', 'webp']))
                 @if($user->username == session('username'))
                     <div class="profile-container">
-                        <img src="{{ asset($improfil) }}" class="creatorprofile" alt="Foto Profil">
+                        <img src="{{ $improfilurl }}" class="creatorprofile" alt="Foto Profil">
                         <img id="edit-photo-btn"
                             src="{{ asset('partses/editingdm.png') }}"
                             data-light="{{ asset('partses/editinglm.png') }}"
@@ -69,7 +69,7 @@
                         <button id="cancel-photo">Batal</button>
                     </div>
                 @else
-                    <img src="{{ asset($improfil) }}" class="creatorprofile" alt="{{ asset($improfil) }}">
+                    <img src="{{ $improfilurl }}" class="creatorprofile">
                 @endif
             @endif
             <div class="text-section">
@@ -195,8 +195,14 @@
                         <div class="video-item">
                             <a href="/Artievides?GetContent={{ $video->codevides }}">
                                 <div class="video-container-{{ $video->codevides }}">
-                                    <video muted id="hover-video-{{ $video->codevides }}" poster="{{ url('/profiles/' . $username . '/' . basename($video->thumbnail) . '?GetContent=' . $video->codevides) }}">
-                                        <source src="{{ url('/profiles/' . $username . '/' . basename($video->video) . '?GetContent=' . $video->codevides) }}" type="video/mp4">
+                                    @php
+                                        $konten = $video->video;
+                                        $thumbnail = $video->thumbnail;
+                                        $thumbnailurl = "https://drive.google.com/uc?export=view&id=$thumbnailurl";
+                                        $videourl = "https://drive.google.com/uc?export=view&id=$konten";
+                                    @endphp
+                                    <video muted id="hover-video-{{ $video->codevides }}" poster="{{ $thumbnailurl }}">
+                                        <source src="{{ $videourl }}" type="video/mp4">
                                     </video>
                                     <div style="background: rgba(0, 0, 0, 0.6) !important" class="video-timer-profiles" id="video-timer-{{ $video->codevides }}">00:00 / 00:00</div>
                                     <h3>{{ $video->judul }}</h3>
@@ -223,18 +229,23 @@
                         <div class="story-item" id="rclick">
                             @foreach ($images as $index => $img)
                                 @php
-                                    $ext = pathinfo($img->konten, PATHINFO_EXTENSION);
-                                    $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif']);
-                                    $isVideo = in_array($ext, ['mp4', 'webm', 'ogg']);
+                                    $videoTypes = ['mp4', 'webm', 'ogg'];
+                                    $imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+                                    $fileId = $img->konten;
+                                    $fileUrl = "https://drive.google.com/uc?export=view&id=$fileId";
+
+                                    $isVideo = in_array(strtolower($img->type), $videoTypes);
+                                    $isImage = in_array(strtolower($img->type), $imageTypes);
                                 @endphp
                                 @if ($isVideo)
                                     <video id="cbtnry1-{{ $storyCode }}-{{ $index }}" class="cardstories-{{ $storyCode }} {{ $index !== 0 ? 'hidden' : '' }}" controls>
-                                        <source src="{{ url('/profiles/' . $username . '/' . basename($img->konten) . '?GetContent=' . $story->coderies) }}" type="video/{{ $ext }}">
+                                        <source src="{{ $fileUrl }}" type="video/mp4">
                                         Browsermu tidak mendukung video.
                                     </video>
                                 @elseif ($isImage)
                                     <img id="cbtnry1-{{ $storyCode }}-{{ $index }}" class="img-storyitem cardstories-{{ $storyCode }} {{ $index !== 0 ? 'hidden' : '' }}"
-                                        src="{{ url('/profiles/' . $username . '/' . basename($img->konten) . '?GetContent=' . $story->coderies) }}" alt="{{ $story->title }}">
+                                        src="{{ $fileUrl }}" alt="{{ $story->title }}">
                                 @endif
                             @endforeach
                             <button id="previmg-{{ $storyCode }}" class="nav-button1 prev">◀</button>

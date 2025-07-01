@@ -9,6 +9,6 @@
 @endphp
 @if($imgSrc)
     <a href="{{ route('profiles.show', ['username' => $username]) }}">
-        <img src="{{ url($imgSrc) }}" class="creatorstories">
+        <img src="{{ $imgSrc }}" class="creatorstories">
     </a>
 @endif

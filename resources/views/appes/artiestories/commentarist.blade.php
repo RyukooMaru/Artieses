@@ -14,18 +14,24 @@
     <div class="commentaristcardimg">
         @foreach ($images as $index => $img)
             @php
-                $isImage = in_array(pathinfo($img->konten, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'gif']);
-                $isVideo = in_array(pathinfo($img->konten, PATHINFO_EXTENSION), ['mp4', 'webm', 'ogg']);
+                $videoTypes = ['mp4', 'webm', 'ogg'];
+                $imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+                $fileId = $img->konten;
+                $fileUrl = "https://drive.google.com/uc?export=view&id=$fileId";
+
+                $isVideo = in_array(strtolower($img->type), $videoTypes);
+                $isImage = in_array(strtolower($img->type), $imageTypes);
             @endphp
             @if ($isImage)
-                <img src="{{ url('/Artiestoriesimg/' . basename($img->konten) . '?GetContent=' . $story->coderies) }}"
+                <img src="{{ $fileUrl }}"
                     class="crimg cardstories-{{ $storyCode }} {{ $index !== 0 ? 'hidden' : '' }}"
                     id="cbtnry001-{{ $storyCode }}-{{ $index }}" >
             @elseif ($isVideo)
                 <video controls
                     class="crimg cardstories-{{ $storyCode }} {{ $index !== 0 ? 'hidden' : '' }}"
                     id="cbtnry001-{{ $storyCode }}-{{ $index }}" tabindex="-1">
-                    <source src="{{ url('/Artiestoriesvideo/' . basename($img->konten) . '?GetContent=' . $story->coderies) }}" type="video/mp4">
+                    <source src="{{ $fileUrl }}" type="video/mp4">
                     Browsermu tidak mendukung video.
                 </video>
             @endif

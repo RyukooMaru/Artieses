@@ -14,7 +14,13 @@
         <div class="video-page-container">
             <div class="main-video">
                 <div class="video-wrapper" style="position: relative;">
-                    <video autoplay class="thevides" id="thevides" preload="auto" poster="{{ url('/Artiethumb/' . basename($video->thumbnail) . '?GetContent=' . $video->codevides) }}" src="{{ url('/Artievides/' . basename($video->video) . '?GetContent=' . $video->codevides) }}" controlslist="nodownload" tabindex="-1"></video>
+                    @php
+                        $konten = $video->video;
+                        $thumbnail = $video->thumbnail;
+                        $thumbnailurl = "https://drive.google.com/uc?export=view&id=$thumbnailurl";
+                        $videourl = "https://drive.google.com/uc?export=view&id=$konten";
+                    @endphp
+                    <video autoplay class="thevides" id="thevides" preload="auto" poster="{{ $thumbnailurl }}" src="{{ $videourl }}" controlslist="nodownload" tabindex="-1"></video>
                     <div id="video-key-catcher" class="video-catch"></div>
                     <img class="pbv hidden" data-play="{{ asset('partses/pbv.png') }}" id="pbv" src="{{ asset('partses/pbv.png') }}" data-pause="{{ asset('partses/pause.png') }}">
                     <img src="{{ asset('partses/next.png') }}" class="next hidden" id="next">
@@ -528,7 +534,7 @@
                 @if($imgSrc)
                 <div class="creator-1">
                     <a href="{{ route('profiles.show', ['username' => $username]) }}">
-                        <img src="{{ url($imgSrc) }}" class="creatorvides">
+                        <img src="{{ $imgSrc }}" class="creatorvides">
                     </a>
                 </div>
                 @endif

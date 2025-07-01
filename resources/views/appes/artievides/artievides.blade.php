@@ -1,7 +1,13 @@
+@php
+  $konten = $video->video;
+  $thumbnail = $video->thumbnail;
+  $thumbnailurl = "https://drive.google.com/uc?export=view&id=$thumbnailurl";
+  $videourl = "https://drive.google.com/uc?export=view&id=$konten";
+@endphp
 <a href="/Artievides?GetContent={{ $video->codevides }}" class="">
   <div class="video-container video-container-{{ $video->codevides }}">
-    <video width="100%" muted class="hover-video" id="hover-video-{{$video->codevides}}" poster="{{ url('/Artiethumb/' . basename($video->thumbnail) . '?GetContent=' . $video->codevides) }}">
-      <source src="{{ url('/Artievides/' . basename($video->video) . '?GetContent=' . $video->codevides) }}" type="video/mp4">
+    <video width="100%" muted class="hover-video" id="hover-video-{{$video->codevides}}" poster="{{ $thumbnailurl }}">
+      <source src="{{ $videourl }}" type="video/mp4">
     </video>
     <div class="video-timer" id="video-timer-{{$video->codevides}}">00:00 / 00:00</div>
   </div><br>
@@ -15,10 +21,10 @@
       $fileId = $matches[1] ?? null;
       $imgSrc = "https://drive.google.com/uc?export=view&id=$fileId";
     @endphp
-    @if(imgSrc)
+    @if($imgSrc)
       <div class="creator-1">
         <a href="{{ route('profiles.show', ['username' => $username]) }}">
-            <img src="{{ url($imgSrc) }}" class="creatorvides">
+            <img src="{{ $imgSrc }}" class="creatorvides">
         </a>
       </div>
     @endif
