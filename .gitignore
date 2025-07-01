@@ -30,3 +30,4 @@ yarn-error.log
 
 # (optional) explicitly allow .gitkeep
 !storage/app/google/.gitkeep
+/storage/app/*.json
