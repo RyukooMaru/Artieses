@@ -44,7 +44,7 @@
             $improfilurl = "https://drive.google.com/uc?export=view&id=$improfil";
         @endphp
         <div class="card-name">
-            @if(in_array(strtolower($ext), ['gif', 'png', 'jpg', 'jpeg', 'webp']))
+            @if($improfilurl)
                 @if($user->username == session('username'))
                     <div class="profile-container">
                         <img src="{{ $improfilurl }}" class="creatorprofile" alt="Foto Profil">
