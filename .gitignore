@@ -21,4 +21,12 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
-/storage/app/google/*.json
+# Ignore everything in storage/app
+/storage/app/**
+
+# Except the google folder and its contents
+!storage/app/google/
+!storage/app/google/**
+
+# (optional) explicitly allow .gitkeep
+!storage/app/google/.gitkeep
