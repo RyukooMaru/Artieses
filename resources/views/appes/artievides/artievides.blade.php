@@ -1,7 +1,7 @@
 @php
   $konten = $video->video;
   $thumbnail = $video->thumbnail;
-  $thumbnailurl = "https://drive.google.com/uc?export=view&id=$thumbnailurl";
+  $thumbnailurl = "https://drive.google.com/uc?export=view&id=$thumbnail";
   $videourl = "https://drive.google.com/uc?export=view&id=$konten";
 @endphp
 <a href="/Artievides?GetContent={{ $video->codevides }}" class="">

@@ -17,7 +17,7 @@
                     @php
                         $konten = $video->video;
                         $thumbnail = $video->thumbnail;
-                        $thumbnailurl = "https://drive.google.com/uc?export=view&id=$thumbnailurl";
+                        $thumbnailurl = "https://drive.google.com/uc?export=view&id=$thumbnail";
                         $videourl = "https://drive.google.com/uc?export=view&id=$konten";
                     @endphp
                     <video autoplay class="thevides" id="thevides" preload="auto" poster="{{ $thumbnailurl }}" src="{{ $videourl }}" controlslist="nodownload" tabindex="-1"></video>
