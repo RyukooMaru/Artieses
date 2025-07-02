@@ -41,6 +41,13 @@
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
+.commentarist-container .delete-content{
+  position: absolute;
+  top: 30px;
+  width: 30px;
+  height: 30px;
+  right: 50px;
+}
 .commentarist-container .nav-button {
   position: absolute;
   top: 50%;

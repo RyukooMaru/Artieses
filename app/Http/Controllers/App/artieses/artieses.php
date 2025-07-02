@@ -31,13 +31,19 @@ class artieses extends Controller
     {
         $page = $request->query('page', 1);
         $perPage = 12;
-        $videos = Artievides::whereNull('deltime')
+        $videos = Artievides::with('user')->whereNull('deltime')
+            ->whereHas('user', function ($query) {
+                $query->whereNull('deleteaccount');
+            })
             ->with('usericonVides')
             ->withCount('likeVides')
             ->orderByDesc('like_vides_count')
             ->orderByDesc('created_at')
             ->get();
-        $stories = Artiestories::whereNull('deltime')
+        $stories = Artiestories::with('user')->whereNull('deltime')
+            ->whereHas('user', function ($query) {
+                $query->whereNull('deleteaccount');
+            })
             ->withCount('reactStories', 'comments')
             ->orderByDesc('react_stories_count')
             ->with([
@@ -56,13 +62,19 @@ class artieses extends Controller
     }
     public function Homes(Request $request)
     {
-        $videos = Artievides::whereNull('deltime')
+        $videos = Artievides::with('user')->whereNull('deltime')
+            ->whereHas('user', function ($query) {
+                $query->whereNull('deleteaccount');
+            })
             ->with('usericonVides')
             ->withCount('likeVides')
             ->orderByDesc('like_vides_count')
             ->orderByDesc('created_at')
             ->get();
-        $stories = Artiestories::whereNull('deltime')
+        $stories = Artiestories::with('user')->whereNull('deltime')
+            ->whereHas('user', function ($query) {
+                $query->whereNull('deleteaccount');
+            })
             ->withCount('reactStories', 'comments')
             ->orderByDesc('react_stories_count')
             ->with([
