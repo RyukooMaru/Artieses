@@ -129,14 +129,12 @@
                     <span>Settings</span>
                 </a>
                 <div class="card-setting hidden" id="card-setting">
-                        <button class="nav-item" onclick="window.location.href='{{ route('profiles.show', ['username' => session('username')]) }}'">
-                            <span>Edit Profil</span>
-                        </button>
-                    <a href="{{ url('/hapus-content') }}">
-                        <button class="nav-item">
-                            <span>Hapus Konten</span>
-                        </button>
-                    </a>
+                    <button class="nav-item" onclick="window.location.href='{{ route('profiles.show', ['username' => session('username')]) }}'">
+                        <span>Edit Profil</span>
+                    </button>
+                    <button class="nav-item" onclick="window.location.href='{{ route('profiles.show', ['username' => session('username')]) }}'">
+                        <span>Hapus Konten</span>
+                    </button>
                     <button class="nav-item" id="show-delete-confirm">
                         <span>Hapus Akun</span>
                     </button>

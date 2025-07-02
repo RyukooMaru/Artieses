@@ -1,385 +1,401 @@
+/* === GENERAL STYLING === */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
+    color: #0f0f0f;
 }
-body.noscroll {
-    overflow: hidden !important
-}
+
 body.dark-mode {
-    background-color: #181818;
-    color: #fff;
+    background-color: #0f0f0f;
+    color: #f1f1f1;
 }
-.pbv, .next, .vol, .zin, .video-timer, .pbvfs, .nfs, .vfs, .zinbtnfs, .timerfs {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-touch-callout: none;
+
+body.noscroll {
+    overflow: hidden !important;
 }
-.no-select {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    cursor: default !important;
+
+* {
+    box-sizing: border-box;
 }
-.zinbtnfs {
-    position: fixed;
-    opacity: 0.6;
-    left: 95.2%;
-    bottom: 37.5px;
-    width: 23px;
-    z-index: 9999;
-}
-.cardvideomain {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
-    margin-top: 5.5%;
-    flex-wrap: wrap;
-}
-.video-page-container {
-    flex-direction: column;
-    flex: 1 1 60%;
-    align-items: center;
-}
-.recomvides {
-    flex: 1 1 20%;
-    margin-right: 15px;
-    padding: 10px;
-    border-radius: 8px;
-}
-.dark-mode .recomvides {
-    background: none;
-}
-.main-video {
-    max-width: 96%;
-    margin-left: 20px;
-    background: #000;
-    border-radius: 8px;
-    overflow: hidden;
-}
-.main-video video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 8px;
-}
-.creatorvides {
-    width:55px; 
-    height:55px; 
-    margin-left: 6px;
-    border-radius:50%;
-}
-.pbv {
-    width: 20px;
-    position: relative;
-    bottom: 40px;
-    left: 30px;
-    opacity: 0.6;
-    z-index: 5;
-}
-.pbvfs {
-    position: fixed;
-    width: 20px;
-    bottom: 35px;
-    left: 30px;
-    opacity: 0.6;
-    z-index: 9999;
-}
-.next {
-    width: 20px;
-    position: relative;
-    bottom: 40px;
-    opacity: 0.6;
-    left: 60px;
-    z-index: 5;
-}
-.nfs {
-    width: 20px;
-    position: fixed;
-    bottom: 35px;
-    opacity: 0.6;
-    left: 85px;
-    z-index: 9999;
-}
-.hidden {
-    display: none !important;
-}
-.vol {
-    position: relative;
-    opacity: 0.6;
-    width: 23px;
-    z-index: 5;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-.volume-container {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    position: absolute;
-    bottom: 47px;
-    left: 130px;
-    padding: 5px;
-    width: 300px;
-}
-.volume-bar {
-    width: 100px;
-    height: 8px;
-    appearance: none;
-    background: #ccc;
-    border-radius: 12px;
-    cursor: pointer;
-    margin-right: 10px;
-    z-index: 10;
-    transition: opacity 0.3s ease-in-out, width 0.3s ease-in-out;
-    opacity: 1;
-}
-.volume-bar.hidden {
-    opacity: 0;
-    width: 0;
-    pointer-events: none;
-}
-.video-timer {
-    position: absolute;
-    bottom: 5.5px;
-    background: none;
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 15px;
-    z-index: 5; 
-}
-.vt0 {
-    left: 40px;
-}
-.vt1 {
-    left: 135px;
-}
-.volume-bar::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: rgb(66, 127, 241);
-    cursor: pointer;
-}
-.volume-bar::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: rgb(66, 127, 241);
-    cursor: pointer;
-}
-.volume-bar:not(.hidden) {
-    width: 100px;
-    opacity: 1;
-    visibility: visible;
-}
-.vfs {
-    position: fixed;
-    opacity: 0.6;
-    left: 135px;
-    bottom: 32.6px;
-    width: 22.5px;
-    z-index: 9999;
-}
-.hidden {
-    display: none;
-}
-.volume-bar.hidden,
-.video-timer.hidden {
-    display: none;
-}
-.zin {
-    position: relative;
-    opacity: 0.6;
-    left: 800px;
-    bottom: 37px;
-    width: 23px;
-    z-index: 5;
-}
-.timerfs {
-    position: fixed;
-    left: 182px;
-    bottom: 35px;
-    background: none;
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 15px;
-    z-index:9999;
-}
-.fade-transition {
-    opacity: 1;
-    transition: opacity 0.3s ease;
-}
-.fade-hidden {
-    opacity: 0;
-    pointer-events: none;
-}
-.custom-progress-bar {
-    height: 100%; 
-    position: absolute;
-    width: 0%; 
-    bottom: 0;
-    border-radius: 12px;
-    background: rgb(66, 127, 241);
-}
-.cpbfs{
-    height: 100%; 
-    position: absolute;
-    width: 0%; 
-    bottom: 0;
-    border-radius: 12px;
-    background: rgb(66, 127, 241);
-    z-index: 9999;
-}
-.custom-progress-container {
-    position: relative;
-    height: 10px;
-    left: 12px; 
-    width: 97%;
-    z-index: 3;
-    background: rgba(255, 255, 255, 0.6);
-    bottom: 90px; 
-    border-radius: 12px;
-    cursor: pointer;
-}
-.cpcfs {
-    position: fixed;
-    z-index:9999;
-    height: 10px;
-    left: 12px; 
-    width: 97%;
-    background: rgba(255, 255, 255, 0.6);
-    bottom: 80px; 
-    border-radius: 12px;
-    cursor: pointer;
-}
-.video-catch {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-}
-.custom-progress-bar-quick {
-    height: 100%; 
-    width: 0%; 
-    bottom:0;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.9);
-}
-.custom-tooltip {
-    position: absolute;
-    background-color: #333;
-    color: #fff;
-    padding: 2px 6px;
-    font-size: 12px;
-    border-radius: 4px;
-    transform: translateX(-50%);
-    white-space: nowrap;
-    pointer-events: none;
-    top: -25px;
-    z-index: 10;
-}
-.hover-bar {
-    position: absolute;
-    bottom: -3.5px;
-    height: 15px;
-    width: 15px;
-    background-color: rgb(66, 127, 241);
-    box-shadow: 0 0 4px rgb(255, 255, 255, 1);
-    transform: translateX(-50%);
-    pointer-events: none;
-    border-radius: 50%;
-    z-index: 5;
-}
-.video-info {
-    display: flex;
-    max-width: 960px;
-    margin-left: 14px;
-}
-.video-title {
-    font-size: 27px;
-    font-weight: bold;
-    margin-left: 25px;
-    margin-top: 8px;
-    margin-bottom: 5px;
-}
-.video-meta {
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 5px;
-    margin-left: 10px;
-    transform: translateY(0%);
-}
-.video-meta p {
-    font-size: 12px;
-    font-weight: normal;
-    transform: translateY(-10%) !important;
-}
-.video-meta a {
+
+a {
     text-decoration: none;
     color: inherit;
 }
-.sidebar {
-    display: none;
+
+/* === MAIN LAYOUT === */
+.cardvideomain {
+    display: flex;
+    flex-direction: row; /* Berdampingan di layar besar */
+    justify-content: center;
+    padding: 24px;
+    gap: 24px;
 }
-.iclivides {
-    height: 30px;
-    width:30px;
+
+.video-page-container {
+    flex: 1;
+    min-width: 0; /* Mencegah item flex meluap */
 }
-.btnsubs1 {
-    height: 30px;
-    width: 150px;
-    border: none;
-    background: none;
-    text-align: center;
-    background-color: #666;
-    margin-left: 44%;
-    margin-top: 9px;
-    color: white;
+
+.recomvides {
+    width: 402px; /* Lebar tetap untuk rekomendasi seperti YouTube */
+    flex-shrink: 0; /* Mencegah kolom ini menyusut */
+}
+
+/* === RESPONSIVE LAYOUT (TABLET & MOBILE) === */
+@media (max-width: 992px) {
+    .cardvideomain {
+        flex-direction: column; /* Tumpuk vertikal di layar kecil */
+        padding: 0;
+    }
+    .video-page-container {
+        width: 100%;
+    }
+    .recomvides {
+        width: 100%;
+        padding: 0 16px;
+    }
+    .main-video {
+        border-radius: 0; /* Video memenuhi layar */
+        width: 100%;
+        margin-left: 0;
+    }
+    .video-info, .video-title, .description {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+
+/* === VIDEO PLAYER === */
+.main-video {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative; /* Penting untuk posisi kontrol */
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    /* Aspect ratio akan diatur oleh JS */
+    aspect-ratio: 16 / 9; /* Default aspect ratio */
+}
+
+.thevides {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     border-radius: 12px;
 }
-.btldl {
-    width: 12%;
-    height: 40px;
-    margin-top: 3px;
-    margin-left: 30px;
-    background-color: #888;
-    
+
+.video-catch {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 2;
+}
+
+/* === VIDEO CONTROLS (NEW STRUCTURE) === */
+.controls-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    padding: 0 12px;
+    background-image: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.main-video:hover .controls-container,
+.main-video:hover .hidden { /* Tampilkan kontrol saat hover */
+   opacity: 1;
+}
+
+.controls-container.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.controls-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 25px;
-    border-radius: 17px;
+    padding: 8px 0;
 }
-.btnlivides,
-.btnlivides1 {
-    height: 30px;
-    width: 30px;
+
+.controls-left, .controls-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Elemen kontrol (play, next, vol, zin) */
+.pbv, .next, .vol, .zin {
+    width: 24px;
+    height: 24px;
+    opacity: 0.9;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+.pbv:hover, .next:hover, .vol:hover, .zin:hover {
+    transform: scale(1.1);
+}
+
+.volume-container {
+    display: flex;
+    align-items: center;
+}
+
+.volume-bar {
+    width: 0;
+    opacity: 0;
+    transition: width 0.3s, opacity 0.3s;
+    cursor: pointer;
+    accent-color: #2681f5; /* Modern way to color range input */
+}
+
+.volume-container:hover .volume-bar {
+    width: 80px;
+    opacity: 1;
+    margin-left: 8px;
+}
+
+.video-timer {
+    color: white;
+    font-size: 14px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+
+/* === PROGRESS BAR === */
+.custom-progress-container {
+    position: relative;
+    height: 5px; /* Lebih tipis seperti YouTube */
+    width: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: height 0.2s ease;
+}
+.custom-progress-container:hover {
+    height: 8px; /* Menebal saat di-hover */
+}
+
+.custom-progress-bar, .custom-progress-bar-quick {
+    position: absolute;
+    height: 100%;
+    width: 0;
+    bottom: 0;
+    border-radius: 4px;
+}
+
+.custom-progress-bar {
+    background: #2681f5;
+    z-index: 2;
+}
+
+.custom-progress-bar-quick {
+    background: rgba(255, 255, 255, 0.6);
+    z-index: 1;
+}
+
+.hover-bar {
+    position: absolute;
+    bottom: 50%;
+    transform: translate(-50%, 50%);
+    height: 16px;
+    width: 16px;
+    background-color: #2681f5;
+    border-radius: 50%;
+    z-index: 3;
+    display: none; /* Sembunyikan dan tampilkan saat hover */
+}
+.custom-progress-container:hover .hover-bar {
+    display: block;
+}
+
+.custom-tooltip {
+    position: absolute;
+    background-color: rgba(0,0,0,0.7);
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    transform: translateX(-50%);
+    top: -30px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* === VIDEO INFO SECTION === */
+.video-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+.video-info {
+    display: flex;
+    align-items: flex-start; /* Ubah ke flex-start */
+    flex-wrap: wrap; /* Izinkan wrapping di layar kecil */
+    gap: 12px;
+}
+
+.creator-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-grow: 1; /* Ambil sisa ruang */
+}
+
+.creatorvides {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.video-meta {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.video-meta p {
+    font-size: 12px;
+    font-weight: normal;
+    color: #606060;
+    margin: 0;
+}
+
+.dark-mode .video-meta p {
+    color: #aaa;
+}
+
+.actions-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto; /* Dorong ke kanan di layar besar */
+}
+
+@media (max-width: 600px) {
+    .video-info {
+        flex-direction: column;
+        align-items: stretch; /* Memenuhi lebar */
+    }
+    .actions-container {
+        width: 100%;
+        margin-left: 0;
+        justify-content: space-between; /* Sebar tombol */
+    }
+}
+
+.btnsubs1 {
+    height: 36px;
+    padding: 0 16px;
+    border: none;
+    background-color: #0f0f0f;
+    color: white;
+    border-radius: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.dark-mode .btnsubs1 {
+    background-color: #f1f1f1;
+    color: #0f0f0f;
+}
+
+.btldl {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    background-color: #f2f2f2;
+    border-radius: 18px;
+    padding: 0 10px;
+    gap: 5px;
+}
+
+.dark-mode .btldl {
+    background-color: #272727;
+}
+
+.btnlivides, .btnlivides1 {
     border: none;
     background: none;
     cursor: pointer;
     padding: 0;
+    display: flex;
+    align-items: center;
 }
+
+.iclivides {
+    height: 24px;
+    width: 24px;
+}
+
+.btldl strong {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0 5px;
+}
+
+.btldl span {
+    color: #ccc;
+}
+.dark-mode .btldl span {
+    color: #555;
+}
+
+
+/* === DESCRIPTION === */
 .description {
-    padding: 3px 20px;
-    width: 91.5%;
-    margin-top: 15px;
+    background-color: #f2f2f2;
     border-radius: 12px;
-    background-color: #888;
-    margin-left: 25px;
-    margin-bottom: 20px;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.dark-mode .description {
+    background-color: #272727;
+}
+
+.description p {
+    margin: 0;
+}
+.description p:first-child {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* === FULLSCREEN MODE STYLES === */
+/* Biarkan style fullscreen Anda karena sudah terintegrasi dengan JS */
+.zinbtnfs, .pbvfs, .nfs, .vfs, .timerfs, .cpcfs, .cpbfs {
+    position: fixed;
+    z-index: 9999;
+}
+/* Anda bisa menyesuaikan posisi ini jika diperlukan */
+.zinbtnfs { opacity: 0.6; left: 95.2%; bottom: 37.5px; width: 23px; }
+.pbvfs { width: 20px; bottom: 35px; left: 30px; opacity: 0.6; }
+.nfs { width: 20px; bottom: 35px; opacity: 0.6; left: 85px; }
+.vfs { opacity: 0.6; left: 135px; bottom: 32.6px; width: 22.5px; }
+.timerfs { left: 182px; bottom: 35px; background: none; color: white; padding: 2px 6px; border-radius: 4px; font-size: 15px; }
+.cpcfs { height: 10px; left: 12px; width: 97%; background: rgba(255, 255, 255, 0.6); bottom: 80px; border-radius: 12px; cursor: pointer; }
+.cpbfs { height: 100%; width: 0%; bottom: 0; border-radius: 12px; background: rgb(66, 127, 241); }
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+.no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

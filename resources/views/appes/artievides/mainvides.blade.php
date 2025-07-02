@@ -42,21 +42,29 @@
                     @endphp
                     <video autoplay class="thevides" id="thevides" preload="auto" poster="{{ url('konten' . $thumbId) }}" src="{{ url('konten' . $kontenId) }}" controlslist="nodownload" tabindex="-1"></video>
                     <div id="video-key-catcher" class="video-catch"></div>
-                    <img class="pbv hidden" data-play="{{ asset('partses/pbv.png') }}" id="pbv" src="{{ asset('partses/pbv.png') }}" data-pause="{{ asset('partses/pause.png') }}">
-                    <img src="{{ asset('partses/next.png') }}" class="next hidden" id="next">
-                    <div class="volume-container">
-                        <img src="{{ asset('partses/volume.png') }}" onmouseenter="showVolumeBar()" onmouseleave="hideVolumeBar()" class="vol hidden" id="vol">
-                        <input type="range" id="volumeBar" onmouseenter="showVolumeBar()" onmouseleave="hideVolumeBar()" class="volume-bar hidden" min="0" max="1" step="0.01" value="0.5">
-                        <div class="video-timer vt0 hidden" id="video-timer">00:00 / 00:00</div>
+                    <div class="controls-container hidden" id="controls-container">
+                        <div class="custom-progress-container" id="custom-progress-container">
+                            <div class="custom-progress-bar-quick" id="custom-progress-bar-quick"></div>
+                            <div class="custom-progress-bar" id="custom-progress-bar"></div>
+                            <div class="hover-bar" id="hover-bar"></div>
+                            <div class="custom-tooltip hidden" id="custom-tooltip"></div>
+                        </div>
+                        <div class="controls-bar">
+                            <div class="controls-left">
+                                <img class="pbv" data-play="{{ asset('partses/pbv.png') }}" id="pbv" src="{{ asset('partses/pbv.png') }}" data-pause="{{ asset('partses/pause.png') }}">
+                                <img src="{{ asset('partses/next.png') }}" class="next" id="next">
+                                <div class="volume-container">
+                                    <img src="{{ asset('partses/volume.png') }}" class="vol" id="vol">
+                                    <input type="range" id="volumeBar" class="volume-bar" min="0" max="1" step="0.01" value="0.5">
+                                </div>
+                                <div class="video-timer" id="video-timer">00:00 / 00:00</div>
+                            </div>
+                            <div class="controls-right">
+                                <img src="{{ asset('partses/zin.png') }}" class="zin" id="zin">
+                            </div>
+                        </div>
                     </div>
-                    <img src="{{ asset('partses/zin.png') }}" class="zin hidden" id="zin">
-                    <div class="custom-progress-container hidden" id="custom-progress-container">
-                        <div class="custom-progress-bar-quick hidden" id="custom-progress-bar-quick"></div>
-                        <div class="custom-progress-bar hidden" id="custom-progress-bar"></div>
-                        <div class="hover-bar" id="hover-bar"></div>
-                        <div class="custom-tooltip hidden" id="custom-tooltip"></div>
-                    </div>
-                </div>  
+                </div>
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         const videoElement = document.getElementById('thevides');
