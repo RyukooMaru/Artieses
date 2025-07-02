@@ -64,16 +64,26 @@ use Illuminate\Support\Facades\Http;
             'ipadmin' => env('ADMIN_IP'),
             'reqip' => $request->ip(),
         ];
-    })
-    ;Route::get('/check-limits-size', function () {
-    return response()->json([
-        'upload_max_filesize_php' => ini_get('upload_max_filesize'),
-        'post_max_size_php' => ini_get('post_max_size'),
-        'memory_limit_php' => ini_get('memory_limit'),
-        'max_execution_time_php' => ini_get('max_execution_time'),
-        'user_ini_filename' => ini_get('user_ini.filename'),
-    ]);
-});
+    });
+    Route::get('/check-limits-size', function () {
+        return response()->json([
+            'upload_max_filesize_php' => ini_get('upload_max_filesize'),
+            'post_max_size_php' => ini_get('post_max_size'),
+            'memory_limit_php' => ini_get('memory_limit'),
+            'max_execution_time_php' => ini_get('max_execution_time'),
+            'user_ini_filename' => ini_get('user_ini.filename'),
+        ]);
+    });
+    Route::get('/check-userini', function () {
+        return response()->json([
+            'user_ini_filename' => ini_get('user_ini.filename'), 
+            'user_ini_path' => php_ini_loaded_file(), 
+            'scan_additional_ini_files' => php_ini_scanned_files(), 
+        ]);
+    });
+    Route::get('/phpinfo', function () {
+        phpinfo();
+    });
 ##
 
 # APP #
