@@ -34,7 +34,7 @@
                 .then(res => res.json())
                 .then(data => {
                     if (!data.logged_in) {
-                        console.log('kekirim ga?');
+                        console.log('kekirim ga?', data);
                         sessionStorage.setItem('alert', data.alert);
                         sessionStorage.setItem('form', data.form);
                         window.location.href = data.redirect;
@@ -74,7 +74,7 @@
                         const delprev = document.getElementById('image-preview-' + storyCode);
                         delprev.remove();
                         clearBtn?.classList.add('hidden');
-                        console.log('kekirim ga?');
+                        console.log('kekirim ga?', data);
                         if (!data.logged_in) {
                             sessionStorage.setItem('alert', data.alert);
                             sessionStorage.setItem('form', data.form);
@@ -107,7 +107,7 @@
                     .then(res => res.json())
                     .then(data => {
                         inputEl.value = '';
-                        console.log('kekirim ga?');
+                        console.log('kekirim ga?', data);
                         clearBtn?.classList.add('hidden');
                         if (!data.logged_in) {
                             sessionStorage.setItem('alert', data.alert);

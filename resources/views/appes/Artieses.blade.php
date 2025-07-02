@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="{{ asset('css/appes/artiekeles.css') }}">
   <link rel="stylesheet" href="{{ asset('css/appes/artievides.css') }}">
   <link rel="stylesheet" href="{{ asset('css/appes/artiestories.css') }}">
+  @include('appes.artiestories.js.echopusher')<!-- echo pusher -->
   <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
   <link rel="icon" href="{{ asset('partses/favicon.ico') }}">
   @include('partses.baries')
@@ -70,8 +71,6 @@
                     document.getElementById('loader').style.display = 'none';
                 })
                 .catch(error => {
-                    console.log(`/load-feed?page=${currentPage}`);
-                    console.error('Gagal memuat data:', error);
                     isLoading = false;
                     document.getElementById('loader').style.display = 'none';
                 });
