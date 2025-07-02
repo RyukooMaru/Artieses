@@ -40,7 +40,7 @@
                             }
                         }
                     @endphp
-                    <video autoplay class="thevides" id="thevides" preload="auto" poster="{{ url('konten' . $thumbId) }}" src="{{ url('konten' . $kontenId) }}" controlslist="nodownload" tabindex="-1"></video>
+                    <video autoplay class="thevides" id="thevides" preload="auto" poster="{{ url('/konten/' . $thumbId) }}" src="{{ url('/konten/' . $kontenId) }}" controlslist="nodownload" tabindex="-1"></video>
                     <div id="video-key-catcher" class="video-catch"></div>
                     <div class="controls-container hidden" id="controls-container">
                         <div class="custom-progress-container" id="custom-progress-container">
@@ -551,8 +551,8 @@
             <div class="video-title">{{ $video->judul }}</div>
             <div class="video-info">
                 @php
-                    $username = $story->usericonStories->username;
-                    $improfil = $story->usericonStories->improfil;
+                    $username = $video->usericonVides->username;
+                    $improfil = $video->usericonVides->improfil;
                     $viewUrl = $improfil; // Ubah ke huruf 'V' besar biar konsisten
                     $fileId = null;
                     $matches = [];

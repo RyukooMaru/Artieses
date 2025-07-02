@@ -26,8 +26,8 @@
 @endphp
 <a href="/Artievides?GetContent={{ $video->codevides }}" class="">
   <div class="video-container video-container-{{ $video->codevides }}">
-    <video width="100%" muted class="hover-video" id="hover-video-{{$video->codevides}}" poster="{{ url('konten' . $thumbId) }}">
-      <source src="{{ url('konten' . $kontenId) }}" type="video/mp4">
+    <video width="100%" muted class="hover-video" id="hover-video-{{$video->codevides}}" poster="{{ url('/konten/' . $thumbId) }}">
+      <source src="{{ url('/konten/' . $kontenId) }}" type="video/mp4">
     </video>
     <div class="video-timer" id="video-timer-{{$video->codevides}}">00:00 / 00:00</div>
   </div><br>
@@ -50,7 +50,7 @@
   @if($fileId)
       <div class="creator-1">
         <a href="{{ route('profiles.show', ['username' => $username]) }}">
-            <img src="{{ url('konten' . $fileId) }}" class="creatorvides">
+            <img src="{{ url('/konten/' . $fileId) }}" class="creatorvides">
         </a>
       </div>
     @endif
