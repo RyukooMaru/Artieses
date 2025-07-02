@@ -50,6 +50,7 @@
                 fileInput1.value = '';
                 delprev1?.remove();
                 clearBtn1?.classList.add('hidden');
+                console.log('kekirim ga?');
             })
             .catch(error => console.error('Error:', error))
             .finally(restoreButton);
@@ -64,6 +65,7 @@
             })
             .then(res => res.json())
             .then(data => {
+                console.log('kekirim ga?');
                 if (handleAuthRedirect(data)) return;
                 inputOL.value = '';
                 clearBtn1?.classList.add('hidden');

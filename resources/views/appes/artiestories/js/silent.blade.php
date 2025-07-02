@@ -1,4 +1,4 @@
-<!-- 
+
   <script>
     const originalLog = console.log;
     console.log = function (...args) {
@@ -12,4 +12,4 @@
       }
       originalLog.apply(console, args);
     };        
-  </script> -->
+  </script>

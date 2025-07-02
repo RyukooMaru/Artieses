@@ -14,11 +14,6 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'useTLS' => true,
-                // Jika kamu pakai Laravel Websockets lokal, bisa ubah ini:
-                // 'host' => '127.0.0.1',
-                // 'port' => 6001,
-                // 'scheme' => 'http',
-                // 'useTLS' => false,
             ],
         ],
 
