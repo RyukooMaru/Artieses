@@ -8,7 +8,7 @@
                 console.log('Reaksi:', reaksi3);
                 console.log('Story ID:', storyId3);
                 if (reaksi3 && storyId3) {
-                    fetch("{{ route('uprcm0') }}", {
+                    fetch("{{ route('uprcm1') }}", {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

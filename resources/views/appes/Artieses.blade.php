@@ -169,6 +169,7 @@
         }
     });
   </script><!-- tangkap delete(last) -->
+  @include('appes.artiestories.js.reactfront')<!-- react story -->
   @include('appes.artiestories.js.commentarist0')<!-- give reacted artietories(front) -->
   @include('appes.artiestories.js.commentarist01')<!-- give reacted artietories(back) -->
   @include('appes.artiestories.js.commentarist')<!-- buka content artiestories -->

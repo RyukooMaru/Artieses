@@ -2,23 +2,10 @@
     $firstReply = $comment->replies->first();
     $idbalcom = $firstReply->balcomstoriesid ?? null;
     $commentlagi = $comment->commentartiestoriesid;
-    $check = $comment->rcm1->pluck('reaksi')->unique();
-    $getreactsuka = $check->where('reaksi', 'suka')->first();
-    $getreactsenang = $check->where('reaksi', 'senang')->first();
-    $getreactsedih = $check->where('reaksi', 'sedih')->first();
-    $getreactmarah = $check->where('reaksi', 'marah')->first();
-    $getreactketawa = $check->where('reaksi', 'ketawa')->first();
     $username = $comment->userComments->username ?? 'defaultuser';
     $improfil = $comment->userComments->improfil ?? 'default.png';
     $path = $improfil;
     $ext = pathinfo($improfil, PATHINFO_EXTENSION);
-    $reactions = [
-        'suka' => $getreactsuka,
-        'marah' => $getreactmarah,
-        'sedih' => $getreactsedih,
-        'ketawa' => $getreactketawa,
-        'senang' => $getreactsenang,
-    ];
     use Illuminate\Support\Str;
     $prefix = '<img src="' . url('/konten/');
     
