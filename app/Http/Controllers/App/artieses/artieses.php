@@ -31,30 +31,24 @@ class artieses extends Controller
     {
         $page = $request->query('page', 1);
         $perPage = 12;
-        $videos = Artievides::with('user')->whereNull('deltime')
-            ->whereHas('user', function ($query) {
-                $query->whereNull('deleteaccount');
-            })
-            ->with('usericonVides')
-            ->withCount('likeVides')
-            ->orderByDesc('like_vides_count')
-            ->orderByDesc('created_at')
-            ->get();
-        $stories = Artiestories::with('user')->whereNull('deltime')
-            ->whereHas('user', function ($query) {
-                $query->whereNull('deleteaccount');
-            })
-            ->withCount('reactStories', 'comments')
-            ->orderByDesc('react_stories_count')
-            ->with([
-                'usericonStories',
-                'ReactStories',
-                'comments.replies',
-                'comments.userComments',
-                'comments.replies.userBalcom'
-            ])
-            ->latest()
-            ->get();
+        $videos = Artievides::with('usericonVides')
+    ->whereNull('deltime')
+    ->whereHas('usericonVides', function ($query) {
+        $query->whereNull('deleteaccount');
+    })
+    ->withCount('likeVides')
+    ->orderByDesc('like_vides_count')
+    ->orderByDesc('created_at')
+    ->get();
+        $stories = Artiestories::with('usericonVides')
+    ->whereNull('deltime')
+    ->whereHas('usericonVides', function ($query) {
+        $query->whereNull('deleteaccount');
+    })
+    ->withCount('likeVides')
+    ->orderByDesc('like_vides_count')
+    ->orderByDesc('created_at')
+    ->get();
         $articles = Artiekeles::latest()->get();
         $mergedFeed = $this->generateMergedFeed($videos, $stories, $articles);
         $pagedFeed = collect($mergedFeed)->forPage($page, $perPage);
@@ -62,30 +56,24 @@ class artieses extends Controller
     }
     public function Homes(Request $request)
     {
-        $videos = Artievides::with('user')->whereNull('deltime')
-            ->whereHas('user', function ($query) {
-                $query->whereNull('deleteaccount');
-            })
-            ->with('usericonVides')
-            ->withCount('likeVides')
-            ->orderByDesc('like_vides_count')
-            ->orderByDesc('created_at')
-            ->get();
-        $stories = Artiestories::with('user')->whereNull('deltime')
-            ->whereHas('user', function ($query) {
-                $query->whereNull('deleteaccount');
-            })
-            ->withCount('reactStories', 'comments')
-            ->orderByDesc('react_stories_count')
-            ->with([
-                'usericonStories',
-                'ReactStories',
-                'comments.replies',
-                'comments.userComments',
-                'comments.replies.userBalcom'
-            ])
-            ->latest()
-            ->get();
+        $videos = Artievides::with('usericonVides')
+    ->whereNull('deltime')
+    ->whereHas('usericonVides', function ($query) {
+        $query->whereNull('deleteaccount');
+    })
+    ->withCount('likeVides')
+    ->orderByDesc('like_vides_count')
+    ->orderByDesc('created_at')
+    ->get();
+        $stories = Artiestories::with('usericonVides')
+    ->whereNull('deltime')
+    ->whereHas('usericonVides', function ($query) {
+        $query->whereNull('deleteaccount');
+    })
+    ->withCount('likeVides')
+    ->orderByDesc('like_vides_count')
+    ->orderByDesc('created_at')
+    ->get();
         $articles = Artiekeles::latest()->get();
         $mergedFeed = $this->generateMergedFeed($videos, $stories, $articles);
         $perPage = 12;
