@@ -600,7 +600,7 @@
                                 data-light="{{ asset('partses/likedm.png') }}"
                                 data-dark="{{ asset('partses/likedm.png') }}">
                         </button>
-                        <strong>{{ formatAngka($video->like_vides_count ?? 0) }}</strong>
+                        <strong>{{ \App\Helpers\inthelp::formatAngka($video->like_vides_count ?? 0) }}</strong>
                         <span>|</span>
                         <button class="btnlivides1 btnlivides-{{ $video->codevides }}" id="btnlivides-{{ $video->codevides }}">
                             <img class="iclivides" loading="lazy"
@@ -664,7 +664,7 @@
                 </script>
             </div>
             <div class="description">
-                <p><strong>{{ formatAngka($video->banyakviewyahemangiyah->count()) }} x ditonton | {{ \Carbon\Carbon::parse($video->created_at)->translatedFormat('d F Y') }}</strong></p>
+                <p><strong>{{ \App\Helpers\inthelp::formatAngka($video->banyakviewyahemangiyah->count()) }} x ditonton | {{ \Carbon\Carbon::parse($video->created_at)->translatedFormat('d F Y') }}</strong></p>
                 <p>{{ $video->lseo }}</p>
             </div>
         </div>
