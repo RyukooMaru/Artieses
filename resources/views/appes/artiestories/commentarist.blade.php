@@ -49,7 +49,7 @@
         @include('appes.artiestories.reacted2')
         <div class="rbtnry001">
         <button class="rbtnry rbtnry2-{{ $storyCode }}" style="margin-top: 8px; margin-left:100px;" id="rbtnry2-{{ $storyCode }}">
-            <img class="iclikestory" loading="lazy"
+            <img class="iclikestory" loading="lazy" id="nullreact2-{{ $storyCode }}"
                 data-light="{{ asset('partses/likelm.png') }}"
                 data-dark="{{ asset('partses/likedm.png') }}">
         </button>

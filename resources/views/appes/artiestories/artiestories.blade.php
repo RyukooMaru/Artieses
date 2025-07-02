@@ -92,18 +92,18 @@
         </script>
         @include('appes.artiestories.reacted')
         <div class="artiestories1" style="margin-left:10px; margin-top:10px;">
-        @include('appes.artiestories.reacted1')
-        <button class="rbtnry rbtnry-{{ $storyCode }}" id="rbtnry1-{{ $storyCode }}">
-            <img class="iclikestory" loading="lazy"
-                data-light="{{ asset('partses/likelm.png') }}"
-                data-dark="{{ asset('partses/likedm.png') }}">
-        </button>
-        @include('appes.artiestories.commentarist')
-        <button class="rbtnry cbtnry1-{{ $storyCode }}" id="cbtnry1-{{ $storyCode }}">
-            <img class="iclikestory" loading="lazy"
-            data-light="{{ asset('partses/commentlm.png') }}"
-            data-dark="{{ asset('partses/commentdm.png') }}">
-        </button>
+            @include('appes.artiestories.reacted1')
+            <button class="rbtnry rbtnry-{{ $storyCode }}" id="rbtnry1-{{ $storyCode }}">
+                <img class="iclikestory" loading="lazy" id="nullreact1-{{ $storyCode }}"
+                    data-light="{{ asset('partses/likelm.png') }}"
+                    data-dark="{{ asset('partses/likedm.png') }}">
+            </button>
+            @include('appes.artiestories.commentarist')
+            <button class="rbtnry cbtnry1-{{ $storyCode }}" id="cbtnry1-{{ $storyCode }}">
+                <img class="iclikestory" loading="lazy"
+                data-light="{{ asset('partses/commentlm.png') }}"
+                data-dark="{{ asset('partses/commentdm.png') }}">
+            </button>
         </div> 
         <p style="margin-top: 10px; margin-left:10px; font-size:13px;">{{ 0 + $story->react_stories_count }} Reaksi | {{ 0 + $story->comments_count }} Komentar</p>
         <p class="captionStories">{{ $story->caption }}</p>

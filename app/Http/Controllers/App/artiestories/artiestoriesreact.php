@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\App\artiestories;
 
+use App\Events\rebc;
+use App\Events\recm;
+use App\Events\refr;
 use App\Helpers\AuthHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -39,9 +42,11 @@ class artiestoriesreact extends Controller
             ]);
             $message = 'Reaksi berhasil ditambahkan';
         }
+        broadcast(new refr(session('username'), $validated['artiestoriesid'], $validated['reaksi']));
         return response()->json([
             'logged_in' => true,
             'success' => true,
+            'reaksi' => $validated['reaksi'],
             'message' => $message,
             'data' => $created,
             'csrf' => csrf_token()
@@ -75,9 +80,11 @@ class artiestoriesreact extends Controller
             ]);
             $message = 'Reaksi berhasil ditambahkan';
         }
+        broadcast(new recm(session('username'), $validated['commentartiestoriesid'], $validated['reaksi']));
         return response()->json([
             'logged_in' => true,
             'success' => true,
+            'reaksi' => $validated['reaksi'],
             'message' => $message,
             'data' => $created,
             'csrf' => csrf_token()
@@ -111,9 +118,11 @@ class artiestoriesreact extends Controller
             ]);
             $message = 'Reaksi berhasil ditambahkan';
         }
+        broadcast(new rebc(session('username'), $validated['balcomstoriesid'], $validated['reaksi']));
         return response()->json([
             'logged_in' => true,
             'success' => true,
+            'reaksi' => $validated['reaksi'],
             'message' => $message,
             'data' => $created,
             'csrf' => csrf_token()
