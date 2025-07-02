@@ -1,12 +1,9 @@
 #!/bin/bash
 
-# Salin file konfigurasi PHP kustom
-cp /home/site/wwwroot/custom.ini /usr/local/etc/php/conf.d/
+echo "Starting custom nginx configuration..."
+# Salin file konfigurasi kustom kita ke lokasi konfigurasi Nginx yang aktif
+cp /home/site/wwwroot/nginx/default /etc/nginx/sites-enabled/default
 
-# --- TAMBAHKAN BAGIAN INI ---
-# Ubah konfigurasi Nginx untuk menunjuk ke /public
-sed -i 's|/home/site/wwwroot|/home/site/wwwroot/public|g' /etc/nginx/sites-available/default
-# --- AKHIR BAGIAN TAMBAHAN ---
-
-# Jalankan skrip startup bawaan Azure
-/opt/startup/startup.sh
+# Muat ulang Nginx untuk menerapkan konfigurasi baru
+service nginx reload
+echo "Nginx reloaded with custom configuration."
