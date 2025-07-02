@@ -7,11 +7,11 @@
         });
     }
     if (typeof window.channel3 === 'undefined') {
-        window.channel3 = window.pusher1.subscribe('typing-channel1');
+        window.channel3 = window.pusher1.subscribe('typing1');
     }
     window.typingTimeout3 = null;
     window.canFetchTyping3 = true;
-    window.channel3.bind('user.typing1', function (data) {
+    window.channel3.bind('.user1', function (data) {
         if (data.message && data.message !== "") {
             if (window.canFetchTyping3) {
                 const imprev = document.getElementById(`image-preview1-${data.reqplat}`);
@@ -177,9 +177,9 @@
         }
     });
     if (typeof window.channel4 === 'undefined') {
-        window.channel4 = window.pusher1.subscribe('broadcast-channel1');
+        window.channel4 = window.pusher1.subscribe('broadcast1');
     }
-    window.channel4.bind('broadcast.typing1', function (data) {
+    window.channel4.bind('.broadcast1', function (data) {
         if (data.reqplat && data.reqplat.length > 0) {
             const cardmengetik = document.getElementById(`divbrcmt2-${data.reqplat}`);
             const teksmengetik = document.getElementById(`brcmt2-${data.reqplat}`);

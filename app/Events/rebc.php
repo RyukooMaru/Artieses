@@ -9,31 +9,31 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 
-class BroadcastTyping implements ShouldBroadcast
+class rebc implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $username;
     public $reqplat;
-    public $message;
+    public $reactfront;
 
-    public function __construct($username, $reqplat, $message)
+    public function __construct($username, $reqplat, $reactfront)
     {
         $this->username = $username;
         $this->reqplat = $reqplat;
-        $this->message = $message;
+        $this->reactfront = $reactfront;
     }
 
     public function broadcastOn(): array
     {
         return [
-            new Channel('broadcast'),
+            new Channel('rebc'),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'broadcast';
+        return 'rebc';
     }
 
     public function broadcastWith()
@@ -41,7 +41,7 @@ class BroadcastTyping implements ShouldBroadcast
         return [
             'username' => $this->username,
             'reqplat' => $this->reqplat,
-            'message' => $this->message,
+            'reactfront' => $this->reactfront,
         ];
     }
 }

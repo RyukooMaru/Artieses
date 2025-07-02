@@ -33,12 +33,12 @@ class UserTyping implements ShouldBroadcast
     }
     public function broadcastOn()
     {
-        return new Channel('typing-channel');
+        return new Channel('typing');
     }
 
     public function broadcastAs()
     {
-        return 'user.typing';
+        return 'user';
     }
     public function broadcastWith()
     {

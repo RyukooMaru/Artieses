@@ -27,13 +27,13 @@ class BroadcastTyping1 implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('broadcast-channel1'),
+            new Channel('broadcast1'),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'broadcast.typing1';
+        return 'broadcast1';
     }
 
     public function broadcastWith()
