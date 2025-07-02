@@ -232,19 +232,18 @@
                                     $imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
                                     $fileId = $img->konten;
-                                    $fileUrl = "https://drive.google.com/uc?export=view&id=$fileId";
 
                                     $isVideo = in_array(strtolower($img->type), $videoTypes);
                                     $isImage = in_array(strtolower($img->type), $imageTypes);
                                 @endphp
                                 @if ($isVideo)
                                     <video id="cbtnry1-{{ $storyCode }}-{{ $index }}" class="cardstories-{{ $storyCode }} {{ $index !== 0 ? 'hidden' : '' }}" controls>
-                                        <source src="{{ $fileUrl }}" type="video/mp4">
+                                        <source src="{{ url('/konten/' . $fileId) }}" type="video/mp4">
                                         Browsermu tidak mendukung video.
                                     </video>
                                 @elseif ($isImage)
                                     <img id="cbtnry1-{{ $storyCode }}-{{ $index }}" class="img-storyitem cardstories-{{ $storyCode }} {{ $index !== 0 ? 'hidden' : '' }}"
-                                        src="{{ $fileUrl }}" alt="{{ $story->title }}">
+                                        src="{{ url('/konten/' . $fileId) }}" alt="{{ $story->title }}">
                                 @endif
                             @endforeach
                             <button id="previmg-{{ $storyCode }}" class="nav-button1 prev">◀</button>
