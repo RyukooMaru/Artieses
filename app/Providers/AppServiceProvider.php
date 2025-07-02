@@ -43,9 +43,6 @@ class AppServiceProvider extends ServiceProvider
             );
             return new Filesystem($adapter);
         });
-        ini_set('upload_max_filesize', '9999M');
-        ini_set('post_max_size', '9999M');
-        ini_set('memory_limit', '9999M');
     }
     
 }
