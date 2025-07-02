@@ -18,7 +18,7 @@
                         $konten = $video->video;
                         $thumbnail = $video->thumbnail;
                         $kontenurl = $konten;
-                        thumburl = $thumbnail
+                        $thumburl = $thumbnail;
                         $kontenId = null;
                         $thumbId = null;
                         if ($kontenurl) {

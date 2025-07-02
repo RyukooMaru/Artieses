@@ -41,7 +41,6 @@ class AppServiceProvider extends ServiceProvider
                 $client,
                 $config['container']
             );
-
             return new Filesystem($adapter);
         });
         ini_set('upload_max_filesize', '9999M');

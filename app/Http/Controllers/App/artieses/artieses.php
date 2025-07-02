@@ -40,13 +40,13 @@ class artieses extends Controller
     ->orderByDesc('like_vides_count')
     ->orderByDesc('created_at')
     ->get();
-        $stories = Artiestories::with('usericonVides')
+        $stories = Artiestories::with('usericonStories')
     ->whereNull('deltime')
-    ->whereHas('usericonVides', function ($query) {
+    ->whereHas('usericonStories', function ($query) {
         $query->whereNull('deleteaccount');
     })
-    ->withCount('likeVides')
-    ->orderByDesc('like_vides_count')
+            ->withCount('reactStories', 'comments')
+            ->orderByDesc('react_stories_count')
     ->orderByDesc('created_at')
     ->get();
         $articles = Artiekeles::latest()->get();
@@ -65,13 +65,13 @@ class artieses extends Controller
     ->orderByDesc('like_vides_count')
     ->orderByDesc('created_at')
     ->get();
-        $stories = Artiestories::with('usericonVides')
+        $stories = Artiestories::with('usericonStories')
     ->whereNull('deltime')
-    ->whereHas('usericonVides', function ($query) {
+    ->whereHas('usericonStories', function ($query) {
         $query->whereNull('deleteaccount');
     })
-    ->withCount('likeVides')
-    ->orderByDesc('like_vides_count')
+            ->withCount('reactStories', 'comments')
+            ->orderByDesc('react_stories_count')
     ->orderByDesc('created_at')
     ->get();
         $articles = Artiekeles::latest()->get();

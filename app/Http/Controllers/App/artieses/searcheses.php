@@ -28,52 +28,36 @@ class searcheses extends Controller
         ]);
         $query = $request->input('search');
         $videos = Artievides::with('usericonVides')
-    ->whereNull('deltime')
-    ->whereHas('usericonVides', function ($query) {
-        $query->whereNull('deleteaccount');
-    })
-    ->when($query, function ($queryBuilder) use ($query) {
-        $queryBuilder->where(function ($q) use ($query) {
-            $q->where('judul', 'LIKE', "%{$query}%")
-              ->orWhere('kseo', 'LIKE', "%{$query}%")
-              ->orWhere('lseo', 'LIKE', "%{$query}%");
-        });
-    })
-    ->get();
-        $stories = Artiestories::with('usericonVides')
-    ->whereNull('deltime')
-    ->whereHas('usericonVides', function ($query) {
-        $query->whereNull('deleteaccount');
-    })
-    ->when($query, function ($queryBuilder) use ($query) {
-        $queryBuilder->where(function ($q) use ($query) {
-            $q->where('judul', 'LIKE', "%{$query}%")
-              ->orWhere('kseo', 'LIKE', "%{$query}%")
-              ->orWhere('lseo', 'LIKE', "%{$query}%");
-        });
-    })
-    ->get();
-        $articles = Artiekeles::with('usericonVides')
-    ->whereNull('deltime')
-    ->whereHas('usericonVides', function ($query) {
-        $query->whereNull('deleteaccount');
-    })
-    ->when($query, function ($queryBuilder) use ($query) {
-        $queryBuilder->where(function ($q) use ($query) {
-            $q->where('judul', 'LIKE', "%{$query}%")
-              ->orWhere('kseo', 'LIKE', "%{$query}%")
-              ->orWhere('lseo', 'LIKE', "%{$query}%");
-        });
-    })
-    ->get();
+             ->whereNull('deltime')
+             ->whereHas('usericonVides', function ($query) {
+                          $query->whereNull('deleteaccount');
+             })
+             ->when($query, function ($queryBuilder) use ($query) {
+                          $queryBuilder->where(function ($q) use ($query) {
+                                       $q->where('judul', 'LIKE', "%{$query}%")
+                                       ->orWhere('kseo', 'LIKE', "%{$query}%")
+                                       ->orWhere('lseo', 'LIKE', "%{$query}%");
+                          });
+             })
+             ->get();
+        $stories = Artiestories::with('usericonStories')
+             ->whereNull('deltime')
+             ->whereHas('usericonStories', function ($query) {
+                          $query->whereNull('deleteaccount');
+             })
+             ->when($query, function ($queryBuilder) use ($query) {
+                          $queryBuilder->where(function ($q) use ($query) {
+                                       $q->where('judul', 'LIKE', "%{$query}%")
+                                       ->orWhere('kseo', 'LIKE', "%{$query}%")
+                                       ->orWhere('lseo', 'LIKE', "%{$query}%");
+                          });
+             })
+             ->get();
         $formattedVideos = $videos->map(function ($item) {
             return ['type' => 'video', 'data' => $item];
         });
         $formattedStories = $stories->map(function ($item) {
             return ['type' => 'story', 'data' => $item];
-        });
-        $formattedArticles = $articles->map(function ($item) {
-            return ['type' => 'article', 'data' => $item];
         });
         $results = new Collection(array_merge($formattedVideos->all(), $formattedStories->all(), $formattedArticles->all()));
         $sortedResults = $results->sortByDesc(function ($item) {
