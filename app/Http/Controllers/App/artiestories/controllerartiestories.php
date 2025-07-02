@@ -69,6 +69,7 @@ class controllerartiestories extends Controller
     }
     private function uploadToGoogleDrive($file)
     {
+        dd(env('GOOGLE_CREDENTIALS'), is_file(env('GOOGLE_CREDENTIALS')));
         $credentialsPath = base_path(env('GOOGLE_CREDENTIALS_PATH'));
         $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
         $client = new \Google_Client();

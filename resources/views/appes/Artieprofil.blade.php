@@ -680,6 +680,9 @@
             });
         });
     </script>
+    @include('appes.artiestories.js.reactfront')<!-- react story -->
+    @include('appes.artiestories.js.commentarist0')<!-- give reacted artietories(front) -->
+    @include('appes.artiestories.js.commentarist01')<!-- give reacted artietories(back) -->
     @include('appes.artiestories.js.commentarist')<!-- buka content artiestories -->
     @include('appes.artiestories.js.cnoscroll')<!-- noscroll open comment -->
     @include('appes.artiestories.js.commentarist001')<!-- open session artiestories -->

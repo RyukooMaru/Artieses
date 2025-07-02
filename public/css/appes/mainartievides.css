@@ -1,4 +1,4 @@
-/* === GENERAL STYLING === */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -23,11 +23,9 @@ a {
     text-decoration: none;
     color: inherit;
 }
-
-/* === MAIN LAYOUT === */
 .cardvideomain {
     display: flex;
-    flex-direction: row; /* Berdampingan di layar besar */
+    flex-direction: row;
     justify-content: center;
     padding: 24px;
     gap: 24px;
@@ -35,18 +33,16 @@ a {
 
 .video-page-container {
     flex: 1;
-    min-width: 0; /* Mencegah item flex meluap */
+    min-width: 0;
 }
 
 .recomvides {
-    width: 402px; /* Lebar tetap untuk rekomendasi seperti YouTube */
-    flex-shrink: 0; /* Mencegah kolom ini menyusut */
+    width: 402px;
+    flex-shrink: 0;
 }
-
-/* === RESPONSIVE LAYOUT (TABLET & MOBILE) === */
 @media (max-width: 992px) {
     .cardvideomain {
-        flex-direction: column; /* Tumpuk vertikal di layar kecil */
+        flex-direction: column;
         padding: 0;
     }
     .video-page-container {
@@ -57,7 +53,7 @@ a {
         padding: 0 16px;
     }
     .main-video {
-        border-radius: 0; /* Video memenuhi layar */
+        border-radius: 0;
         width: 100%;
         margin-left: 0;
     }
@@ -66,9 +62,6 @@ a {
         padding-right: 16px;
     }
 }
-
-
-/* === VIDEO PLAYER === */
 .main-video {
     width: 100%;
     margin-left: auto;
@@ -76,14 +69,13 @@ a {
     background: #000;
     border-radius: 12px;
     overflow: hidden;
-    position: relative; /* Penting untuk posisi kontrol */
+    position: relative;
 }
 
 .video-wrapper {
     position: relative;
     width: 100%;
-    /* Aspect ratio akan diatur oleh JS */
-    aspect-ratio: 16 / 9; /* Default aspect ratio */
+    aspect-ratio: 16 / 9;
 }
 
 .thevides {
@@ -98,8 +90,6 @@ a {
     top: 0; left: 0; right: 0; bottom: 0;
     z-index: 2;
 }
-
-/* === VIDEO CONTROLS (NEW STRUCTURE) === */
 .controls-container {
     position: absolute;
     bottom: 0;
@@ -113,7 +103,7 @@ a {
 }
 
 .main-video:hover .controls-container,
-.main-video:hover .hidden { /* Tampilkan kontrol saat hover */
+.main-video:hover .hidden {
    opacity: 1;
 }
 
@@ -134,8 +124,6 @@ a {
     align-items: center;
     gap: 16px;
 }
-
-/* Elemen kontrol (play, next, vol, zin) */
 .pbv, .next, .vol, .zin {
     width: 24px;
     height: 24px;
@@ -157,7 +145,7 @@ a {
     opacity: 0;
     transition: width 0.3s, opacity 0.3s;
     cursor: pointer;
-    accent-color: #2681f5; /* Modern way to color range input */
+    accent-color: #2681f5;
 }
 
 .volume-container:hover .volume-bar {
@@ -171,19 +159,16 @@ a {
     font-size: 14px;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
 }
-
-
-/* === PROGRESS BAR === */
 .custom-progress-container {
     position: relative;
-    height: 5px; /* Lebih tipis seperti YouTube */
+    height: 5px;
     width: 100%;
     background: rgba(255, 255, 255, 0.4);
     cursor: pointer;
     transition: height 0.2s ease;
 }
 .custom-progress-container:hover {
-    height: 8px; /* Menebal saat di-hover */
+    height: 8px;
 }
 
 .custom-progress-bar, .custom-progress-bar-quick {
@@ -203,7 +188,6 @@ a {
     background: rgba(255, 255, 255, 0.6);
     z-index: 1;
 }
-
 .hover-bar {
     position: absolute;
     bottom: 50%;
@@ -213,7 +197,7 @@ a {
     background-color: #2681f5;
     border-radius: 50%;
     z-index: 3;
-    display: none; /* Sembunyikan dan tampilkan saat hover */
+    display: none;
 }
 .custom-progress-container:hover .hover-bar {
     display: block;
@@ -231,8 +215,6 @@ a {
     pointer-events: none;
     z-index: 10;
 }
-
-/* === VIDEO INFO SECTION === */
 .video-title {
     font-size: 20px;
     font-weight: 600;
@@ -242,8 +224,8 @@ a {
 
 .video-info {
     display: flex;
-    align-items: flex-start; /* Ubah ke flex-start */
-    flex-wrap: wrap; /* Izinkan wrapping di layar kecil */
+    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
@@ -251,7 +233,7 @@ a {
     display: flex;
     align-items: center;
     gap: 12px;
-    flex-grow: 1; /* Ambil sisa ruang */
+    flex-grow: 1;
 }
 
 .creatorvides {
@@ -280,18 +262,18 @@ a {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-left: auto; /* Dorong ke kanan di layar besar */
+    margin-left: auto;
 }
 
 @media (max-width: 600px) {
     .video-info {
         flex-direction: column;
-        align-items: stretch; /* Memenuhi lebar */
+        align-items: stretch;
     }
     .actions-container {
         width: 100%;
         margin-left: 0;
-        justify-content: space-between; /* Sebar tombol */
+        justify-content: space-between;
     }
 }
 
@@ -350,9 +332,6 @@ a {
 .dark-mode .btldl span {
     color: #555;
 }
-
-
-/* === DESCRIPTION === */
 .description {
     background-color: #f2f2f2;
     border-radius: 12px;
@@ -374,13 +353,10 @@ a {
     margin-bottom: 8px;
 }
 
-/* === FULLSCREEN MODE STYLES === */
-/* Biarkan style fullscreen Anda karena sudah terintegrasi dengan JS */
 .zinbtnfs, .pbvfs, .nfs, .vfs, .timerfs, .cpcfs, .cpbfs {
     position: fixed;
     z-index: 9999;
 }
-/* Anda bisa menyesuaikan posisi ini jika diperlukan */
 .zinbtnfs { opacity: 0.6; left: 95.2%; bottom: 37.5px; width: 23px; }
 .pbvfs { width: 20px; bottom: 35px; left: 30px; opacity: 0.6; }
 .nfs { width: 20px; bottom: 35px; opacity: 0.6; left: 85px; }
@@ -388,8 +364,6 @@ a {
 .timerfs { left: 182px; bottom: 35px; background: none; color: white; padding: 2px 6px; border-radius: 4px; font-size: 15px; }
 .cpcfs { height: 10px; left: 12px; width: 97%; background: rgba(255, 255, 255, 0.6); bottom: 80px; border-radius: 12px; cursor: pointer; }
 .cpbfs { height: 100%; width: 0%; bottom: 0; border-radius: 12px; background: rgb(66, 127, 241); }
-
-/* Utility classes */
 .hidden {
     display: none !important;
 }
