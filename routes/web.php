@@ -59,11 +59,10 @@ use Illuminate\Support\Facades\Http;
             abort(500, 'Terjadi kesalahan saat mengambil konten');
         }
     });
-    Route::get('/check-limits', function () {
+    Route::post('/check-limits', function (Request $request) {
         return [
-            'upload_max_filesize' => ini_get('upload_max_filesize'),
-            'post_max_size' => ini_get('post_max_size'),
-            'memory_limit' => ini_get('memory_limit'),
+            'ipadmin' => env('ADMIN_IP'),
+            'reqip' => $request->ip(),
         ];
     });
 ##

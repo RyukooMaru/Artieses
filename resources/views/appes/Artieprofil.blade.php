@@ -197,11 +197,31 @@
                                     @php
                                         $konten = $video->video;
                                         $thumbnail = $video->thumbnail;
-                                        $thumbnailurl = "https://drive.google.com/uc?export=view&id=$thumbnailurl";
-                                        $videourl = "https://drive.google.com/uc?export=view&id=$konten";
+                                        $kontenurl = $konten;
+                                        $thumburl = $thumbnail;
+                                        $kontenId = null;
+                                        $thumbId = null;
+                                        if ($kontenurl) {
+                                            if (preg_match('/\/d\/(.*?)\//', $kontenurl, $matches)) {
+                                                $kontenId = $matches[1];
+                                            } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $kontenurl, $matches)) {
+                                                $kontenId = $matches[1];
+                                            } elseif (!str_contains($kontenurl, 'drive.google.com')) {
+                                                $kontenId = $kontenurl;
+                                            }
+                                        }
+                                        if ($thumburl) {
+                                            if (preg_match('/\/d\/(.*?)\//', $thumburl, $matches)) {
+                                                $thumbId = $matches[1];
+                                            } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $thumburl, $matches)) {
+                                                $thumbId = $matches[1];
+                                            } elseif (!str_contains($thumburl, 'drive.google.com')) {
+                                                $thumbId = $thumburl;
+                                            }
+                                        }
                                     @endphp
-                                    <video muted id="hover-video-{{ $video->codevides }}" poster="{{ $thumbnailurl }}">
-                                        <source src="{{ $videourl }}" type="video/mp4">
+                                    <video muted id="hover-video-{{ $video->codevides }}" poster="{{ url('/konten/' . $thumbId) }}">
+                                        <source src="{{ url('/konten/' . $kontenId) }}" type="video/mp4">
                                     </video>
                                     <div style="background: rgba(0, 0, 0, 0.6) !important" class="video-timer-profiles" id="video-timer-{{ $video->codevides }}">00:00 / 00:00</div>
                                     <h3>{{ $video->judul }}</h3>
