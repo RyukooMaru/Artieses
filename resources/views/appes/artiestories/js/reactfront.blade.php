@@ -1,9 +1,9 @@
 <script>
     if (typeof window.pusherreact === 'undefined') {
-        pusherreact.logToConsole = true;
         window.pusherreact = new Pusher("{{ config('broadcasting.connections.pusher.key') }}", {
             cluster: "{{ config('broadcasting.connections.pusher.options.cluster') }}",
-            forceTLS: true
+            forceTLS: true,
+            logToConsole: true
         });
     }
     if (typeof window.channelreact === 'undefined') {

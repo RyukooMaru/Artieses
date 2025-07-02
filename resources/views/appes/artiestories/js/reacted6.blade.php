@@ -17,7 +17,7 @@
                         },
                         body: JSON.stringify({
                             reaksi: reaksi5,
-                            artiestoriesid: storyId5
+                            balcomstoriesid: storyId5
                         })
                     })
                     .then(res => res.json())
