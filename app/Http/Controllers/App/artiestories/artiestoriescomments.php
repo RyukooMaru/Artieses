@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 use App\Models\BalcomStories;
 use Illuminate\Http\Request;
 use App\Models\ComStories;
-use Illuminate\Support\Facades\Storage;
 
 class artiestoriescomments extends Controller
 {
@@ -101,7 +100,8 @@ class artiestoriescomments extends Controller
             if (!$request->input('message') && $request->hasFile('fileInput')) {
                 $file = $request->file('fileInput');
                 $fileid = $this->uploadToGoogleDrive($file);
-                $inputcomments = '<img src="' . $fileid . '" class="imgcom">';
+                $path = url("/konten/" . $fileid);
+                $inputcomments = '<img src="' . $path . '" class="imgcom">';
             }
             if (!$request->hasFile('fileInput')) {
                 $inputcomments = $request->input('message');
@@ -159,7 +159,8 @@ class artiestoriescomments extends Controller
             if (!$request->input('message1') && $request->hasFile('fileInput1')) {
                 $file = $request->file('fileInput1');
                 $fileid = $this->uploadToGoogleDrive($file);
-                $inputcomments = '<img src="' . $fileid . '" class="imgcom">';
+                $path = url("/konten/" . $fileid);
+                $inputcomments = '<img src="' . $path . '" class="imgcom">';
             }
             if (!$request->hasFile('fileInput1')) {
                 $reqplat = $request->input('storyCode1');
