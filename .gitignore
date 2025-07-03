@@ -21,6 +21,7 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+.user.ini
 artieses-464604-b5090e2915de.json
 
 # Ignore all contents of storage/app
