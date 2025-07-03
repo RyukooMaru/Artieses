@@ -25,6 +25,13 @@ use App\Models\Artiestories;
 use App\Models\Artievides;
 use App\Models\Artiekeles;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+
+
+use Google\Client as Google_Client;
+use Google\Service\Drive as Google_Service_Drive;
+use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 
 
 # SPECIALIST EVENT ROUTE
@@ -37,25 +44,29 @@ use Illuminate\Support\Facades\Http;
     Route::post('/broadcast-typing1', [artiestoriescomments::class, 'broadcast1'])->name('broadcast1');
 
     Route::get('/konten/{id}', function ($id) {
-        $url = "https://drive.google.com/uc?export=view&id={$id}";
-
         try {
-            $response = Http::withHeaders([
-                'User-Agent' => 'Mozilla/5.0',
-            ])->get($url);
+            $credentialsPath = base_path(env('GOOGLE_CREDENTIALS_PATH'));
 
-            if ($response->successful()) {
-                $contentType = $response->header('Content-Type') ?? 'application/octet-stream';
-
-                return response($response->body(), 200)
-                    ->header('Content-Type', $contentType);
-            } else {
-                abort(404, 'Konten tidak ditemukan');
-            }
+            $client = new Google_Client();
+            $client->setAuthConfig($credentialsPath);
+            $client->addScope(Google_Service_Drive::DRIVE_READONLY);
+            $service = new Google_Service_Drive($client);
+            $response = $service->files->get($id, [
+                'alt' => 'media'
+            ]);
+            $meta = $service->files->get($id, ['fields' => 'mimeType, name']);
+            return Response::make($response->getBody()->getContents(), 200, [
+                'Content-Type' => $meta->mimeType ?? 'application/octet-stream',
+                'Content-Disposition' => 'inline; filename="' . $meta->name . '"',
+                'Accept-Ranges' => 'bytes',
+            ]);
+        } catch (\Google_Service_Exception $e) {
+            abort(404, 'File tidak ditemukan / akses dibatasi');
         } catch (\Exception $e) {
-            abort(500, 'Terjadi kesalahan saat mengambil konten');
+            abort(500, 'Terjadi kesalahan saat mengakses file Google Drive');
         }
     });
+ #
     // Route::get('/check-limits', function (Request $request) {
     //     return [
     //         'ipadmin' => env('ADMIN_IP'),
@@ -81,6 +92,7 @@ use Illuminate\Support\Facades\Http;
     // Route::get('/phpinfo', function () {
     //     phpinfo();
     // });
+ #
 ##
 
 # APP #

@@ -23,12 +23,16 @@ a {
     text-decoration: none;
     color: inherit;
 }
+.allvid {
+    margin-top: 20px;
+}
 .cardvideomain {
     display: flex;
     flex-direction: row;
     justify-content: center;
     padding: 24px;
     gap: 24px;
+    margin-top: 10px;
 }
 
 .video-page-container {
@@ -55,7 +59,7 @@ a {
     .main-video {
         border-radius: 0;
         width: 100%;
-        margin-left: 0;
+        margin-left: 0; 
     }
     .video-info, .video-title, .description {
         padding-left: 16px;
@@ -75,6 +79,7 @@ a {
 .video-wrapper {
     position: relative;
     width: 100%;
+    margin-top: 5%;
     aspect-ratio: 16 / 9;
 }
 

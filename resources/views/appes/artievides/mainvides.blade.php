@@ -9,7 +9,7 @@
     <link rel="icon" href="{{ asset('partses/favicon.ico') }}">
     @include('partses.baries')
 </head>
-<body>
+<body class="allvid">
     <div class="cardvideomain">
         <div class="video-page-container">
             <div class="main-video">
@@ -42,7 +42,7 @@
                     @endphp
                     <video autoplay class="thevides" id="thevides" preload="auto" poster="{{ url('/konten/' . $thumbId) }}" src="{{ url('/konten/' . $kontenId) }}" controlslist="nodownload" tabindex="-1"></video>
                     <div id="video-key-catcher" class="video-catch"></div>
-                    <div class="controls-container hidden" id="controls-container">
+                    <div class="controls-container" id="controls-container">
                         <div class="custom-progress-container" id="custom-progress-container">
                             <div class="custom-progress-bar-quick" id="custom-progress-bar-quick"></div>
                             <div class="custom-progress-bar" id="custom-progress-bar"></div>
