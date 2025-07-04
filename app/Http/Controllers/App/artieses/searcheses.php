@@ -47,7 +47,7 @@ class searcheses extends Controller
              })
              ->when($query, function ($queryBuilder) use ($query) {
                           $queryBuilder->where(function ($q) use ($query) {
-                                       $q->where('judul', 'LIKE', "%{$query}%")
+                                       $q->where('caption', 'LIKE', "%{$query}%")
                                        ->orWhere('kseo', 'LIKE', "%{$query}%")
                                        ->orWhere('lseo', 'LIKE', "%{$query}%");
                           });
@@ -59,7 +59,7 @@ class searcheses extends Controller
         $formattedStories = $stories->map(function ($item) {
             return ['type' => 'story', 'data' => $item];
         });
-        $results = new Collection(array_merge($formattedVideos->all(), $formattedStories->all(), $formattedArticles->all()));
+        $results = new Collection(array_merge($formattedVideos->all(), $formattedStories->all()));
         $sortedResults = $results->sortByDesc(function ($item) {
             return $item['data']->created_at;
         });
