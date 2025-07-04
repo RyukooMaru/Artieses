@@ -314,79 +314,11 @@
                         function hideControls() {
                             controlscontainer.classList.remoe('show');
                             controlscontainer.classList.add('hidden');
-                            controlscontainer.add('show');
-                            controlscontainer.remove('hidden');
-                            timer.classList.add('show');
-                            timer.classList.remove('hidden');
-                            progressContainer.classList.add('show');
-                            progressContainer.classList.remove('hidden');
-                            progressBar.classList.add('show');
-                            progressBar.classList.remove('hidden');
-                            pbv.classList.add('show');
-                            pbv.classList.remove('hidden');
-                            next.classList.add('show');
-                            next.classList.remove('hidden');
-                            vol.classList.add('show');
-                            vol.classList.remove('hidden');
-                            zin.classList.add('show');
-                            zin.classList.remove('hidden');
                             clearTimeout(hideControlsTimeout);
                             hideControlsTimeout = setTimeout(() => {
-                                controlscontainer.remove('show');
-                                controlscontainer.add('hidden');
-                                timer.classList.add('hidden');
-                                timer.classList.remove('show');
-                                progressContainer.classList.add('hidden');
-                                progressContainer.classList.remove('show');
-                                progressBar.classList.add('hidden');
-                                progressBar.classList.remove('show');
-                                pbv.classList.remove('show');
-                                pbv.classList.add('hidden');
-                                next.classList.remove('show');
-                                next.classList.add('hidden');
-                                vol.classList.remove('show');
-                                vol.classList.add('hidden');
-                                zin.classList.remove('show');
-                                zin.classList.add('hidden');
+                                controlscontainer.classList.remove('show');
+                                controlscontainer.classList.add('hidden');
                             }, 1500);
-                        }
-                        function showControls1() {
-                            controlscontainer.add('show');
-                            controlscontainer.remove('hidden');
-                            timer.classList.add('show');
-                            timer.classList.remove('hidden');
-                            progressContainer.classList.add('show');
-                            progressContainer.classList.remove('hidden');
-                            progressBar.classList.add('show');
-                            progressBar.classList.remove('hidden');
-                            pbv.classList.add('show');
-                            pbv.classList.remove('hidden');
-                            next.classList.add('show');
-                            next.classList.remove('hidden');
-                            vol.classList.add('show');
-                            vol.classList.remove('hidden');
-                            zin.classList.add('show');
-                            zin.classList.remove('hidden');
-                            clearTimeout(hideControlsTimeout);
-                        }
-                        function hideControls() {
-                            controlscontainer.remove('show');
-                            controlscontainer.add('hidden');
-                            timer.classList.remove('show');
-                            timer.classList.add('hidden');
-                            progressContainer.classList.remove('show');
-                            progressContainer.classList.add('hidden');
-                            progressBar.classList.remove('show');
-                            progressBar.classList.add('hidden');
-                            pbv.classList.remove('show');
-                            pbv.classList.add('hidden');
-                            next.classList.remove('show');
-                            next.classList.add('hidden');
-                            vol.classList.remove('show');
-                            vol.classList.add('hidden');
-                            zin.classList.remove('show');
-                            zin.classList.add('hidden');
-                            clearTimeout(hideControlsTimeout);
                         }
                         videoWrapper.addEventListener('mouseenter', () => {
                             if (video.getAttribute('poster')) {
