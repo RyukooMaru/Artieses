@@ -168,7 +168,6 @@
                         const controlscontainer = document.getElementById('controls-container');
                         const timer = document.querySelector('.video-timer');
                         const videoWrapper = document.querySelector('.video-wrapper');
-                        const controlscontainer = document.getElementById('controls-container');
                         let hideControlsTimeout;
                         let hideCursorTimeout;
                         const video = document.getElementById('thevides');
