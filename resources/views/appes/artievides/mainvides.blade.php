@@ -312,7 +312,7 @@
                             clearTimeout(hideControlsTimeout);
                         }
                         function hideControls() {
-                            controlscontainer.classList.remoe('show');
+                            controlscontainer.classList.remove('show');
                             controlscontainer.classList.add('hidden');
                             clearTimeout(hideControlsTimeout);
                             hideControlsTimeout = setTimeout(() => {
