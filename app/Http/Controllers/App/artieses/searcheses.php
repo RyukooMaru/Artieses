@@ -47,7 +47,7 @@ class searcheses extends Controller
              })
              ->when($query, function ($queryBuilder) use ($query) {
                           $queryBuilder->where(function ($q) use ($query) {
-                                       $q->where('judul', 'LIKE', "%{$query}%")
+                                       $q->where('caption', 'LIKE', "%{$query}%")
                                        ->orWhere('kseo', 'LIKE', "%{$query}%")
                                        ->orWhere('lseo', 'LIKE', "%{$query}%");
                           });
