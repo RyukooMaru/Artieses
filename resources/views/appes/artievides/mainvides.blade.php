@@ -165,6 +165,7 @@
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
                         const overlay = document.getElementById('video-key-catcher');
+                        const controlscontainer = document.getElementById('controls-container');
                         const timer = document.querySelector('.video-timer');
                         const videoWrapper = document.querySelector('.video-wrapper');
                         let hideControlsTimeout;
@@ -297,6 +298,8 @@
 
                         }
                         function showControls() {
+                            controlscontainer.add('show');
+                            controlscontainer.remove('hidden');
                             timer.classList.add('show');
                             timer.classList.remove('hidden');
                             progressContainer.classList.add('show');
@@ -313,6 +316,8 @@
                             zin.classList.remove('hidden');
                             clearTimeout(hideControlsTimeout);
                             hideControlsTimeout = setTimeout(() => {
+                                controlscontainer.remove('show');
+                                controlscontainer.add('hidden');
                                 timer.classList.add('hidden');
                                 timer.classList.remove('show');
                                 progressContainer.classList.add('hidden');
@@ -330,6 +335,8 @@
                             }, 1500);
                         }
                         function showControls1() {
+                            controlscontainer.add('show');
+                            controlscontainer.remove('hidden');
                             timer.classList.add('show');
                             timer.classList.remove('hidden');
                             progressContainer.classList.add('show');
@@ -347,6 +354,8 @@
                             clearTimeout(hideControlsTimeout);
                         }
                         function hideControls() {
+                            controlscontainer.remove('show');
+                            controlscontainer.add('hidden');
                             timer.classList.remove('show');
                             timer.classList.add('hidden');
                             progressContainer.classList.remove('show');
