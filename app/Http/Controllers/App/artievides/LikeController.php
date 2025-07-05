@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers\App\artievides;
 
-use Illuminate\Http\Request;
-use App\Models\Artievides;
+use App\Models\dislikevides;
+use App\Models\likevides;
 
 class LikeController
 {
     public function like($codevides)
     {
-        $video = Artievides::where('codevides', $codevides)->firstOrFail();
-        $video->like_vides_count = ($video->like_vides_count ?? 0) + 1;
-        $video->save();
+        likevides::create([
+            'userid' => session('userid'),
+            'codevides' => $codevides,
+        ]);
 
         return response()->json([
-            'status' => 'success',
-            'likes' => $video->like_vides_count
+            'status' => 'success'
         ]);
     }
     public function dislike($codevides)
     {
-        $video = Artievides::where('codevides', $codevides)->firstOrFail();
-        $video->like_vides_count = max(0, ($video->like_vides_count ?? 0) - 1);
-        $video->save();
+        dislikevides::create([
+            'userid' => session('userid'),
+            'codevides' => $codevides,
+        ]);
 
         return response()->json([
-            'status' => 'success',
-            'likes' => $video->like_vides_count
+            'status' => 'success'
         ]);
     }
 }

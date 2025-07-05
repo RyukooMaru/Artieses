@@ -26,12 +26,6 @@ class loges extends Controller
                 $requestIp = $request->ip();
                 $adminIp = env('ADMIN_IP');
                 if ($requestIp !== $adminIp) {
-                    \Log::warning('IP tidak cocok dengan ADMIN_IP', [
-                        'request_ip' => $requestIp,
-                        'expected_admin_ip' => $adminIp,
-                        'user_id' => auth()->id() ?? 'guest',
-                        'url' => $request->fullUrl(),
-                    ]);
                     return redirect()->route('authes')->with([
                         'alert' => 'Username atau Password salah!',
                         'form' => 'login'
