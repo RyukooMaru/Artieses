@@ -53,7 +53,6 @@
         const channel = pusher.subscribe('typing-channel');
         channel.bind('user.typing', function (data) {
             if (data.message && data.message !== "") {
-                // Tampilkan pesan untuk semua termasuk pengirim
                 const container = document.getElementById('chat-container');
                 const card = document.createElement('div');
                 card.className = 'cardcom001';

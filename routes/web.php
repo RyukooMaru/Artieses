@@ -24,14 +24,11 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Artiestories;
 use App\Models\Artievides;
 use App\Models\Artiekeles;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Storage;
-
-
+use App\Http\Controllers\App\artievides\LikeController;
+use Illuminate\Support\Str;
 use Google\Client as Google_Client;
 use Google\Service\Drive as Google_Service_Drive;
-use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 
 
 # SPECIALIST EVENT ROUTE
@@ -45,21 +42,41 @@ use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 
     Route::get('/konten/{id}', function ($id) {
         try {
-            $credentialsPath = base_path(env('GOOGLE_CREDENTIALS_PATH'));
-
             $client = new Google_Client();
-            $client->setAuthConfig($credentialsPath);
+            $client->setAuthConfig(base_path(env('GOOGLE_CREDENTIALS_PATH')));
             $client->addScope(Google_Service_Drive::DRIVE_READONLY);
+            $accessToken = $client->fetchAccessTokenWithAssertion()['access_token'];
             $service = new Google_Service_Drive($client);
-            $response = $service->files->get($id, [
-                'alt' => 'media'
-            ]);
-            $meta = $service->files->get($id, ['fields' => 'mimeType, name']);
-            return Response::make($response->getBody()->getContents(), 200, [
-                'Content-Type' => $meta->mimeType ?? 'application/octet-stream',
-                'Content-Disposition' => 'inline; filename="' . $meta->name . '"',
-                'Accept-Ranges' => 'bytes',
-            ]);
+            $file = $service->files->get($id, ['fields' => 'mimeType, name']);
+            $mime = $file->mimeType;
+            $name = $file->name;
+            if (Str::startsWith($mime, 'video/')) {
+                $rangeHeader = request()->header('Range');
+                $clientHttp = new \GuzzleHttp\Client();
+                $googleResponse = $clientHttp->request('GET', "https://www.googleapis.com/drive/v3/files/{$id}?alt=media", [
+                    'headers' => [
+                        'Authorization' => "Bearer $accessToken",
+                        'Range' => $rangeHeader,
+                    ],
+                    'stream' => true,
+                ]);
+                return response()->stream(function () use ($googleResponse) {
+                    echo $googleResponse->getBody()->getContents();
+                }, 206, [
+                    'Content-Type' => $mime,
+                    'Content-Disposition' => 'inline; filename="' . $name . '"',
+                    'Accept-Ranges' => 'bytes',
+                    'Content-Range' => $googleResponse->getHeaderLine('Content-Range'),
+                    'Content-Length' => $googleResponse->getHeaderLine('Content-Length'),
+                ]);
+            } else {
+                $response = $service->files->get($id, ['alt' => 'media']);
+                return Response::make($response->getBody()->getContents(), 200, [
+                    'Content-Type' => $mime ?? 'application/octet-stream',
+                    'Content-Disposition' => 'inline; filename="' . $name . '"',
+                    'Accept-Ranges' => 'bytes',
+                ]);
+            }
         } catch (\Google_Service_Exception $e) {
             abort(404, 'File tidak ditemukan / akses dibatasi');
         } catch (\Exception $e) {
@@ -180,14 +197,21 @@ use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
     Route::get('/Artiestories', function (Request $request) {
         $reqplat = $request->query('GetContent');
         if (!session('isLoggedIn')) {
-                $videos = Artievides::whereNull('deltime')
+                $videos = Artievides::with('usericonVides')
+                    ->whereNull('deltime')
+                    ->whereHas('usericonVides', function ($query) {
+                        $query->whereNull('deleteaccount');
+                    })
                     ->with('usericonVides')
                     ->withCount('likeVides')
                     ->orderByDesc('like_vides_count')
                     ->orderByDesc('created_at')
                     ->get();
-            
-                $stories = Artiestories::whereNull('deltime')
+                $stories = Artiestories::with('usericonStories')
+                    ->whereNull('deltime')
+                    ->whereHas('usericonStories', function ($query) {
+                        $query->whereNull('deleteaccount');
+                    })
                     ->withCount('reactStories')
                     ->orderByDesc('react_stories_count')
                     ->with([
@@ -199,12 +223,9 @@ use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
                     ])
                     ->latest()
                     ->get();
-            
                 $articles = Artiekeles::latest()->get();
-            
                 $mergedFeed = [];
                 $videoIndex = $storyIndex = $articleIndex = 0;
-            
                 while ($videoIndex < $videos->count() || $storyIndex < $stories->count() || $articleIndex < $articles->count()) {
                     for ($i = 0; $i < 6 && $videoIndex < $videos->count(); $i++) {
                         $mergedFeed[] = ['type' => 'video', 'data' => $videos[$videoIndex++]];
@@ -220,14 +241,21 @@ use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
                 }
         }
         if (session('isLoggedIn')) {
-                $videos = Artievides::whereNull('deltime')
+                $videos = Artievides::with('usericonVides')
+                    ->whereNull('deltime')
+                    ->whereHas('usericonVides', function ($query) {
+                        $query->whereNull('deleteaccount');
+                    })
                     ->with('usericonVides')
                     ->withCount('likeVides')
                     ->orderByDesc('like_vides_count')
                     ->orderByDesc('created_at')
                     ->get();
-            
-                $stories = Artiestories::whereNull('deltime')
+                $stories = Artiestories::with('usericonStories')
+                    ->whereNull('deltime')
+                    ->whereHas('usericonStories', function ($query) {
+                        $query->whereNull('deleteaccount');
+                    })
                     ->withCount('reactStories')
                     ->orderByDesc('react_stories_count')
                     ->with([
@@ -259,6 +287,8 @@ use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
         }
         return view('appes.artieses', compact('mergedFeed', 'reqplat'))->with('open_commentarist', $reqplat);
     })->name('artiestories');
+    Route::post('/like/{codevides}', [LikeController::class, 'like'])->name('video.like');
+    Route::post('/dislike/{codevides}', [LikeController::class, 'dislike'])->name('video.dislike');
 ##
 
 # ARTIEVIDES #
@@ -276,7 +306,6 @@ use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
                 ->where('codevides', $reqplat)
                 ->where('banyakviewyah?emangiyah?wkwk', $ip)
                 ->exists();
-
             if (!$alreadyViewed) {
                 DB::table('banyakviewyah?emangiyah?')->insert([
                     'codevides' => $reqplat,

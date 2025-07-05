@@ -135,12 +135,9 @@
                                                 window.location.href = data.redirect;
                                                 return;
                                             }
-
                                             if (data.csrf) {
                                                 document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.csrf);
                                             }
-
-                                            // Opsional: update tampilan tombol
                                             if (data.subscribed) {
                                                 button.textContent = 'Subscribed';
                                                 button.classList.add('subscribed');
@@ -163,7 +160,7 @@
                     </script>
                 </div>
                 <div class="subs">
-                    <p>{{ $user->stories->count() + $user->videos->count() + $user->artiekeles->count() }} Konten</p>
+                    <p>{{ $user->stories->whereNull('deltime')->count() + $user->videos->whereNull('deltime')->count() + $user->artiekeles->whereNull('deltime')->count() }} Konten</p>
                     <p>{{ $user->subscriber->count() }} Subscriber</p>
                     <p>{{ $user->subscribing->count() }} Subscribing</p>
                 </div>

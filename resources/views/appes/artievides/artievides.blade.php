@@ -46,7 +46,7 @@
               $fileId = $viewUrl;
           }
       }
-  @endphp
+    @endphp
   @if($fileId)
       <div class="creator-1">
         <a href="{{ route('profiles.show', ['username' => $username]) }}">
