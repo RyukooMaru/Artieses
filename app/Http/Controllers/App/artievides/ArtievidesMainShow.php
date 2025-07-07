@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Http\Controllers\App\artievides;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Artievides;
+use Illuminate\Support\Facades\DB;
+
+class ArtievidesMainShow extends Controller
+{
+    public function ArtievidesMainShow(Request $request) {
+        $reqplat = $request->query('GetContent');
+        $video = Artievides::where('codevides', $reqplat)->firstOrFail();
+        $user = $video->usericonVides;
+        $subscriber = $user->subscriber()->latest()->get();
+        $views = $video->banyakviewyahemangiyah()->latest()->get();
+        $ip = $request->getClientIp();
+        $currentUserId = session('userid');
+        $isOwner = $currentUserId == $video->userid;
+        if (!$isOwner) {
+            $alreadyViewed = DB::table('banyakviewyah?emangiyah?')
+                ->where('codevides', $reqplat)
+                ->where('banyakviewyah?emangiyah?wkwk', $ip)
+                ->exists();
+
+            if (!$alreadyViewed) {
+                DB::table('banyakviewyah?emangiyah?')->insert([
+                    'codevides' => $reqplat,
+                    'banyakviewyah?emangiyah?wkwk' => $ip,
+                    'created_at' => now(),
+                ]);
+            }
+        }
+        $searchWords = collect(explode(' ', $video->judul))
+            ->merge(explode(' ', $video->kseo))
+            ->merge(explode(' ', $video->lseo))
+            ->filter()
+            ->unique();
+        if ($searchWords->isEmpty()) {
+            $relatedVideos = Artievides::with('usericonVides')
+                ->where('codevides', '!=', $video->codevides)
+                ->whereNull('deltime')
+                ->whereHas('usericonVides', function ($query) {
+                    $query->whereNull('deleteaccount');
+                })
+                ->withCount('likeVides')
+                ->orderByDesc('like_vides_count')
+                ->orderByDesc('created_at')
+                ->get();
+        } else {
+            $relatedVideos = Artievides::with('usericonVides')
+                ->where('codevides', '!=', $video->codevides)
+                ->whereNull('deltime')
+                ->whereHas('usericonVides', function ($query) {
+                    $query->whereNull('deleteaccount');
+                })
+                ->where(function ($query) use ($searchWords) {
+                    foreach ($searchWords as $word) {
+                        $trimmedWord = trim($word);
+                        if (!empty($trimmedWord)) {
+                            $query->orWhere('judul', 'LIKE', '%' . $trimmedWord . '%')
+                                ->orWhere('kseo', 'LIKE', '%' . $trimmedWord . '%')
+                                ->orWhere('lseo', 'LIKE', '%' . $trimmedWord . '%');
+                        }
+                    }
+                })
+                ->withCount('likeVides')
+                ->orderByDesc('like_vides_count')
+                ->orderByDesc('created_at')
+                ->get();
+        }
+        return view('appes.artievides.mainvides', compact(
+            'reqplat', 
+            'video', 
+            'user', 
+            'subscriber', 
+            'views', 
+            'relatedVideos'
+        ));
+    }
+}

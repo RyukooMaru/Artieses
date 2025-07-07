@@ -15,11 +15,11 @@ use App\Http\Controllers\App\artiestories\artiestoriescomments;
 use App\Http\Controllers\App\artiestories\artiestoriesreact;
 use App\Http\Controllers\App\artievides\controllerartievides;
 use App\Http\Controllers\App\artiestories\controllerartiestories;
+use App\Http\Controllers\App\artievides\ArtievidesMainShow;
 use App\Http\Controllers\App\profil\profilcontroller;
 use App\Http\Controllers\App\subscribe\subscontroller;
 use App\Http\Controllers\nullpage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Models\Artiestories;
 use App\Models\Artievides;
@@ -270,7 +270,6 @@ use Google\Service\Drive as Google_Service_Drive;
                 $articles = Artiekeles::latest()->get();
                 $mergedFeed = [];
                 $videoIndex = $storyIndex = $articleIndex = 0;
-            
                 while ($videoIndex < $videos->count() || $storyIndex < $stories->count() || $articleIndex < $articles->count()) {
                     for ($i = 0; $i < 6 && $videoIndex < $videos->count(); $i++) {
                         $mergedFeed[] = ['type' => 'video', 'data' => $videos[$videoIndex++]];
@@ -292,30 +291,7 @@ use Google\Service\Drive as Google_Service_Drive;
 ##
 
 # ARTIEVIDES #
-    Route::get('/Artievides', function(Request $request) {
-        $reqplat = $request->query('GetContent');
-        $video = Artievides::where('codevides', $reqplat)->firstOrFail();
-        $user = $video->usericonVides;
-        $subscriber = $user->subscriber()->latest()->get();
-        $views = $video->banyakviewyahemangiyah()->latest()->get();
-        $ip = $request->getClientIp();
-        $currentUserId = session('userid');
-        $isOwner = $currentUserId == $video->userid;
-        if (!$isOwner) {
-            $alreadyViewed = DB::table('banyakviewyah?emangiyah?')
-                ->where('codevides', $reqplat)
-                ->where('banyakviewyah?emangiyah?wkwk', $ip)
-                ->exists();
-            if (!$alreadyViewed) {
-                DB::table('banyakviewyah?emangiyah?')->insert([
-                    'codevides' => $reqplat,
-                    'banyakviewyah?emangiyah?wkwk' => $ip,
-                    'created_at' => now(),
-                ]);
-            }
-        }
-        return view('appes.artievides.mainvides', compact('reqplat', 'video', 'user', 'subscriber', 'views'));
-    });
+    Route::get('/Artievides', [ArtievidesMainShow::class, 'ArtievidesMainShow']);
     Route::get('/artievides', function(Request $request) {
         return redirect('/Artievides?' . http_build_query($request->query()));
     });

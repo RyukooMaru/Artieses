@@ -28,7 +28,6 @@ class controllerartievides extends Controller
         ]);
         $content = file_get_contents($file->getPathname());
         $mimeType = $file->getMimeType();
-
         $uploadedFile = $service->files->create($fileMetadata, [
             'data' => $content,
             'mimeType' => $mimeType,

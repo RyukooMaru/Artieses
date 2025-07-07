@@ -10,10 +10,10 @@
     @include('partses.baries')
 </head>
 <body class="allvid">
-    <div class="cardvideomain">
+    <div class="cardvideomain" id="cardvideomain">
         <div class="video-page-container">
-            <div class="main-video">
-                <div class="video-wrapper" style="position: relative;">
+            <div class="main-video" id="main-video">
+                <div class="video-wrapper" id="video-wrapper">
                     @php
                         $konten = $video->video;
                         $thumbnail = $video->thumbnail;
@@ -133,7 +133,74 @@
             </div>
         </div>
         <div class="recomvides">
-            <p>test</p>
+            @foreach ($relatedVideos as $RelateVideo)
+            @php
+                $konten = $RelateVideo->video;
+                $thumbnail = $RelateVideo->thumbnail;
+                $kontenurl = $konten;
+                $thumburl = $thumbnail;
+                $kontenId = null;
+                $thumbId = null;
+                if ($kontenurl) {
+                    if (preg_match('/\/d\/(.*?)\//', $kontenurl, $matches)) {
+                        $kontenId = $matches[1];
+                    } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $kontenurl, $matches)) {
+                        $kontenId = $matches[1];
+                    } elseif (!str_contains($kontenurl, 'drive.google.com')) {
+                        $kontenId = $kontenurl;
+                    }
+                }
+                if ($thumburl) {
+                    if (preg_match('/\/d\/(.*?)\//', $thumburl, $matches)) {
+                        $thumbId = $matches[1];
+                    } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $thumburl, $matches)) {
+                        $thumbId = $matches[1];
+                    } elseif (!str_contains($thumburl, 'drive.google.com')) {
+                        $thumbId = $thumburl;
+                    }
+                }
+                @endphp
+                <a href="/Artievides?GetContent={{ $RelateVideo->codevides }}" class="">
+                    <div class="video-container video-container-{{ $RelateVideo->codevides }}">
+                        <video width="100%" muted class="hover-video" id="hover-video-{{$RelateVideo->codevides}}" poster="{{ url('/konten/' . $thumbId) }}">
+                        <source src="{{ url('/konten/' . $kontenId) }}" type="video/mp4">
+                        </video>
+                        <div class="video-timer-wrap" id="video-timer-{{$RelateVideo->codevides}}">00:00 / 00:00</div>
+                    </div><br>
+                    <div class="cabot-artievides">
+                        @php
+                        $username = $RelateVideo->usericonVides->username;
+                        $improfil = $RelateVideo->usericonVides->improfil;
+                        $viewUrl = $improfil;
+                        $fileId = null;
+                        if ($viewUrl) {
+                            if (preg_match('/\/d\/(.*?)\//', $viewUrl, $matches)) {
+                                $fileId = $matches[1];
+                            } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $viewUrl, $matches)) {
+                                $fileId = $matches[1];
+                            } elseif (!str_contains($viewUrl, 'drive.google.com')) {
+                                $fileId = $viewUrl;
+                            }
+                        }
+                        @endphp
+                    @if($fileId)
+                        <div class="creator-1">
+                            <a href="{{ route('profiles.show', ['username' => $username]) }}">
+                                <img src="{{ url('/konten/' . $fileId) }}" class="creatorvides">
+                            </a>
+                        </div>
+                        @endif
+                        <a href="{{ route('profiles.show', ['username' => $username]) }}">
+                        <p class="h5-artievides">{{ $username }}</p>
+                        </a>
+                        <h3 class="h3-artievides">{{ Str::limit($RelateVideo->judul, 15) }}</h3>
+                        <p class="date-artievides" style="margin-top: 30px;">
+                        {{ \App\Helpers\inthelp::formatAngka($RelateVideo->like_vides_count ?? 0) }} Disukai | 
+                        {{ \App\Helpers\inthelp::formatWaktu($RelateVideo->created_at) }}
+                        </p>
+                    </div>
+                </a>
+            @endforeach
         </div>
     </div>
   <script src="{{ asset('js/appes/togglemode.js') }}"></script>
@@ -184,10 +251,11 @@
   </script><!-- like dislike video -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const cardmainVideo = document.getElementById('cardvideomain');
         const overlay = document.getElementById('video-key-catcher');
         const controlscontainer = document.getElementById('controls-container');
         const timer = document.querySelector('.video-timer');
-        const videoWrapper = document.querySelector('.video-wrapper');
+        const videoWrapper = document.getElementById('video-wrapper');
         let hideControlsTimeout;
         let hideCursorTimeout;
         const video = document.getElementById('thevides');
@@ -424,6 +492,12 @@
         function resetVideoStyles() {
             zinBtn.src = `{{ asset('partses/zin.png') }}`;
             video.setAttribute('style', originalStyle);
+            controlscontainer.classList.add('controls-container');
+            controlscontainer.classList.remove('controls-container-fs');
+            overlay.classList.add('video-catch');
+            overlay.classList.remove('video-catch-fullscreen');
+            videoWrapper.classList.add('video-wrapper');
+            videoWrapper.classList.remove('videowrapper-fullscreen');
             zinBtn.classList.remove('zinbtnfs');
             zinBtn.classList.add('zin');
             timer.classList.remove('timerfs');
@@ -452,15 +526,19 @@
                     elem.msRequestFullscreen();
                 }
                 originalStyle = video.getAttribute('style') || '';
+                controlscontainer.classList.remove('controls-container');
+                controlscontainer.classList.add('controls-container-fs');
+                videoWrapper.classList.remove('video-wrapper');
+                videoWrapper.classList.add('videowrapper-fullscreen');
                 video.style.position = 'fixed';
                 video.style.top = '0';
                 video.style.left = '0';
                 video.style.width = '100vw';
                 video.style.height = '100vh';
-                video.style.zIndex = '9998';
                 video.style.objectFit = 'contain';
-                video.style.backgroundColor = '#000';
-                video.style.borderRadius = 'none';
+                video.style.borderRadius = 'none !important';
+                overlay.classList.remove('video-catch');
+                overlay.classList.add('video-catch-fullscreen');
                 zinBtn.src = `{{ asset('partses/zout.png') }}`;
                 zinBtn.classList.add('zinbtnfs');
                 zinBtn.classList.remove('zin');
@@ -588,7 +666,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
         const videoElement = document.getElementById('thevides');
-        const mainVideoContainer = document.querySelector('.main-video');
+        const mainVideoContainer = document.getElementById('main-video');
         function setVideoAspectRatio() {
             if (videoElement.videoWidth && videoElement.videoHeight) {
                 mainVideoContainer.style.aspectRatio = `${videoElement.videoWidth} / ${videoElement.videoHeight}`;

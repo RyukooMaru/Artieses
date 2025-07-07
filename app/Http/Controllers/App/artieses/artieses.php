@@ -32,23 +32,23 @@ class artieses extends Controller
         $page = $request->query('page', 1);
         $perPage = 12;
         $videos = Artievides::with('usericonVides')
-    ->whereNull('deltime')
-    ->whereHas('usericonVides', function ($query) {
-        $query->whereNull('deleteaccount');
-    })
-    ->withCount('likeVides')
-    ->orderByDesc('like_vides_count')
-    ->orderByDesc('created_at')
-    ->get();
+            ->whereNull('deltime')
+            ->whereHas('usericonVides', function ($query) {
+                $query->whereNull('deleteaccount');
+            })
+            ->withCount('likeVides')
+            ->orderByDesc('like_vides_count')
+            ->orderByDesc('created_at')
+            ->get();
         $stories = Artiestories::with('usericonStories')
-    ->whereNull('deltime')
-    ->whereHas('usericonStories', function ($query) {
-        $query->whereNull('deleteaccount');
-    })
+            ->whereNull('deltime')
+            ->whereHas('usericonStories', function ($query) {
+                $query->whereNull('deleteaccount');
+            })
             ->withCount('reactStories', 'comments')
             ->orderByDesc('react_stories_count')
-    ->orderByDesc('created_at')
-    ->get();
+            ->orderByDesc('created_at')
+            ->get();
         $articles = Artiekeles::latest()->get();
         $mergedFeed = $this->generateMergedFeed($videos, $stories, $articles);
         $pagedFeed = collect($mergedFeed)->forPage($page, $perPage);
