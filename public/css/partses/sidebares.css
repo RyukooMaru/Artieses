@@ -95,38 +95,49 @@
 }
 @media (max-width: 767px) {
     .sidebar {
-        width: 60px;
-        padding: 10px 0;
-        align-items: center;
-        top: 50%;
-        height: auto;
-        transform: translateY(-50%);
-    }
-    .cardbu {
-        width: 50px;
-        left: 70px;
-        top: 10px;
-    }
-    .cardbu .nav-item {
+        bottom: 0;
+        left: 0;
+        top: auto;
+        transform: none;
         width: 100%;
-    }
-    .cardbu .nav-item .icon-img {
-        width: 24px;
-        height: 24px;
-        margin-left: 0;
+        height: 60px;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 10px;
+        box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
     }
     .nav-item {
+        flex-grow: 1;
         justify-content: center;
-        width: 80%;
-        padding: 12px 0;
+        width: auto;
+        padding: 10px;
+        flex-direction: column;
+        height: 100%;
     }
     .nav-item .icon-img {
         width: 24px;
         height: 24px;
         margin-right: 0;
+        margin-bottom: 4px;
     }
     .nav-item span {
-        display: none;
+        display: none; 
+    }
+    .cardbu, .card-setting {
+        left: 10px;
+        bottom: 70px;
+        top: auto;
+        transform: translateY(20px);
+    }
+    .cardbu.show, .card-setting.show {
+       transform: translateY(0);
+    }
+    .carlert {
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        top: auto;
     }
 }
 .card-setting {

@@ -14,7 +14,7 @@
           window.channel1 = window.pusher.subscribe('broadcast');
       }
       if (!window.channelBound1) {
-          window.channel.bind('.user', function (data) {
+          window.channel.bind('user', function (data) {
               if (data.message && data.message !== "") {
                   const targetWrapper = document.querySelector(`.commentarist[data-story="${data.coderies}"]`);
                   check1 = targetWrapper.getAttribute('data-story');
@@ -252,7 +252,6 @@
       document.querySelectorAll('[id^="divbrcmt-"]').forEach(getstorycode => {
         const getstorycd = getstorycode.id.replace('divbrcmt-', '');
         window.channel1.bind('broadcast', function (data) {
-            console.log('BROADCAST DITERIMA:', data);
             if (data.reqplat && data.reqplat.length > 0) {
               if (data.reqplat == getstorycd) {
                 const cardmengetik = document.getElementById('divbrcmt-' + getstorycd);

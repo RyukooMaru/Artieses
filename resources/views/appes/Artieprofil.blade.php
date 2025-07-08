@@ -4,11 +4,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Artieses</title>
-    <link rel="stylesheet" href="{{ asset('css/appes/artiestoriesprofil.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/appes/appes.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/appes/artieprofil.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/appes/artiekeles.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/appes/artievides.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/appes/artiestoriesprofil.css') }}?v={{ filemtime(public_path('css/appes/artiestoriesprofil.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/appes/appes.css') }}?v={{ filemtime(public_path('css/appes/appes.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/appes/artieprofil.css') }}?v={{ filemtime(public_path('css/appes/artieprofil.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/appes/artiekeles.css') }}?v={{ filemtime(public_path('css/appes/artiekeles.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/appes/artievides.css') }}?v={{ filemtime(public_path('css/appes/artievides.css')) }}">
     <link rel="icon" href="{{ asset('partses/favicon.ico') }}">
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css" />
@@ -43,39 +43,56 @@
             $improfil = $user->improfil;
         @endphp
         <div class="card-name">
-            @if($improfil)
-                @if($user->username == session('username'))
-                    <div class="profile-container">
-                        <img src="{{ url('/konten/' . $improfil) }}" class="creatorprofile" alt="Foto Profil">
-                        <img id="edit-photo-btn"
-                            src="{{ asset('partses/editingdm.png') }}"
-                            data-light="{{ asset('partses/editinglm.png') }}"
-                            data-dark="{{ asset('partses/editingdm.png') }}" style="cursor:pointer;">
-                    </div>
-                    <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp,.gif" style="display: none;">
-                    <div id="cropModal" class="card-confirm hidden">
-                        <p>Crop Gambar</p>
-                        <img id="preview-image" style="max-width: 100%; max-height: 400px;">
-                        <button id="cropConfirmBtn">Crop & Lanjut</button>
-                        <button id="cropCancelBtn">Batal</button>
-                    </div>
-                    <div id="photo-modal" class="card-confirm hidden">
-                        <p>Konfirmasi Foto Profil</p>
-                        <div>
-                            <img id="crop-preview" style="max-width: 100%; max-height: 300px;" />
-                        </div>
-                        <button id="confirm-photo">Simpan</button>
-                        <button id="cancel-photo">Batal</button>
-                    </div>
-                @else
-                    <img src="{{ url('/konten/' . $improfil) }}" class="creatorprofile">
-                @endif
-            @endif
-            <div class="text-section">
+            <div class="profile-header-group">
+                <div class="profile-container">
+                    @if($improfil)
+                        @if($user->username == session('username'))
+                            <img src="{{ url('/konten/' . $improfil) }}" class="creatorprofile" alt="Foto Profil">
+                            <img id="edit-photo-btn"
+                                src="{{ asset('partses/editingdm.png') }}"
+                                data-light="{{ asset('partses/editinglm.png') }}"
+                                data-dark="{{ asset('partses/editingdm.png') }}" style="cursor:pointer;">
+                            <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.webp,.gif" style="display: none;">
+                            <div id="cropModal" class="card-confirm hidden">
+                                <p>Crop Gambar</p>
+                                <img id="preview-image" style="max-width: 100%; max-height: 400px;">
+                                <button id="cropConfirmBtn">Crop & Lanjut</button>
+                                <button id="cropCancelBtn">Batal</button>
+                            </div>
+                            <div id="photo-modal" class="card-confirm hidden">
+                                <p>Konfirmasi Foto Profil</p>
+                                <div>
+                                    <img id="crop-preview" style="max-width: 100%; max-height: 300px;" />
+                                </div>
+                                <button id="confirm-photo">Simpan</button>
+                                <button id="cancel-photo">Batal</button>
+                            </div>
+                        @else
+                            <img src="{{ url('/konten/' . $improfil) }}" class="creatorprofile">
+                        @endif
+                    @endif
+                </div>
                 <div class="top-subs">
+                    <div class="subs">
+                        <span>{{ $user->stories->whereNull('deltime')->count() + $user->videos->whereNull('deltime')->count() + $user->artiekeles->whereNull('deltime')->count() }}</span>
+                        <p>Konten</p>
+                    </div>
+                    <div class="subs">
+                        <span>{{ $user->subscriber->count() }}</span>
+                        <p>Subscriber</p>
+                    </div>
+                    <div class="subs">
+                        <span>{{ $user->subscribing->count() }}</span>
+                        <p>Subscribing</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="name-bio-section">
+                <div class="nameprofiles">
                     @if($user->username == session('username'))
                         <div class="edit-username-wrapper">
-                            <span id="username-display" class="nameprofiles">
+                            <span id="username-display" class="use">
                                 {{ $user->username }}
                                 <img class="icon-img-p" id="edit-username-btn" data-light="{{ asset('partses/editinglm.png') }}" data-dark="{{ asset('partses/editingdm.png') }}" style="cursor:pointer;">
                             </span>
@@ -88,82 +105,19 @@
                                 <button id="cancel-username-change">Batal</button>
                             </div>
                         </div>
-                        <p class="nameprofiles use">
-                            {{ $user->nameuse }}
-                            <img class="icon-img-p" loading="lazy" data-light="{{ asset('partses/editinglm.png') }}" data-dark="{{ asset('partses/editingdm.png') }}" style="cursor:pointer;">
-                        </p>
-                        <input type="text" id="username-input" class="hidden-input" value="{{ $user->username }}" style="display:none;">
                     @else
-                        <span class="nameprofiles">{{ $user->username }}</span>
-                        <p class="nameprofiles use">{{ $user->nameuse }}</p>
+                        <span class="use">{{ $user->username }}</span>
                     @endif
-                    @if($user->username == session('username'))
-                    @else
-                        @php
-                            $isSubscribed = \App\Models\Subs::where('subscriber', session('userid'))->where('subscribing', $user->userid)->first();
-                        @endphp
-                        @if($isSubscribed)
-                            <button class="btnsubs btnsubs{{ $user->userid }}" id="{{ $user->userid }}">Unsubscribe</button>
-                        @else
-                            <button class="btnsubs btnsubs{{ $user->userid }}" id="{{ $user->userid }}">Subscribe</button>
-                        @endif
-                    @endif
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const subscribeButtons = document.querySelectorAll('.btnsubs');
-                            subscribeButtons.forEach(button => {
-                                button.addEventListener('click', function () {
-                                    const subscribing = this.id;
-                                    if (subscribing) {
-                                        fetch("{{ route('addsubs') }}", {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'Accept': 'application/json',
-                                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                                            },
-                                            body: JSON.stringify({
-                                                subscribing: subscribing
-                                            })
-                                        })
-                                        .then(res => res.json())
-                                        .then(data => {
-                                            console.log(data);
-                                            if (!data.logged_in) {
-                                                sessionStorage.setItem('alert', data.alert);
-                                                sessionStorage.setItem('form', data.form);
-                                                window.location.href = data.redirect;
-                                                return;
-                                            }
-                                            if (data.csrf) {
-                                                document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.csrf);
-                                            }
-                                            if (data.subscribed) {
-                                                button.textContent = 'Subscribed';
-                                                button.classList.add('subscribed');
-                                            } else {
-                                                button.textContent = 'Subscribe';
-                                                button.classList.remove('subscribed');
-                                            }
-
-                                            console.log(data.message);
-                                        })
-                                        .catch(err => {
-                                            console.error('Fetch error:', err);
-                                        });
-                                    } else {
-                                        console.error('User ID tidak valid!');
-                                    }
-                                });
-                            });
-                        });
-                    </script>
                 </div>
-                <div class="subs">
-                    <p>{{ $user->stories->whereNull('deltime')->count() + $user->videos->whereNull('deltime')->count() + $user->artiekeles->whereNull('deltime')->count() }} Konten</p>
-                    <p>{{ $user->subscriber->count() }} Subscriber</p>
-                    <p>{{ $user->subscribing->count() }} Subscribing</p>
-                </div>
+                @if($user->username == session('username'))
+                    <p class="nameprofiles use">
+                        {{ $user->nameuse }}
+                        <img class="icon-img-p" loading="lazy" data-light="{{ asset('partses/editinglm.png') }}" data-dark="{{ asset('partses/editingdm.png') }}" style="cursor:pointer;">
+                    </p>
+                @else
+                    <p class="nameprofiles use">{{ $user->username }}</p>
+                @endif
+                <input type="text" id="username-input" class="hidden-input" value="{{ $user->username }}" style="display:none;">
                 <div class="bio">
                     @if($user->username == session('username'))
                         <p class="bio-text">
@@ -177,6 +131,16 @@
                         <p>{{ $user->bio }}</p>
                     @endif
                 </div>
+                @if($user->username != session('username'))
+                    @php
+                        $isSubscribed = \App\Models\Subs::where('subscriber', session('userid'))->where('subscribing', $user->userid)->first();
+                    @endphp
+                    @if($isSubscribed)
+                        <button class="btnsubs btnsubs{{ $user->userid }}" id="{{ $user->userid }}" style="width: 100%; margin-top: 1rem;">Unsubscribe</button>
+                    @else
+                        <button class="btnsubs btnsubs{{ $user->userid }}" id="{{ $user->userid }}" style="width: 100%; margin-top: 1rem;">Subscribe</button>
+                    @endif
+                @endif
             </div>
         </div>
         <div class="profile-content">
@@ -343,8 +307,6 @@
     </div>
     <script src="{{ asset('js/appes/togglemode.js') }}"></script>
     <script src="{{ asset('js/appes/artievides1.js') }}"></script>
-    <script>
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const deleteBtns = document.querySelectorAll('[id^="delete-content-"]');
@@ -696,7 +658,57 @@
                 });
             });
         });
-    </script>
+    </script><!-- Setting timer -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const subscribeButtons = document.querySelectorAll('.btnsubs');
+            subscribeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const subscribing = this.id;
+                    if (subscribing) {
+                        fetch("{{ route('addsubs') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                subscribing: subscribing
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            console.log(data);
+                            if (!data.logged_in) {
+                                sessionStorage.setItem('alert', data.alert);
+                                sessionStorage.setItem('form', data.form);
+                                window.location.href = data.redirect;
+                                return;
+                            }
+                            if (data.csrf) {
+                                document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.csrf);
+                            }
+                            if (data.subscribed) {
+                                button.textContent = 'Subscribed';
+                                button.classList.add('subscribed');
+                            } else {
+                                button.textContent = 'Subscribe';
+                                button.classList.remove('subscribed');
+                            }
+
+                            console.log(data.message);
+                        })
+                        .catch(err => {
+                            console.error('Fetch error:', err);
+                        });
+                    } else {
+                        console.error('User ID tidak valid!');
+                    }
+                });
+            });
+        });
+    </script><!-- Subscribe -->
     @include('appes.artiestories.js.reactfront')<!-- react story -->
     @include('appes.artiestories.js.commentarist0')<!-- give reacted artietories(front) -->
     @include('appes.artiestories.js.commentarist01')<!-- give reacted artietories(back) -->

@@ -11,7 +11,6 @@
 {
   color: white;
 }
-
 .commentarist {
   display: flex;
   flex-direction: row !important;
@@ -564,4 +563,102 @@
 }
 .commentarist-container .image-preview img {
   height: 80px;
+}
+@media (max-width: 768px) {
+  .commentarist {
+    flex-direction: column !important; 
+    justify-content: flex-start;
+  }
+  .commentarist-container .commentaristcardimg {
+    flex: none;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    max-height: 65vh;
+    border-radius: 0;
+    order: 1;
+  }
+  .commentarist-container .commentaristcre {
+    flex: 1;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin-top: 0;
+    box-shadow: none;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(-20px);
+    order: 2;
+    padding-bottom: 80px;
+  }
+  .dark-mode .commentarist-container .commentaristcre {
+    background-color: #333;
+  }
+  .commentarist-container .closecmtrst {
+    font-size: 32px !important;
+    margin: 0 !important;
+    top: 15px;
+    left: 15px;
+    transform: none;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+  }
+  .commentarist-container .nav-button.next1 {
+    right: 0px;
+  }
+  .commentarist-container .nav-button {
+    height: 100%;
+    transform: translateY(-50%);
+  }
+  .commentarist-container .chat {
+    width: 100%;
+    height: auto;
+    min-height: 50px;
+    padding: 5px 0;
+    top: auto;
+    bottom: 0;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+  }
+  .dark-mode .commentarist-container .chat {
+    background-color: #222;
+    border-top: 1px solid #444;
+  }
+  .commentarist-container .inpcom {
+    position: static;
+    width: calc(100% - 85px);
+    margin: 5px 0 5px 15px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .commentarist-container .sendcom {
+    position: static;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+  .commentarist-container .p-artiestories {
+    width: auto;
+    margin-left: 15px;
+    margin-top: 5px;
+  }
+  .commentarist-container .rbtnry001 {
+    position: static;
+    width: 100%;
+    margin-top: 15px;
+  }
+  
+  .commentarist-container .image-preview {
+    position: absolute;
+    bottom: 60px;
+    width: 100%;
+    right: 0;
+    top: auto;
+    background-color: #333;
+    height: 100px;
+  }
 }

@@ -52,7 +52,7 @@ class controllerartiestories extends Controller
         foreach ($files as $file) {
             $info = $getID3->analyze($file->getPathname());
             $duration = $info['playtime_seconds'] ?? 0;
-            if ($duration > 60) {
+            if ($duration > 61) {
                 return back()->withErrors(['alert' => 'Durasi video tidak boleh lebih dari 60 detik!']);
             }
         }
