@@ -4,7 +4,6 @@
         document.querySelectorAll('[id^="inpcom-"]').forEach(function (input) {
             const storyCode = input.id.replace('inpcom-', '');
             const clearBtn = document.getElementById("balinpcom-" + storyCode);
-
             if (clearBtn) {
                 input.addEventListener('input', function () {
                     if (input.value.length > 0) {

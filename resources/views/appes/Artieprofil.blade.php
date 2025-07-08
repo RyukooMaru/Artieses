@@ -16,7 +16,7 @@
     @include('partses.baries')
 </head>
 <body class="dark-mode noscroll">
-    @include('captchaes.captchaes')
+    @include('captchaes.captchaesjs')
     @if(session('alert'))
         <div class="feedback error">
             {{ session('alert') }}

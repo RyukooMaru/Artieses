@@ -61,7 +61,6 @@
     transform: translateY(0);
 }
 .dark-mode .cardbu {
-    background: #333;
     color: white;
 }
 .dark-mode .cardbu .nav-item, .dark-mode .card-setting .nav-item {
@@ -121,8 +120,27 @@
         margin-right: 0;
         margin-bottom: 4px;
     }
-    .nav-item span {
+    .cardbu .nav-item span {
         display: none; 
+    }
+    .cardbu button, .card-setting button {
+        padding-left: 0 !important;
+        justify-content: center !important;
+        border-radius: 12px;
+        width: 30% !important;
+    }
+    .card-setting .nav-item {
+        font-size: 12px;
+    }
+    .cardbu, .card-setting {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        justify-content: center;
+        width: calc(100% - 20px - 20px) !important;
+    }
+    .card-setting {
+        transform: translateX(-150px) !important;
     }
     .cardbu, .card-setting {
         left: 10px;
@@ -169,6 +187,5 @@
     transform: translateY(0);
 }
 .dark-mode .card-setting {
-    background: #333;
     color: white;
 }

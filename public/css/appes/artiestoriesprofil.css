@@ -23,7 +23,7 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
-  z-index: 10001;
+  z-index: 11;
 }
 .commentarist-container .commentaristcardimg {
   flex: 1;
@@ -59,7 +59,7 @@
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 10;
+  z-index: 11;
 }
 .commentarist-container .nav-button:hover {
   background-color: rgba(0, 0, 0, 0.7);
@@ -138,7 +138,7 @@
   width:18%; 
   background-color:#777;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 99999;
+  z-index: 11;
 }
 .commentarist-container .brcmt1{
   position:relative; 
@@ -151,7 +151,7 @@
   width:18%; 
   background-color:#777;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 99999;
+  z-index: 11;
 }
 .commentarist-container .brcmt1 p{
   font-size: 12px;
@@ -169,7 +169,7 @@
   background-color:#777;
   transform: translateX(0%);
   box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-  z-index: 99999;
+  z-index: 11;
 }
 .commentarist-container .brcmt2 p{
   font-size: 12px;
@@ -197,7 +197,7 @@
   color: white;
   background: none;
   border: none;
-  z-index: 9999;
+  z-index: 11;
 }
 .commentarist-container .iclikestoryimp1 {
   width: 30px;
@@ -475,7 +475,7 @@
 .commentarist-container .btnimg-sendcom {
   background: transparent;
   border: none;
-  z-index: 9;
+  z-index: 11;
   right: 10px;
   cursor: pointer;
 }
@@ -501,7 +501,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9;
+  z-index: 11;
 }
 .commentarist-container .image-preview1 img {
   height: 80px;

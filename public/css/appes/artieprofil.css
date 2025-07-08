@@ -636,7 +636,7 @@ body.noscroll {
 }
 .video-timer-profiles {
     margin-top: -25px;
-    margin-left: 180px;
+    margin-right: auto;
     width: 75px;
     text-align: center;
     background: rgba(0, 0, 0, 0.6) !important;
@@ -909,6 +909,8 @@ body.noscroll {
     }
     .video-grid, .stories-grid {
         grid-template-columns: repeat(3, 1fr);
+        display: flex !important;
+        flex-direction: column !important; 
         gap: 2px;
         margin: 0;
         padding: 0;

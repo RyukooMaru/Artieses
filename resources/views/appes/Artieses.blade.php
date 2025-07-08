@@ -18,7 +18,7 @@
     <button id="goto-captcha" class="btn-confirm">Ya, Lanjut ke Verifikasi</button>
     <button type="button" class="btn-cancel" id="cancel-delete">Batal</button>
   </div>
-  @include('captchaes.captchaes')
+  @include('captchaes.captchaesjs')
   @if(session('alert'))
     <div class="feedback error">
     </div>
@@ -135,8 +135,10 @@
                         location.reload();
                     } else if (data.requireCaptcha) {
                         const captchaFormes = document.getElementById('captcha-form');
+                        const captchabody = document.getElementById('captchabody');
                         captchaFormes.style.zIndex = '10000';
                         captchaFormes.classList.remove('hidden');
+                        captchabody.classList.remove('hidden');
                     } else {
                     }
                 })

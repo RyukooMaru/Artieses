@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
 use App\Mail\VerifikasiEmail;
-use App\Models\Artiekeles;
-use App\Models\Artiestories;
-use App\Models\Artievides;
 use Exception;
 use Illuminate\Support\Str;
 
@@ -46,100 +43,18 @@ class captchaesR1 extends Controller
             try {
                 Mail::to($emails)->send(new VerifikasiEmail($randominputes));
                 if(session('delete') ){
-                    $pemilik = session('username');
                     $referer = $request->headers->get('referer');
                     if ($referer && Str::contains($referer, '/profiles/')) {
-                        return redirect()->route('profiles.show.withcontent', ['username' => $pemilik])->with(['captchaes' => 'Masukkan kode verifikasi!', 'form' => 'captcha1']);
+                        return response()->json(['requireCaptchadone' => true]);
                     } else {
-                        return redirect()->route('artieses')->with(['captchaes' => 'Masukkan kode verifikasi!', 'form' => 'captcha1']);
+                        return response()->json(['requireCaptchadone' => true]);
                     }
                 } if (session('deleteistuser')) {
-                    $reqplat = session('artiestoriesid');
-                    session(['open_commentarist' => $reqplat]);
-                    $story = Artiestories::where('coderies', $reqplat)->first();
-                    $pemilik = $story?->usericonStories?->username;
                     $referer = $request->headers->get('referer');
                     if ($referer && Str::contains($referer, '/profiles/')) {
-                        return redirect()->route('profiles.show.withcontent', ['username' => $pemilik]);
+                        return response()->json(['requireCaptchadone' => true]);
                     } else {
-                        if (!session('isLoggedIn')) {
-                                $videos = Artievides::whereNull('deltime')
-                                    ->with('usericonVides')
-                                    ->withCount('likeVides')
-                                    ->orderByDesc('like_vides_count')
-                                    ->orderByDesc('created_at')
-                                    ->get();
-                            
-                                $stories = Artiestories::whereNull('deltime')
-                                    ->withCount('reactStories')
-                                    ->orderByDesc('react_stories_count')
-                                    ->with([
-                                        'usericonStories',
-                                        'ReactStories',
-                                        'comments.replies',
-                                        'comments.userComments',
-                                        'comments.replies.userBalcom'
-                                    ])
-                                    ->latest()
-                                    ->get();
-                            
-                                $articles = Artiekeles::latest()->get();
-                            
-                                $mergedFeed = [];
-                                $videoIndex = $storyIndex = $articleIndex = 0;
-                            
-                                while ($videoIndex < $videos->count() || $storyIndex < $stories->count() || $articleIndex < $articles->count()) {
-                                    for ($i = 0; $i < 6 && $videoIndex < $videos->count(); $i++) {
-                                        $mergedFeed[] = ['type' => 'video', 'data' => $videos[$videoIndex++]];
-                                    }
-                            
-                                    for ($i = 0; $i < 3 && $storyIndex < $stories->count(); $i++) {
-                                        $mergedFeed[] = ['type' => 'story', 'data' => $stories[$storyIndex++]];
-                                    }
-                            
-                                    for ($i = 0; $i < 3 && $articleIndex < $articles->count(); $i++) {
-                                        $mergedFeed[] = ['type' => 'article', 'data' => $articles[$articleIndex++]];
-                                    }
-                                }
-                        }
-                        if (session('isLoggedIn')) {
-                                $videos = Artievides::whereNull('deltime')
-                                    ->with('usericonVides')
-                                    ->withCount('likeVides')
-                                    ->orderByDesc('like_vides_count')
-                                    ->orderByDesc('created_at')
-                                    ->get();
-                            
-                                $stories = Artiestories::whereNull('deltime')
-                                    ->withCount('reactStories')
-                                    ->orderByDesc('react_stories_count')
-                                    ->with([
-                                        'usericonStories',
-                                        'ReactStories',
-                                        'comments.replies',
-                                        'comments.userComments',
-                                        'comments.replies.userBalcom'
-                                    ])
-                                    ->latest()
-                                    ->get();
-                                $articles = Artiekeles::latest()->get();
-                                $mergedFeed = [];
-                                $videoIndex = $storyIndex = $articleIndex = 0;
-                                while ($videoIndex < $videos->count() || $storyIndex < $stories->count() || $articleIndex < $articles->count()) {
-                                    for ($i = 0; $i < 6 && $videoIndex < $videos->count(); $i++) {
-                                        $mergedFeed[] = ['type' => 'video', 'data' => $videos[$videoIndex++]];
-                                    }
-                            
-                                    for ($i = 0; $i < 3 && $storyIndex < $stories->count(); $i++) {
-                                        $mergedFeed[] = ['type' => 'story', 'data' => $stories[$storyIndex++]];
-                                    }
-                            
-                                    for ($i = 0; $i < 3 && $articleIndex < $articles->count(); $i++) {
-                                        $mergedFeed[] = ['type' => 'article', 'data' => $articles[$articleIndex++]];
-                                    }
-                                }
-                        }
-                        return redirect()->to('/Artiestories?GetContent=' . $reqplat)->with('open_commentarist', $reqplat)->with(['captchaes' => 'Masukkan kode verifikasi!', 'form' => 'captcha1']);
+                        return response()->json(['requireCaptchadone' => true]);
                     }
                 } else {
                     return redirect()->route('authes')->with(['captchaes' => 'Masukkan kode verifikasi!', 'form' => 'captcha1']);
@@ -149,7 +64,25 @@ class captchaesR1 extends Controller
                 return redirect()->route('authes')->with(['alert' => 'Kesalahan teknis maafkan aku dan coba lagi!', 'form' => 'captcha']);
             }
         } else {
-            return redirect()->route('authes')->with(['alert' => 'Rotasi ga cocok, coba lagi!', 'form' => 'captcha']);
+            if (session('deleteistuser')) {
+                $referer = $request->headers->get('referer');
+                if ($referer && Str::contains($referer, '/profiles/')) {
+                    return response()->json(['requireCaptchalose' => true, 'alert' => 'rotasi tidak sesuai']);
+                } else {
+                    return response()->json(['requireCaptchalose' => true, 'alert' => 'rotasi tidak sesuai']);
+                }
+            }
+            if(session('delete') ){
+                $referer = $request->headers->get('referer');
+                if ($referer && Str::contains($referer, '/profiles/')) {
+                    return response()->json(['requireCaptchalose' => true, 'alert' => 'rotasi tidak sesuai']);
+                } else {
+                    return response()->json(['requireCaptchalose' => true, 'alert' => 'rotasi tidak sesuai']);
+                }
+            }
+            else {
+                return redirect()->route('authes')->with(['alert' => 'Rotasi ga cocok, coba lagi!', 'form' => 'captcha']);
+            }
         } 
     }
 }

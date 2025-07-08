@@ -12,33 +12,39 @@
 }
 
 .captcha-form h2 {
+    z-index: 9999;
     color: white;
     font-size: 2rem;
     text-align: center;
     width: 100%;
 }
 .img-rot{
+    z-index: 9999;
     display: flex;
     justify-content: center;
-    gap: 10px; /* Beri jarak antara tombol */
+    gap: 10px;
 }
 .img-rotasi {
+    z-index: 9999;
     width: 100px;
     height: 100px;
     object-fit: cover;
     border-radius: 8px;
 }
 .input-group {
+    z-index: 9999;
     margin-bottom: 1em;
     text-align: left;
 }
 .input-group label {
+    z-index: 9999;
     display: block;
     margin-bottom: 0.2em;
     font-size: 0.9rem;
     color: #ddd;
 }
 .input-group input {
+    z-index: 9999;
     width: 100%;
     padding: 0.7em;
     border: none;
@@ -50,9 +56,11 @@
     box-sizing: border-box;
 }
 .input-group input:focus {
+    z-index: 9999;
     background: #FAF1E6;
 }
 .close-btnes {
+    z-index: 9999;
     position:relative;
     top: -35px;
     left: 265px;
@@ -65,6 +73,7 @@
     transition: background-color 0.3s ease;
 }
 .btn-captcha {
+    z-index: 9999;
     width: 100%;
     padding: 0.8em;
     background: #ffa700;
@@ -76,14 +85,17 @@
     transition: background 0.3s;
 }
 .btn-captcha:hover {
+    z-index: 9999;
     background: #ff8100;
 }
 .btn-rotasi-container {
+    z-index: 9999;
     display: flex;
     justify-content: center;
     gap: 10px; /* Beri jarak antara tombol */
 }
 .btn-rotasi {
+    z-index: 9999;
     background-color: #3498db;
     color: white;
     border: none;
@@ -95,14 +107,17 @@
     transition: background 0.3s, transform 0.2s;
 }
 .btn-rotasi:hover {
+    z-index: 9999;
     background-color: #2980b9;
     transform: scale(1.1);
 }
 .btn-rotasi:active {
+    z-index: 9999;
     background-color: #1c6ea4;
     transform: scale(0.95);
 }
 .feedback {
+    z-index: 9999;
     margin-bottom: 1em;
     padding: 0.8em;
     border-radius: 5px;
@@ -110,6 +125,7 @@
     text-align: center;
 }
 .feedback.error {
+    z-index: 9999;
     background-color: #f8d7da;
     color: #721c24;
     padding: 10px;
@@ -119,6 +135,7 @@
 
 @media (max-width: 767px) {
     .captcha-form{
+        z-index: 9999;
         width: 250px;
         justify-content: center;
         align-items: center;

@@ -164,7 +164,7 @@ use Google\Service\Drive as Google_Service_Drive;
 # CAPTCHA #
     Route::post('/captchada', [captchaesR1::class, 'captcha'])->name('captcha.action');
     Route::post('/captcha1', [captchaesR2::class, 'captcha1'])->name('captcha1.action');
-    Route::get('/hapus-captcha', [captchaes::class, 'hapuscaptcha'])->name('hapus.captcha');
+    Route::post('/hapus-captcha', [captchaes::class, 'hapuscaptcha'])->name('hapus.captcha');
     Route::get('/get-random-images', [captchaesR1::class, 'RandomImages']);
 ##
 
@@ -193,6 +193,13 @@ use Google\Service\Drive as Google_Service_Drive;
     Route::get('/artiestories', function(Request $request) {
         $reqplat = $request->query('GetContent');
         return redirect()->to('/Artiestories?GetContent=' . $reqplat)->with('open_commentarist', $reqplat);
+    });
+    Route::post('/close-commentarist', function (Request $request) {
+        session()->forget('open_commentarist');
+        return response()->json([
+            'success' => true,
+            'message' => 'Komentar ditutup'
+        ]);
     });
     Route::get('/Artiestories', function (Request $request) {
         $reqplat = $request->query('GetContent');

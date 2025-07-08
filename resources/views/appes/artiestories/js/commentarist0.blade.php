@@ -4,9 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const id = rbtnry1.id.replace('rbtnry1-', '');
         const button = document.getElementById('rbtnry1-' + id);
         const srcard1 = document.getElementById('srcard1-' + id);
-
         let hideTimeout;
-
         function showCard() {
             clearTimeout(hideTimeout);
             srcard1.classList.remove('hidden');
@@ -21,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }, 250);
         }
-
         button.addEventListener('mouseenter', showCard);
         button.addEventListener('mouseleave', hideCard);
         srcard1.addEventListener('mouseleave', hideCard);
