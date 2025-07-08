@@ -251,7 +251,8 @@
       };
       document.querySelectorAll('[id^="divbrcmt-"]').forEach(getstorycode => {
         const getstorycd = getstorycode.id.replace('divbrcmt-', '');
-        window.channel1.bind('.broadcast', function (data) {
+        window.channel1.bind('broadcast', function (data) {
+            console.log('BROADCAST DITERIMA:', data);
             if (data.reqplat && data.reqplat.length > 0) {
               if (data.reqplat == getstorycd) {
                 const cardmengetik = document.getElementById('divbrcmt-' + getstorycd);

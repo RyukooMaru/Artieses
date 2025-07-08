@@ -3,9 +3,7 @@
 return [
 
     'default' => env('BROADCAST_DRIVER', 'pusher'),
-
     'connections' => [
-
         'pusher' => [
             'driver' => 'pusher',
             'key' => env('PUSHER_APP_KEY'),
