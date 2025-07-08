@@ -4,10 +4,10 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Artieses</title>
-  <link rel="stylesheet" href="{{ asset('css/appes/appes.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/appes/artiekeles.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/appes/artievides.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/appes/artiestories.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/appes/appes.css') }}?v={{ filemtime(public_path('css/appes/appes.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/appes/artiekeles.css') }}?v={{ filemtime(public_path('css/appes/artiekeles.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/appes/artievides.css') }}?v={{ filemtime(public_path('css/appes/artievides.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/appes/artiestories.css') }}?v={{ filemtime(public_path('css/appes/artiestories.css')) }}">
   <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
   <link rel="icon" href="{{ asset('partses/favicon.ico') }}">
   @include('partses.baries')

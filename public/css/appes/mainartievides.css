@@ -59,22 +59,22 @@ a {
         }
         .video-container .hover-video {
             width: 100%;
-            height: 94px; /* Tinggi thumbnail (rasio 16:9) */
-            background-color: #eee; /* Warna placeholder jika poster gagal dimuat */
-            object-fit: cover; /* Memastikan video/poster memenuhi frame */
+            height: 94px;
+            background-color: #eee;
+            object-fit: cover;
             display: block;
         }
         .date-artievides {
             font-size: 12px;
-            color: #606060; /* Warna yang sama dengan username */
+            color: #606060;
             margin: 0;
-            margin-top: 2px; /* Jarak kecil dari username */
+            margin-top: 2px;
         }
         .h5-artievides {
             font-size: 12px;
-            color: #606060; /* Warna abu-abu untuk sub-teks (ganti ke #aaa untuk tema gelap) */
+            color: #606060;
             margin: 0;
-            font-weight: 400; /* Font weight normal */
+            font-weight: 400; 
         }
         .video-timer-wrap {
             position: absolute;

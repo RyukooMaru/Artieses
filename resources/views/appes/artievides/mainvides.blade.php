@@ -4,7 +4,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artieses</title>
-    <link rel="stylesheet" href="{{ asset('css/appes/mainartievides.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/appes/mainartievides.css') }}?v={{ filemtime(public_path('css/appes/mainartievides.css')) }}">
     <link href="https://vjs.zencdn.net/8.5.3/video-js.css" rel="stylesheet" />
     <link rel="icon" href="{{ asset('partses/favicon.ico') }}">
     @include('partses.baries')
@@ -85,11 +85,11 @@
                     }
                 @endphp
                 @if($fileId)
-                <div class="creator-1">
-                    <a href="{{ route('profiles.show', ['username' => $username]) }}">
-                        <img src="{{ url('/konten/' . $fileId) }}" class="creatorvides">
-                    </a>
-                </div>
+                    <div class="creator-1">
+                        <a href="{{ route('profiles.show', ['username' => $username]) }}">
+                            <img src="{{ url('/konten/' . $fileId) }}" class="creatorvides">
+                        </a>
+                    </div>
                 @endif
                 <div class="video-meta">
                     <a href="{{ route('profiles.show', ['username' => $username]) }}">{{ $video->usericonVides->username }}</a>
@@ -134,31 +134,31 @@
         </div>
         <div class="recomvides">
             @foreach ($relatedVideos as $RelateVideo)
-            @php
-                $konten = $RelateVideo->video;
-                $thumbnail = $RelateVideo->thumbnail;
-                $kontenurl = $konten;
-                $thumburl = $thumbnail;
-                $kontenId = null;
-                $thumbId = null;
-                if ($kontenurl) {
-                    if (preg_match('/\/d\/(.*?)\//', $kontenurl, $matches)) {
-                        $kontenId = $matches[1];
-                    } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $kontenurl, $matches)) {
-                        $kontenId = $matches[1];
-                    } elseif (!str_contains($kontenurl, 'drive.google.com')) {
-                        $kontenId = $kontenurl;
+                @php
+                    $konten = $RelateVideo->video;
+                    $thumbnail = $RelateVideo->thumbnail;
+                    $kontenurl = $konten;
+                    $thumburl = $thumbnail;
+                    $kontenId = null;
+                    $thumbId = null;
+                    if ($kontenurl) {
+                        if (preg_match('/\/d\/(.*?)\//', $kontenurl, $matches)) {
+                            $kontenId = $matches[1];
+                        } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $kontenurl, $matches)) {
+                            $kontenId = $matches[1];
+                        } elseif (!str_contains($kontenurl, 'drive.google.com')) {
+                            $kontenId = $kontenurl;
+                        }
                     }
-                }
-                if ($thumburl) {
-                    if (preg_match('/\/d\/(.*?)\//', $thumburl, $matches)) {
-                        $thumbId = $matches[1];
-                    } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $thumburl, $matches)) {
-                        $thumbId = $matches[1];
-                    } elseif (!str_contains($thumburl, 'drive.google.com')) {
-                        $thumbId = $thumburl;
+                    if ($thumburl) {
+                        if (preg_match('/\/d\/(.*?)\//', $thumburl, $matches)) {
+                            $thumbId = $matches[1];
+                        } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $thumburl, $matches)) {
+                            $thumbId = $matches[1];
+                        } elseif (!str_contains($thumburl, 'drive.google.com')) {
+                            $thumbId = $thumburl;
+                        }
                     }
-                }
                 @endphp
                 <a href="/Artievides?GetContent={{ $RelateVideo->codevides }}" class="">
                     <div class="video-container video-container-{{ $RelateVideo->codevides }}">
