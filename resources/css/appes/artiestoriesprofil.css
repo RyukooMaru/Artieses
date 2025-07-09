@@ -19,8 +19,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
   z-index: 11;
@@ -80,8 +80,13 @@
 .nav-button:hover {
   opacity: 1;
 }
+.pemmisahcreator{
+  height: 35%;
+}
 .commentarist-container .commentaristcre {
-  flex: 1;
+  display: flex;
+  flex-wrap: nowrap !important;
+  flex-direction: column;
   max-width: 30%;
   margin-top: 30px;
   height: 100%;
@@ -115,10 +120,11 @@
   margin-left: 10px;
 }
 .commentarist-container .rbtnry001 {
-  position:fixed;
   height: 60px;
-  width: 29%;
-  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 20px;
   justify-content: space-around;
   border-top: 1px solid #888; 
   border-bottom: 1px solid #888;
@@ -128,17 +134,6 @@
   height: 45px; 
   background: none;
   border: none  ;
-}
-.commentarist-container .brcmt{
-  position:fixed; 
-  top:87.1%; 
-  border-radius: 12px;
-  right:7%; 
-  height: 25px;
-  width:18%; 
-  background-color:#777;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 11;
 }
 .commentarist-container .brcmt1{
   position:relative; 
@@ -181,12 +176,23 @@
   margin-top: 5px;
   text-align: center;
 }
+.commentarist-container .brcmt{
+  position: fixed;
+  border-radius: 12px;
+  transform: translateY(-150%);
+  background-color:#777;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 11;
+}
 .commentarist-container .chat{
-  position:fixed; 
-  top:90%; 
-  right:0%; 
-  width:32.4%; 
-  height:20%; 
+  transform: translateY(100%);
+  height: 100%;
+  justify-content: center;
+  padding-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-radius: 12px;
   background-color:#222;
 }
 .commentarist-container .closecmtrst {
@@ -207,7 +213,6 @@
 .commentarist-container .iclikestoryimp {
   width: 30px;
   height: 30px; 
-  margin-top: 15px;
   margin-left: 15px;
 }
 .commentarist-container .iclikestory {
@@ -215,10 +220,7 @@
   height: 30px; 
 }
 .commentarist-container .inpcom {
-  position: fixed;
-  top: 92%;
-  right: 5.5%;
-  width: 22%;
+  width: calc(100% - 120px);
   height: 30px;
   border-radius: 12px;
   text-align: center;
@@ -232,17 +234,19 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .commentarist-container .sendcom {
-  position: fixed;
-  top: 92.5%;
-  right: 2%;
+  margin-top: -10px;
   border-radius: 0;
   border: none;
   background: none;
 }
-.commentarist-container .wrappercom1 {
+.pemisah-comment{
   height: 45%;
+}
+.commentarist-container .wrappercom1 {
+  width: calc(100% - 20%);
+  padding-top: 20px !important;
+  height: 100%;
   overflow-y: auto;
-  padding: 3px;
   border-radius: 10px;
   scrollbar-width: thin;
   scrollbar-color: #ccc transparent;
@@ -281,6 +285,7 @@
   margin-left: 0px;
   margin-top: -40px;
   height: 40px;
+  z-index: 11;
   width: 180px;
   background-color: #888;
   border-radius: 12px;
@@ -294,17 +299,19 @@
   width: 180px;
   background-color: #888;
   border-radius: 12px;
+  z-index: 11;
 }
 .commentarist-container .srcard3 {
   display: inline-flex;
+  z-index: 11;
   padding-left:10px;
   border-radius: 10px;
   background-color: #888;
   margin-top: -30px;
-  margin-left: -60px;
+  margin-left: -40px;
   align-items: center;
   flex-wrap: wrap;
-  width: 50.5%;
+  width: calc(70%);
 }
 .commentarist-container .srcard3 img {
   width: 24px;
@@ -317,15 +324,15 @@
 }
 .commentarist-container .srcard4 {
   display: inline-flex;
+  z-index: 11;
   padding-left:10px;
   border-radius: 10px;
   background-color: #888;
-  margin-top: -20px;
-  margin-left: -60px;
+  margin-top: -30px;
+  margin-left: -40px;
   align-items: center;
   flex-wrap: wrap;
-  width: 60%;
-  height: 40px;
+  width: calc(70%);
 }
 .delete-profile{
   position: absolute;
@@ -369,17 +376,17 @@
   cursor: pointer;
   margin-left: 10px;
   color: red;
-  font-weight: bold;
 }
 .dark-mode .commentarist-container .card-artiestories1  {
   box-shadow: 0 0 10px rgba(202, 202, 202, 0.5);
 }
 .commentarist-container .dispcard {
   flex: 1;
+  width: calc(50%);
   padding-top: 30px;
   border-radius: 12px;
+  background-color: #333;
   padding-left: 20px;
-  background-color: #777;
   padding-right: 20px;
   position: relative;
   color: #fff;
@@ -460,6 +467,7 @@
 }
 .commentarist-container .inpbalassaja{
   flex: 1;
+  width: calc(70%);
   padding: 6px 12px;
   border-radius: 12px;
   text-align: center;
@@ -564,74 +572,94 @@
 .commentarist-container .image-preview img {
   height: 80px;
 }
+.commentarist-container .p-artiestories,.commentarist-container .captionStories,.commentarist-container .inint,.commentarist-container .balaskan002,.commentarist-container .urungkan001,.commentarist .gg2,.commentarist .gg12{
+color: black;
+}
 @media (max-width: 768px) {
+  body.noscroll {
+    overflow: hidden !important;
+  }
   .commentarist {
-    flex-direction: column !important; 
-    justify-content: flex-start;
+    display: flex;
+    flex-wrap: wrap;
   }
   .commentarist-container .commentaristcardimg {
-    flex: none;
     max-width: 100%;
     width: 100%;
-    height: auto;
-    max-height: 65vh;
+    height: 55%;
     border-radius: 0;
-    order: 1;
   }
   .commentarist-container .commentaristcre {
-    flex: 1;
     max-width: 100%;
-    width: 100%;
-    height: auto;
+    display: flex !important;
+    padding-left: 30px;
+    flex-wrap: nowrap !important;
+    width: 120%;
+    height: 45%;
+    gap: 0;
     margin-top: 0;
-    box-shadow: none;
-    border-radius: 20px 20px 0 0;
-    transform: translateY(-20px);
-    order: 2;
-    padding-bottom: 80px;
+    border-radius: 16px 16px 0 0;
+    overflow: block;
   }
-  .dark-mode .commentarist-container .commentaristcre {
-    background-color: #333;
+  .forchates{
+    margin-bottom: 8%;
+    width: 94%;
+  }
+  .pemmisahcreator{
+    width: 96%;
+    height: 100%;
+  }
+  .pemisah-comment{
+    width: 96%;
+    height: 100%;
+    margin-top: -10px;
+    padding-left: -10px !important;
+  }
+  .commentarist-container .commentaristcre p {
+    display: block;
   }
   .commentarist-container .closecmtrst {
+    position: absolute;
+    top: 15px;
+    right: 15px;
     font-size: 32px !important;
     margin: 0 !important;
-    top: 15px;
-    left: 15px;
     transform: none;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
   }
-  .commentarist-container .nav-button.next1 {
-    right: 0px;
+  .commentarist-container .inpbalassaja{
+    width: calc(100% - 140px);
   }
-  .commentarist-container .nav-button {
-    height: 100%;
-    transform: translateY(-50%);
+  .commentarist-container .rbtnry001 {
+    width: 96%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .commentarist-container .delete-content {
+    top: 15px;
+    right: 60px;
+  }
+  .nav-button {
+    position: fixed;
+    top: 0px !important;
+    height: 96% !important;
+  }
+  .nav-button.next1 {
+    right: 0px !important;
   }
   .commentarist-container .chat {
-    width: 100%;
+    margin-top: -13%;
     height: auto;
-    min-height: 50px;
-    padding: 5px 0;
-    top: auto;
-    bottom: 0;
-    background-color: #f1f1f1;
-    border-top: 1px solid #ddd;
+    width: 100%;
+    padding-bottom: 15px;
+    background-color: #333;
   }
-  .dark-mode .commentarist-container .chat {
-    background-color: #222;
-    border-top: 1px solid #444;
+  .sendcom{
+    margin-top: -20px;
   }
   .commentarist-container .inpcom {
     position: static;
-    width: calc(100% - 85px);
-    margin: 5px 0 5px 15px;
+    width: calc(100% - 140px);
     display: inline-block;
     vertical-align: middle;
   }
@@ -639,26 +667,93 @@
     position: static;
     display: inline-block;
     vertical-align: middle;
-    margin-left: 10px;
+  }
+  .commentarist-container .wrappercom1 {
+    width: 96%;
+    height: 98%;
+    border-radius: 0 !important;
+    overflow: auto !important;
   }
   .commentarist-container .p-artiestories {
+    margin-left: 60px !important;
+    margin-bottom: 40px !important;
+    width: 30% !important;
+  }
+  .commentarist-container .p-artiestories, .commentarist-container .captionStories  {
+    display: block !important;
+    font-size: 18px !important;
+  }
+  .commentarist-container .captionStories  {
+    width: 100% !important;
+  }
+  .commentarist-container .p-artiestories {
+    font-size: 16px;
     width: auto;
-    margin-left: 15px;
-    margin-top: 5px;
+    margin-left: 10px;
+    margin-top: -30px;
   }
-  .commentarist-container .rbtnry001 {
-    position: static;
-    width: 100%;
-    margin-top: 15px;
+  .commentarist-container .comment001 {
+    font-size: 15px;
+    width: 95%;
+    left: 0;
   }
-  
-  .commentarist-container .image-preview {
-    position: absolute;
-    bottom: 60px;
+  .commentarist-container .dispname {
+    font-size: 16px;
+  }
+  .commentarist-container .rbtnry {
+    margin-left: 0 !important;
+    width: 45px;
+    height: 45px; 
+    background: none;
+    border: none  ;
+  }
+}
+@media (max-width: 992px) {
+  .commentarist {
+    padding: 0;
+    align-items: flex-start;
+  }
+  .commentarist-container {
+    flex-direction: column;
+    height: 100%;
+    max-height: 100%;
     width: 100%;
-    right: 0;
-    top: auto;
-    background-color: #333;
-    height: 100px;
+    gap: 0;
+    border-radius: 0;
+  }
+  .commentaristcardimg {
+    flex: none;
+    height: 60vh;
+    width: 100%;
+    border-radius: 0;
+  }
+  .commentaristcre {
+    flex: none;
+    overflow: none !important;
+    height: 40vh;
+    margin-top: -1px !important;
+    width: 100%;
+    border-radius: 16px 16px 0 0;
+    transform: translateY(-16px);
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+  }
+  .p-artiestories,
+  .captionStories,
+  .comment001,
+  .dispname {
+    font-size: 14px;
+    margin: 0;
+    width: 100%;
+  }
+  .p-artiestories {
+    margin-bottom: 4px;
+  }
+  .pemmisahcreator,
+  .pemisah-comment,
+  .forchates {
+    padding: 12px;
+  }
+  .commentarist-container .nav-button {
+    display: none;
   }
 }

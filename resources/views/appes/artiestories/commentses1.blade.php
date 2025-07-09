@@ -7,8 +7,19 @@
     $path = $improfil;
     $ext = pathinfo($improfil, PATHINFO_EXTENSION);
     use Illuminate\Support\Str;
+    $viewUrl = $improfil; 
+    $fileId = null;
+    $matches = [];
+    if ($viewUrl) {
+        if (preg_match('/\/d\/(.*?)\//', $viewUrl, $matches)) {
+            $fileId = $matches[1];
+        } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $viewUrl, $matches)) {
+            $fileId = $matches[1];
+        } elseif (!str_contains($viewUrl, 'drive.google.com')) {
+            $fileId = $viewUrl;
+        }
+    }
     $prefix = '<img src="' . url('/konten/');
-    
     $now = \Carbon\Carbon::now();
     $waktunya = $comment->created_at;
     $diffInMinutes001 = $waktunya->diffInMinutes($now);
@@ -39,9 +50,9 @@
 @endphp
 <div id="commentwrapcom-{{ $comment->commentartiestoriesid }}">
     <div class="cardcom001 cardcom001-{{ $commentlagi }}">
-        @if(in_array(strtolower($ext), ['gif', 'png', 'jpg', 'jpeg', 'webp']))
+        @if($fileId)
             <a href="{{ route('profiles.show', ['username' => $comment->userComments->username]) }}">
-                <img src="{{ asset($path) }}" class="creatorstories">
+                <img src="{{ url('/konten/' . $fileId) }}" class="creatorstories">
             </a>
         @endif
         <div class="dispcard">

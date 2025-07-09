@@ -48,4 +48,3 @@
     </form>
 </div>
 </div>
-<script src="{{ asset('js/appes/artiestories.js') }}"></script>

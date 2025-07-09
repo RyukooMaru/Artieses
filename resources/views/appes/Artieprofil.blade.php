@@ -4,12 +4,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Artieses</title>
-    <link rel="stylesheet" href="{{ asset('css/appes/artiestoriesprofil.css') }}?v={{ filemtime(public_path('css/appes/artiestoriesprofil.css')) }}">
-    <link rel="stylesheet" href="{{ asset('css/appes/appes.css') }}?v={{ filemtime(public_path('css/appes/appes.css')) }}">
-    <link rel="stylesheet" href="{{ asset('css/appes/artieprofil.css') }}?v={{ filemtime(public_path('css/appes/artieprofil.css')) }}">
-    <link rel="stylesheet" href="{{ asset('css/appes/artiekeles.css') }}?v={{ filemtime(public_path('css/appes/artiekeles.css')) }}">
-    <link rel="stylesheet" href="{{ asset('css/appes/artievides.css') }}?v={{ filemtime(public_path('css/appes/artievides.css')) }}">
-    <link rel="icon" href="{{ asset('partses/favicon.ico') }}">
+    @vite(['resources/css/appes/appes.css', 
+            'resources/css/appes/artiekeles.css',
+            'resources/css/appes/artievides.css',
+            'resources/css/appes/artiestoriesprofil.css',
+            'resources/css/appes/artieprofil.css',
+            'resources/js/appes/togglemode.js',
+            'resources/js/appes/artievides1.js'
+            ])
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.js"></script>
@@ -86,7 +88,6 @@
                         <p>Subscribing</p>
                     </div>
                 </div>
-
             </div>
             <div class="name-bio-section">
                 <div class="nameprofiles">
@@ -305,8 +306,6 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('js/appes/togglemode.js') }}"></script>
-    <script src="{{ asset('js/appes/artievides1.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const deleteBtns = document.querySelectorAll('[id^="delete-content-"]');

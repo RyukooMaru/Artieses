@@ -33,7 +33,8 @@
     margin-bottom: 20px;
     border-radius: 12px;
     padding-top: 10px;
-    min-width: 180% !important;
+    min-width: 100%;
+    margin-left: calc(25% + 1%);
   }
   .artievides-card {
     border-radius: 15px;
@@ -141,6 +142,9 @@ h2 {
 .drop-area img {
   max-width: 80px;
   margin-bottom: 10px;
+}
+.date-artievides{
+  width: 78% !important;
 }
 .drop-area p {
   margin: 0;

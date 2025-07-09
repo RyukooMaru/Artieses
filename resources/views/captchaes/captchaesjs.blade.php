@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('css/captchaes/captchaes.css') }}">
+@vite(['resources/css/captchaes/captchaes.css', 'resources/js/captchaes/captchaes.js'])
 <div id="captchabody">
     <div id="captcha-form" class="captcha-form hidden">
         <h2>CAPTCHA</h2>
@@ -96,4 +96,3 @@
         })
     })
 </script><!-- captcha close -->
-<script src="{{ asset('js/captchaes/captchaes.js') }}"></script>

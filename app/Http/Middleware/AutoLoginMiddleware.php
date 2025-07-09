@@ -20,9 +20,8 @@ class AutoLoginMiddleware
         if (!$rememberToken) {
             return $next($request);
         }
-        $persistentLogin = PersistentLogin::where('expires_at', '>', now())->get()->first(function ($login) use ($rememberToken) {
-            return hash_equals($login->token, hash('sha256', $rememberToken));
-        });
+        $hashedToken = hash('sha256', $rememberToken);
+        $persistentLogin = PersistentLogin::where('token', $hashedToken)->where('expires_at', '>', now())->first();
         if ($persistentLogin) {
             $user = Users::find($persistentLogin->userid);
             if ($user) {

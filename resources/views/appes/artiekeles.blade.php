@@ -44,4 +44,3 @@
         </form>
     </div>
 </div>
-<script src="{{ asset('js/appes/artiekeles.js') }}"></script>

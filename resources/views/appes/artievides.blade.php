@@ -54,4 +54,3 @@
     </form>
 </div>
 </div>
-<script src="{{ asset('js/appes/artievides.js') }}"></script>

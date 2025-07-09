@@ -1,5 +1,5 @@
 body.noscroll {
-    overflow: hidden !important
+    overflow: hidden;
 }
 .card-main {
     display: flex;
@@ -409,9 +409,6 @@ body.noscroll {
     gap: 1rem;
     margin-top: 1rem;
 }
-body.noscroll {
-    overflow: hidden !important
-}
 .card-name {
     display: flex;
     align-items: center;
@@ -810,6 +807,9 @@ body.noscroll {
     width: 100%;
 }
 @media (max-width: 768px) {
+    body.noscroll {
+        overflow: auto;
+    }
     .card-main {
         flex-direction: column;
         width: 100%;

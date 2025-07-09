@@ -4,7 +4,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artieses</title>
-    <link rel="stylesheet" href="{{ asset('css/appes/mainartievides.css') }}?v={{ filemtime(public_path('css/appes/mainartievides.css')) }}">
+    @vite(['resources/js/appes/togglemode.js', 'resources/css/appes/mainartievides.css'])
     <link href="https://vjs.zencdn.net/8.5.3/video-js.css" rel="stylesheet" />
     <link rel="icon" href="{{ asset('partses/favicon.ico') }}">
     @include('partses.baries')
@@ -203,7 +203,6 @@
             @endforeach
         </div>
     </div>
-  <script src="{{ asset('js/appes/togglemode.js') }}"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".btnlivides").forEach(button => {

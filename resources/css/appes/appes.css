@@ -84,7 +84,7 @@ body.sidebar-collapsed .card-main {
 }
 @media (max-width: 991px) {
   .card-main {
-    width: calc(100% - 70px - 30px);
+    width: calc(100% - 180px - 30px);
     padding: 15px;
   }
   .card-main .wrapper {

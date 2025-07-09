@@ -1,5 +1,9 @@
-<link rel="stylesheet" href="{{ asset('css/partses/topbares.css') }}">
-<link rel="stylesheet" href="{{ asset('css/partses/sidebares.css') }}">
+@vite(['resources/css/partses/sidebares.css', 
+        'resources/css/partses/topbares.css',
+        'resources/js/partses/sidebares.js',
+        'resources/js/partses/topbares.js',
+        'resources/js/appes/artieses.js'
+        ])
 <header class="top-navbar">
     <a href="{{ url('/') }}">
         <img src="{{ asset('partses/icouth.png') }}" alt="artieses, artiekeles" class="brandes"/>
@@ -160,6 +164,3 @@
     @endif
 </body>
 @include('partses.js.deleteprofil')<!-- delete account -->
-<script src="{{ asset('js/appes/artieses.js') }}"></script> 
-<script src="{{ asset('js/partses/topbares.js') }}"></script>
-<script src="{{ asset('js/partses/sidebares.js') }}"></script>
