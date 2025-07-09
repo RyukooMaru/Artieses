@@ -10,6 +10,7 @@
     @include('partses.baries')
 </head>
 <body class="allvid">
+  @include('captchaes.captchaesjs')
     <div class="cardvideomain" id="cardvideomain">
         <div class="video-page-container">
             <div class="main-video" id="main-video">
@@ -56,8 +57,8 @@
                                 <div class="volume-container">
                                     <img src="{{ asset('partses/volume.png') }}" class="vol" id="vol">
                                     <input type="range" id="volumeBar" class="volume-bar" min="0" max="1" step="0.01" value="0.5">
+                                    <div class="video-timer-mains" id="video-timer">00:00 / 00:00</div>
                                 </div>
-                                <div class="video-timer" id="video-timer">00:00 / 00:00</div>
                             </div>
                             <div class="controls-right">
                                 <img src="{{ asset('partses/zin.png') }}" class="zin" id="zin">
@@ -84,16 +85,27 @@
                         }
                     }
                 @endphp
-                @if($fileId)
-                    <div class="creator-1">
-                        <a href="{{ route('profiles.show', ['username' => $username]) }}">
-                            <img src="{{ url('/konten/' . $fileId) }}" class="creatorvides">
-                        </a>
+                <div class="kumpul">
+                    @if($fileId)
+                        <div class="creator-1">
+                            <a href="{{ route('profiles.show', ['username' => $username]) }}">
+                                <img src="{{ url('/konten/' . $fileId) }}" class="creatorvides">
+                            </a>
+                        </div>
+                    @endif
+                    <div class="video-meta">
+                        <a href="{{ route('profiles.show', ['username' => $username]) }}">{{ $video->usericonVides->username }}</a>
+                        <p>{{ $user->subscriber->count() }} Subscriber</p>
                     </div>
-                @endif
-                <div class="video-meta">
-                    <a href="{{ route('profiles.show', ['username' => $username]) }}">{{ $video->usericonVides->username }}</a>
-                    <p>{{ $user->subscriber->count() }} Subscriber</p>
+                    @php
+                        $isUserOwner = $video->usericonVides->username === session('username');
+                        $loggedInUser = \App\Models\Users::where('username', session('username'))->first();
+                        $isAdmin = $loggedInUser && $loggedInUser->admin;
+                    @endphp
+                    @if ($isUserOwner || $isAdmin)
+                        <img class="delete-content" id="delete-content-{{ $video->codevides }}" data-light="{{ asset('partses/deletelm.png') }}" data-dark="{{ asset('partses/deletedm.png') }}">
+                    @else
+                    @endif
                 </div>
                 @if($user->username == session('username'))
                 @else
@@ -169,35 +181,37 @@
                     </div><br>
                     <div class="cabot-artievides">
                         @php
-                        $username = $RelateVideo->usericonVides->username;
-                        $improfil = $RelateVideo->usericonVides->improfil;
-                        $viewUrl = $improfil;
-                        $fileId = null;
-                        if ($viewUrl) {
-                            if (preg_match('/\/d\/(.*?)\//', $viewUrl, $matches)) {
-                                $fileId = $matches[1];
-                            } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $viewUrl, $matches)) {
-                                $fileId = $matches[1];
-                            } elseif (!str_contains($viewUrl, 'drive.google.com')) {
-                                $fileId = $viewUrl;
+                            $username = $RelateVideo->usericonVides->username;
+                            $improfil = $RelateVideo->usericonVides->improfil;
+                            $viewUrl = $improfil;
+                            $fileId = null;
+                            if ($viewUrl) {
+                                if (preg_match('/\/d\/(.*?)\//', $viewUrl, $matches)) {
+                                    $fileId = $matches[1];
+                                } elseif (preg_match('/id=([a-zA-Z0-9_-]+)/', $viewUrl, $matches)) {
+                                    $fileId = $matches[1];
+                                } elseif (!str_contains($viewUrl, 'drive.google.com')) {
+                                    $fileId = $viewUrl;
+                                }
                             }
-                        }
                         @endphp
-                    @if($fileId)
-                        <div class="creator-1">
-                            <a href="{{ route('profiles.show', ['username' => $username]) }}">
-                                <img src="{{ url('/konten/' . $fileId) }}" class="creatorvides">
-                            </a>
-                        </div>
+                        @if($fileId)
+                            <div class="creator-1">
+                                <a href="{{ route('profiles.show', ['username' => $username]) }}">
+                                    <img src="{{ url('/konten/' . $fileId) }}" class="creatorvides">
+                                </a>
+                            </div>
                         @endif
-                        <a href="{{ route('profiles.show', ['username' => $username]) }}">
-                        <p class="h5-artievides">{{ $username }}</p>
-                        </a>
-                        <h3 class="h3-artievides">{{ Str::limit($RelateVideo->judul, 15) }}</h3>
-                        <p class="date-artievides" style="margin-top: 30px;">
-                        {{ \App\Helpers\inthelp::formatAngka($RelateVideo->like_vides_count ?? 0) }} Disukai | 
-                        {{ \App\Helpers\inthelp::formatWaktu($RelateVideo->created_at) }}
-                        </p>
+                        <div class="inf-video-related">
+                            <h3 class="h3-artievides">{{ Str::limit($RelateVideo->judul, 15) }}</h3>
+                            <a href="{{ route('profiles.show', ['username' => $username]) }}">
+                                <p class="h5-artievides">{{ $username }}</p>
+                            </a>
+                            <p class="date-artievides" style="margin-top: 30px;">
+                                {{ \App\Helpers\inthelp::formatAngka($RelateVideo->like_vides_count ?? 0) }} Disukai | 
+                                {{ \App\Helpers\inthelp::formatWaktu($RelateVideo->created_at) }}
+                            </p>
+                        </div>
                     </div>
                 </a>
             @endforeach
@@ -592,19 +606,16 @@
     function showVolumeBar() {
         clearTimeout(hideVolumeBarTimeout);
         volumeBar.classList.remove('hidden');
-        if (videoTimer) {
-            videoTimer.classList.add('vt1');
-            videoTimer.classList.remove('vt0');
-        }
+        videoControls.classList.add('volume-visible'); 
     }
+
     function hideVolumeBar() {
         if (!isVolumeBarDragging) {
             hideVolumeBarTimeout = setTimeout(() => {
                 volumeBar.classList.add('hidden');
-                if (videoTimer) {
-                    videoTimer.classList.remove('vt1');
-                    videoTimer.classList.add('vt0');
-                }
+
+                // Cukup hapus class dari kontainer
+                videoControls.classList.remove('volume-visible');
             }, 300);
         }
     }
@@ -727,5 +738,65 @@
         });
     });
   </script><!-- subs -->
+  <script>updateVolumeFromClick
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteBtns = document.querySelectorAll('[id^="delete-content-"]');
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const idAttr = btn.id;
+                const videoId = idAttr.replace('delete-content-', '');
+                if (!videoId) {
+                    return;
+                }
+                fetch('/delete-konten', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify({ artievidesid: videoId })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else if (data.requireCaptcha) {
+                        const captchaFormes = document.getElementById('captcha-form');
+                        const captchabody = document.getElementById('captchabody');
+                        captchaFormes.style.zIndex = '10000';
+                        captchaFormes.classList.remove('hidden');
+                        captchabody.classList.remove('hidden');
+                    } else {
+                    }
+                })
+            });
+        });
+    });
+  </script><!-- delete konten(first) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const runDelete = "{{ session('runDelete') }}";
+        const videoId = "{{ session('artievidesid') }}";
+
+        if (runDelete && videoId) {
+            console.log('y');
+            fetch('/delete-konten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify({ artievidesid: videoId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                }
+            });
+        }
+    });
+  </script><!-- tangkap delete(last) -->
 </body>
 </html>

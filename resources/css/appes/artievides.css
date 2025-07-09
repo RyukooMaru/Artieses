@@ -176,8 +176,9 @@ h2 {
 }
 .card-artievides1 {
   width: 31.2%;
-  height: 255px;
-  padding-bottom: 15px;
+  height: auto;
+  max-height: 250px;
+  padding-bottom: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 12px;
   display: flex;
@@ -189,7 +190,7 @@ h2 {
 .cabot-artievides {
   display: flex;
   position: relative;
-  height: 50px  ;
+  max-height: 30%;
   width: 86.5%;
   border-radius: 12px;
   padding-top: 10px;

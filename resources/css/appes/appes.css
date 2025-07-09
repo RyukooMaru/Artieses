@@ -1,9 +1,9 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
   overflow-y: scroll;
   background-color: #f9f9f9;
   color: #000;
+  font-family: sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
   padding-top: 60px;
 }
@@ -75,6 +75,15 @@ body.sidebar-collapsed .card-main {
     width: calc(100% - 180px - 30px);
     padding: 15px;
   }
+  .wrapper{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+  }
+  .wrapper > * {
+    max-width: 50% !important;
+    align-self: center;
+  }
   body.sidebar-collapsed .card-main {
     width: calc(100% - 70px - 30px);
   }
@@ -100,7 +109,6 @@ body.sidebar-collapsed .card-main {
     margin-left: -38px !important;
     width: calc(100% - 55px - 20px);
   }
-
   body {
     font-size: 14px;
   }

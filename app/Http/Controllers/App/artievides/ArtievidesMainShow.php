@@ -11,23 +11,36 @@ class ArtievidesMainShow extends Controller
 {
     public function ArtievidesMainShow(Request $request) {
         $reqplat = $request->query('GetContent');
+        $cekcontent = Artievides::with('usericonVides')
+                    ->whereNull('deltime')
+                    ->whereHas('usericonVides', function ($query) {
+                        $query->whereNull('deleteaccount');
+                    })
+                    ->when($reqplat, function ($queryBuilder) use ($reqplat) {
+                                $queryBuilder->where(function ($q) use ($reqplat) {
+                                            $q->where('codevides', $reqplat);
+                                });
+                    })->firstOrFail();
+        if ($cekcontent->isEmpty()) {
+            $fullPath = $request->path();
+            return view('blankpage', ['requested' => $fullPath]);
+        }
         $video = Artievides::where('codevides', $reqplat)->firstOrFail();
         $user = $video->usericonVides;
         $subscriber = $user->subscriber()->latest()->get();
         $views = $video->banyakviewyahemangiyah()->latest()->get();
-        $ip = $request->getClientIp();
+        $cookieName = 'video_viewed_' . $reqplat;
         $currentUserId = session('userid');
         $isOwner = $currentUserId == $video->userid;
         if (!$isOwner) {
             $alreadyViewed = DB::table('banyakviewyah?emangiyah?')
                 ->where('codevides', $reqplat)
-                ->where('banyakviewyah?emangiyah?wkwk', $ip)
+                ->where('banyakviewyah?emangiyah?wkwk', $cookieName)
                 ->exists();
-
             if (!$alreadyViewed) {
                 DB::table('banyakviewyah?emangiyah?')->insert([
                     'codevides' => $reqplat,
-                    'banyakviewyah?emangiyah?wkwk' => $ip,
+                    'banyakviewyah?emangiyah?wkwk' => $cookieName,
                     'created_at' => now(),
                 ]);
             }

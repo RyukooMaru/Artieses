@@ -4,57 +4,6 @@
   width: 31.13%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-@media (max-width: 767px) {
-    .card-artiestories1 {
-      border-radius: 12px;
-      padding-top: 20px;
-      min-width: 180%;
-      box-shadow: none;
-    }
-    .artiestories-card1 {
-      margin-top: -200px;
-      margin-left: -140px;
-      min-width: 370px;
-    }
-    .artiestories-card {
-      border-radius: 15px;
-      width: 500px;
-    }
-    .commentaristcre{
-      padding-left: 10% !important;
-      z-index: 998;
-      border: none;
-      transform: translate(2%, 0.5%);
-      min-height: 102%;
-      min-width: 100%;
-      overflow-x: hidden;
-    }
-    .rbtnry001 {
-      margin-left: -4.5%;
-      transform: translateX(1.1%);
-      margin-top: 45.4% !important;
-      min-width: 85%;
-      min-height: 3% !important;
-      border: none;
-    }
-    .wrappercom1 {
-      transform: translate(-5%, 48%);
-    }
-    .closecmtrst{
-      transform: translate(330px, -200px);
-    }
-    .nav-button .prev1{
-      z-index: 24;
-    }
-    .commentaristcardimg{
-      z-index: 1000;
-      position: absolute;
-      top: 110px;
-      left: -37px;
-      min-width: 480px !important;
-      height: 230.4px !important;
-    }
-}
 .image-container {
   display: flex;
   justify-content: center;
@@ -345,8 +294,6 @@ h2 {
 .iclikestoryimp {
   width: 30px;
   height: 30px; 
-  margin-top: 15px;
-  margin-left: 15px;
 }
 .iclikescmt {
   width: 30px;
@@ -385,12 +332,14 @@ h2 {
   margin-top: 7px;
   height: 30px !important; 
 }
+
 .srcard1 {
   position: absolute;
   display: fixed;
   margin-left: 0px;
   margin-top: -40px;
   height: 40px;
+  z-index: 11;
   width: 180px;
   background-color: #888;
   border-radius: 12px;
@@ -404,17 +353,19 @@ h2 {
   width: 180px;
   background-color: #888;
   border-radius: 12px;
+  z-index: 11;
 }
 .srcard3 {
   display: inline-flex;
+  z-index: 11;
   padding-left:10px;
   border-radius: 10px;
   background-color: #888;
-  margin-top: -10px;
-  margin-left: -60px;
+  margin-top: -30px;
+  margin-left: -40px;
   align-items: center;
   flex-wrap: wrap;
-  width: 50.5%;
+  width: calc(70%);
 }
 .srcard3 img {
   width: 24px;
@@ -427,15 +378,15 @@ h2 {
 }
 .srcard4 {
   display: inline-flex;
+  z-index: 11;
   padding-left:10px;
   border-radius: 10px;
   background-color: #888;
-  margin-top: 0px;
-  margin-left: -60px;
+  margin-top: -30px;
+  margin-left: -40px;
   align-items: center;
   flex-wrap: wrap;
-  width: 60%;
-  height: 40px;
+  width: calc(70%);
 }
 .srcard4 img {
   width: 30px;
@@ -486,8 +437,10 @@ h2 {
   z-index: 9999;
 }
 .commentaristcre {
-  flex: 1;
-  max-width: 30%;
+  display: flex;
+  flex-wrap: nowrap !important;
+  flex-direction: column;
+  width: 30%;
   margin-top: 30px;
   height: 100%;
   background-color: #ffffff;
@@ -507,10 +460,13 @@ h2 {
   border-radius: 3px;
 }
 .rbtnry001 {
-  position:fixed;
   height: 60px;
-  width: 29%;
-  margin-top: 10px;
+  margin-top: -10px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-top: 10px;
+  gap: 20px;
   justify-content: space-around;
   border-top: 1px solid #888; 
   border-bottom: 1px solid #888;
@@ -554,23 +510,23 @@ h2 {
   background-color: #777;
 }
 .chat{
-  position:fixed; 
-  top:90%; 
-  right:0%; 
-  width:32.4%; 
-  height:20%; 
+  transform: translateY(60%);
+  height: 100%;
+  justify-content: center;
+  padding-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-radius: 12px;
   background-color:#222;
 }
 .brcmt{
-  position:fixed; 
-  top:87.1%; 
+  position: fixed;
   border-radius: 12px;
-  right:7%; 
-  height: 25px;
-  width:18%; 
+  transform: translateY(-150%);
   background-color:#777;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  z-index: 99999;
+  z-index: 11;
 }
 .brcmt1{
   position:relative; 
@@ -614,10 +570,7 @@ h2 {
   text-align: center;
 }
 .inpcom {
-  position: fixed;
-  top: 92%;
-  right: 5.5%;
-  width: 22%;
+  width: calc(100% - 120px);
   height: 30px;
   border-radius: 12px;
   text-align: center;
@@ -631,17 +584,19 @@ h2 {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .sendcom {
-  position: fixed;
-  top: 92.5%;
-  right: 2%;
+  margin-top: -10px;
   border-radius: 0;
   border: none;
   background: none;
 }
-.wrappercom1 {
+.pemisah-comment{
   height: 45%;
+}
+.wrappercom1 {
+  width: 103%;
+  padding-top: 20px !important;
+  height: 100%;
   overflow-y: auto;
-  padding: 10px;
   border-radius: 10px;
   scrollbar-width: thin;
   scrollbar-color: #ccc transparent;
@@ -685,11 +640,14 @@ h2 {
 }
 .dispcard {
   flex: 1;
-  padding-top: 9px;
+  width: calc(50% - 5% - 5%);
+  padding-top: 10px;
   border-radius: 12px;
+  background-color: #333;
   padding-left: 20px;
   padding-right: 20px;
   position: relative;
+  color: #fff;
   top: -18px;
 }
 .delete-content{
@@ -747,10 +705,16 @@ h2 {
   border-radius: 12px;
   flex-wrap: wrap;
 }
-.iclikestoryimp1 {
+.iclikestoryimp {
   width: 30px;
   height: 30px; 
-  margin-right: 10px;
+  margin-left: 15px;
+}
+.sendcom {
+  margin-top: -10px;
+  border-radius: 0;
+  border: none;
+  background: none;
 }
 .inpbalassaja{
   flex: 1;
@@ -775,13 +739,6 @@ h2 {
   color: #65676b;
   cursor: pointer;
   top: 10px;
-}
-.btnimg-sendcom {
-  background: transparent;
-  border: none;
-  z-index: 9;
-  right: 10px;
-  cursor: pointer;
 }
 .iclikescmt1 {
   position: relative;
@@ -820,49 +777,118 @@ h2 {
     width: 32px;
     height: 32px;
   }
-  .dispname, .comment001 {
-    font-size: 13px;
-  }
-  .wrappercom2 {
-    padding-left: 40px;
-  }
-  .balaskan001 {
-    font-size: 12px;
-    flex-wrap: wrap;
-  }
   .captionStories, .captionStoriess {
     font-size: 12px;
   }
 }
-.wrappercom3 {
+.artiestories1 {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 18px;
-  padding-left: 30px;
-  margin-top: -25px;
+  flex-wrap: nowrap;
 }
-.image-preview {
-  position:relative;
-  top:-87%;
-  right:0%;
-  padding-top:10px;
-  height: 90px;
-  background-color: #222;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.image-preview img {
-  height: 80px;
-}
-.bcloimcom {
-  position: relative;
-  height: 20px;
-  top: -33%;
-  border: none;
-  background-color: #888;
-  color: black;
-  border-radius: 50%;
-  right: 53%;
+@media (max-width: 767px) {
+  body.noscroll {
+    overflow: hidden !important;
+  }
+  .inpcom {
+    position: static;
+    width: calc(100% - 140px);
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .commentarist {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .card-artiestories1 {
+    border-radius: 12px;
+    padding-top: 20px;
+    min-width: 100%;
+    margin-left: calc(25% + 1%);
+    box-shadow: none;
+  }
+  .artiestories-card1 {
+    margin-top: -200px;
+    margin-left: -140px;
+    min-width: 370px;
+  }
+  .artiestories-card {
+    border-radius: 15px;
+    width: 500px;
+  }
+  .nav-button.prev1, .nav-button.next1 {
+    position: fixed;
+    border-radius: 12px;
+    top: 29% !important;
+    height: 55% !important;
+  }
+  .next1{
+    right: 0 !important;
+  }
+  .forchates{
+    margin-bottom: 8%;
+    width: 94%;
+  }
+  .commentaristcre {
+    max-width: 100%;
+    display: flex !important;
+    padding-left: 30px;
+    flex-wrap: nowrap !important;
+    width: 120%;
+    height: 45%;
+    gap: 0;
+    margin-top: 0;
+    border-radius: 16px 16px 0 0;
+    overflow: block;
+  }
+  .rbtnry001 {
+    width: 96%;
+    display: flex;
+    margin-top: -10px !important;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .wrappercom1 {
+    width: 96%;
+    height: 98%;
+    border-radius: 0 !important;
+    overflow: auto !important;
+  }
+  .closecmtrst{
+    transform: translate(330px, -200px);
+  }
+  .commentaristcre p {
+    display: block;
+  }
+  .closecmtrst {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 32px !important;
+    margin: 0 !important;
+    transform: none;
+  }
+  .inpbalassaja{
+    width: calc(100% - 140px);
+  }
+  .forchates{
+    margin-bottom: 8%;
+    width: 100%;
+  }
+  .pemmisahcreator{
+    width: 105%;
+    height: 100%;
+  }
+  .pemisah-comment{
+    padding-top: 20px;
+    width: 105%;
+    height: 90%;
+    margin-top: -10px;
+    padding-left: -10px !important;
+  }
+  .commentaristcardimg {
+    max-width: 100%;
+    width: 100%;
+    height: 55%;
+    border-radius: 0;
+  }
 }

@@ -98,7 +98,9 @@
                     data-light="{{ asset('partses/likelm.png') }}"
                     data-dark="{{ asset('partses/likedm.png') }}">
             </button>
-            @include('appes.artiestories.commentarist')
+            <div class="commentarist-containe">
+                @include('appes.artiestories.commentarist')
+            </div>
             <button class="rbtnry cbtnry1-{{ $storyCode }}" id="cbtnry1-{{ $storyCode }}">
                 <img class="iclikestory" loading="lazy"
                 data-light="{{ asset('partses/commentlm.png') }}"

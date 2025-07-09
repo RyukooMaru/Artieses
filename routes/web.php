@@ -39,7 +39,6 @@ use Google\Service\Drive as Google_Service_Drive;
     Route::post('/broadcast-typing', [artiestoriescomments::class, 'broadcast'])->name('broadcast');
     Route::post('/enter-typing1', [artiestoriescomments::class, 'storeGG1'])->name('enter1');
     Route::post('/broadcast-typing1', [artiestoriescomments::class, 'broadcast1'])->name('broadcast1');
-
     Route::get('/konten/{id}', function ($id) {
         try {
             $client = new Google_Client();
@@ -192,6 +191,19 @@ use Google\Service\Drive as Google_Service_Drive;
 # ARTIESTORIES #
     Route::get('/artiestories', function(Request $request) {
         $reqplat = $request->query('GetContent');
+        $cekcontent = Artiestories::with('usericonStories')
+                    ->whereNull('deltime')
+                    ->whereHas('usericonStories', function ($query) {
+                        $query->whereNull('deleteaccount');
+                    })
+                    ->when($reqplat, function ($queryBuilder) use ($reqplat) {
+                                $queryBuilder->where(function ($q) use ($reqplat) {
+                                            $q->where('coderies', $reqplat);
+                                });
+                    })->firstOrFail();
+        if ($cekcontent->isEmpty()) {
+            abort(404);
+        }
         return redirect()->to('/Artiestories?GetContent=' . $reqplat)->with('open_commentarist', $reqplat);
     });
     Route::post('/close-commentarist', function (Request $request) {
@@ -203,6 +215,19 @@ use Google\Service\Drive as Google_Service_Drive;
     });
     Route::get('/Artiestories', function (Request $request) {
         $reqplat = $request->query('GetContent');
+        $cekcontent = Artiestories::with('usericonStories')
+                    ->whereNull('deltime')
+                    ->whereHas('usericonStories', function ($query) {
+                        $query->whereNull('deleteaccount');
+                    })
+                    ->when($reqplat, function ($queryBuilder) use ($reqplat) {
+                                $queryBuilder->where(function ($q) use ($reqplat) {
+                                            $q->where('coderies', $reqplat);
+                                });
+                    })->firstOrFail();
+        if ($cekcontent->isEmpty()) {
+            abort(404);
+        }
         if (!session('isLoggedIn')) {
                 $videos = Artievides::with('usericonVides')
                     ->whereNull('deltime')
@@ -300,6 +325,21 @@ use Google\Service\Drive as Google_Service_Drive;
 # ARTIEVIDES #
     Route::get('/Artievides', [ArtievidesMainShow::class, 'ArtievidesMainShow']);
     Route::get('/artievides', function(Request $request) {
+        $reqplat = $request->query('GetContent');
+        $cekcontent = Artievides::with('usericonVides')
+                    ->whereNull('deltime')
+                    ->whereHas('usericonVides', function ($query) {
+                        $query->whereNull('deleteaccount');
+                    })
+                    ->when($reqplat, function ($queryBuilder) use ($reqplat) {
+                                $queryBuilder->where(function ($q) use ($reqplat) {
+                                            $q->where('codevides', $reqplat);
+                                });
+                    })->firstOrFail();
+        if ($cekcontent->isEmpty()) {
+            $fullPath = $request->path();
+            return view('blankpage', ['requested' => $fullPath]);
+        }
         return redirect('/Artievides?' . http_build_query($request->query()));
     });
 ##

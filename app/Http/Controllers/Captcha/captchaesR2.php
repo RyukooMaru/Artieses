@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Captcha;
 
 use App\Http\Controllers\Controller;
 use App\Models\Artiestories;
+use App\Models\Artievides;
 use Illuminate\Http\Request;
 use App\Models\Users;
 use Illuminate\Support\Str;
@@ -88,16 +89,31 @@ class captchaesR2 extends Controller
             }
         } if (session('deleteistuser')) {
             if ($kodeinput === $kodecapt){
-                $reqplat = session('artiestoriesid');
                 session(['deleteitsuser1' => true]);
-                $story = Artiestories::where('coderies', $reqplat)->first();
-                $pemilik = $story?->usericonStories?->username;
+                $contentId = null;
+                $ownerUsername = null;
+                $redirectUrl = '';
+                if (session()->has('artiestoriesid')) {
+                    $contentId = session('artiestoriesid');
+                    $story = Artiestories::where('coderies', $contentId)->first();
+                    $ownerUsername = $story?->usericonStories?->username;
+                    $redirectUrl = '/Artiestories?GetContent=' . $contentId;
+                } elseif (session()->has('artievidesid')) {
+                    $contentId = session('artievidesid');
+                    $video = Artievides::where('codevides', $contentId)->first();
+                    $ownerUsername = $video?->usericonvides?->username; 
+                    $redirectUrl = '/Artievides?GetContent=' . $contentId;
+                }
+                if (!$ownerUsername) {
+                    return redirect('/')->with('error', 'Konten yang Anda coba hapus tidak ditemukan.');
+                }
                 $referer = $request->headers->get('referer');
                 if ($referer && Str::contains($referer, '/profiles/')) {
-                    return redirect()->route('profiles.show.withcontent', ['username' => $pemilik])->with(['runDelete' => true]);
+                    return redirect()->route('profiles.show.withcontent', ['username' => $ownerUsername])
+                                    ->with(['runDelete' => true]);
                 } else {
-                    return redirect()->to('/Artiestories?GetContent=' . $reqplat)
-                        ->with(['runDelete' => true]);
+                    return redirect()->to($redirectUrl)
+                                    ->with(['runDelete' => true]);
                 }
             } else {
                 return redirect()->route('authes')->with(['alert' => 'Kode salah!', 'form' => 'captcha1']);
