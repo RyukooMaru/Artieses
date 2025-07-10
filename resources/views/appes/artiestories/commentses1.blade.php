@@ -72,7 +72,7 @@
                 $isAdmin = $loggedInUser && $loggedInUser->admin;
             @endphp
             @if ($isUserOwner || $isAdmin)
-                <img class="delete-content" id="delete-comment-{{ $storyCode }}" data-light="{{ asset('partses/deletelm.png') }}" data-dark="{{ asset('partses/deletedm.png') }}">
+                <img class="delete-content" id="delete-comment-{{ $comment->commentartiestoriesid }}" data-light="{{ asset('partses/deletelm.png') }}" data-dark="{{ asset('partses/deletedm.png') }}">
             @else
             @endif
         </div>
@@ -147,7 +147,7 @@
                                 $isAdmin = $loggedInUser && $loggedInUser->admin;
                             @endphp
                             @if ($isUserOwner || $isAdmin)
-                                <img class="delete-content" id="delete-comment-{{ $storyCode }}" data-light="{{ asset('partses/deletelm.png') }}" data-dark="{{ asset('partses/deletedm.png') }}">
+                                <img class="delete-content" id="delete-comment1-{{ $commentlagi }}" data-light="{{ asset('partses/deletelm.png') }}" data-dark="{{ asset('partses/deletedm.png') }}">
                             @else
                             @endif
                         </div>

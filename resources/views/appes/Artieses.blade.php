@@ -191,13 +191,44 @@
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     },
-                    body: JSON.stringify({ artiestoriesid: storyId })
+                    body: JSON.stringify({ id: storyId })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const getwrapper = document.querySelector(`.commentwrapcom-${data.commentid}`);
+                        if (getwrapper) {
+                            getwrapper.remove();
+                        }
+                    }
+                });
+            });
+        });
+    });
+  </script><!-- Delete First Comment -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteBtns = document.querySelectorAll('[id^="delete-comment1-"]');
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const idAttr = btn.id;
+                const storyId = idAttr.replace('delete-comment1-', '');
+                if (!storyId) {
+                    return;
+                }
+                fetch('/delete-konten', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify({ id1: storyId })
                 })
                 .then(res => res.json())
             });
         });
     });
-  </script>
+  </script><!-- Delete Comment Balas -->
   @include('appes.artiestories.js.reactfront')<!-- react story -->
   @include('appes.artiestories.js.commentarist0')<!-- give reacted artietories(front) -->
   @include('appes.artiestories.js.commentarist01')<!-- give reacted artietories(back) -->

@@ -3,8 +3,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Artiestories;
 use App\Models\Artievides;
+use App\Models\ComStories;
 use App\Models\Users;
 use Illuminate\Http\Request;
+use App\Events\hapuscomment;
 
 class DeleteKonten extends Controller
 {
@@ -14,13 +16,19 @@ class DeleteKonten extends Controller
         $story = null;
         $video = null;
         $pemilik = null;
+        if($request->json('id')){
+            $comment = ComStories::where('commentartiestoriesid', $request->json('id'))->first();
+            $id = $comment->commentartiestoriesid;
+            $comment->forceDelete();
+            broadcast(new hapuscomment($id));
+            return response()->json(['success' => true, 'commentid' => $id]);
+        }
         if($request->json('artievidesid')){
             $video = Artievides::where('codevides', $request->json('artievidesid'))->first();
             if ($video) {
                 $pemilik = $video->usericonvides->username;
             }
         }
-
         if($request->json('artiestoriesid')){
             $story = Artiestories::where('coderies', $request->json('artiestoriesid'))->first();
             if ($story) {

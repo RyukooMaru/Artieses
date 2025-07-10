@@ -12,15 +12,15 @@
     window.hapuscommenttime = null;
     window.haouscommentmore = true;
     window.hapuscomment.bind('hapuscomment', function (data) {
-        if (data.message && data.message !== "") {
-            if (window.haouscommentmore) {
-                const getwrapper = document.querySelector(`.commentwrapcom-${data.commentid}`);
+        if (window.haouscommentmore) {
+            const getwrapper = document.querySelector(`.commentwrapcom-${data.commentid}`);
+            if (getwrapper) {
                 getwrapper.remove();
-                clearTimeout(window.hapuscommenttime);
-                window.hapuscommenttime = setTimeout(() => {
-                    window.haouscommentmore = true;
-                }, 1000);
             }
+            clearTimeout(window.hapuscommenttime);
+            window.hapuscommenttime = setTimeout(() => {
+                window.haouscommentmore = true;
+            }, 1000);
         }
     });
   </script>

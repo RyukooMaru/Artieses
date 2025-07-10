@@ -9,39 +9,33 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 
-class rebc implements ShouldBroadcast
+class hapuscomment1 implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $username;
-    public $reqplat;
-    public $reactfront;
+    public $id;
 
-    public function __construct($username, $reqplat, $reactfront)
+    public function __construct($id)
     {
-        $this->username = $username;
-        $this->reqplat = $reqplat;
-        $this->reactfront = $reactfront;
+        $this->id = $id;
     }
 
     public function broadcastOn(): array
     {
         return [
-            new Channel('rebc'),
+            new Channel('hapuscomment1'),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'rebc';
+        return 'hapuscomment1';
     }
 
     public function broadcastWith()
     {
         return [
-            'username' => $this->username,
-            'reqplat' => $this->reqplat,
-            'reactfront' => $this->reactfront,
+            'id' => $this->id,
         ];
     }
 }

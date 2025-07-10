@@ -12,17 +12,19 @@
     window.hapuscommenttime1 = null;
     window.haouscommentmore1 = true;
     window.hapuscomment1.bind('hapuscomment1', function (data) {
-        if (data.message && data.message !== "") {
-            if (window.haouscommentmore1) {
-                const getwrapper = document.querySelector(`.wrappercom3-${data.commentid}`);
-                const getreply1 = document.querySelector(`.reply-${data.commentid}`);
+        if (window.haouscommentmore1) {
+            const getwrapper = document.querySelector(`.wrappercom3-${data.commentid}`);
+            const getreply1 = document.querySelector(`.reply-${data.commentid}`);
+            if (getwrapper) {
                 getwrapper.remove();
-                getreply1.remove();
-                clearTimeout(window.hapuscommenttime1);
-                window.hapuscommenttime1 = setTimeout(() => {
-                    window.haouscommentmore1 = true;
-                }, 1000);
             }
+            if (getreply1) {
+                getreply1.remove();
+            }
+            clearTimeout(window.hapuscommenttime1);
+            window.hapuscommenttime1 = setTimeout(() => {
+                window.haouscommentmore1 = true;
+            }, 1000);
         }
     });
   </script>
