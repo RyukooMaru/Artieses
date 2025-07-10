@@ -6,18 +6,21 @@
             forceTLS: true
         });
     }
-    if (typeof window.hapuscomment === 'undefined') {
-        window.hapuscomment = window.pusher01.subscribe('typing1');
+    if (typeof window.hapuscomment1 === 'undefined') {
+        window.hapuscomment1 = window.pusher01.subscribe('hapuscomment1');
     }
-    window.typingTimeout3 = null;
-    window.canFetchTyping3 = true;
-    window.hapuscomment.bind('user1', function (data) {
+    window.hapuscommenttime1 = null;
+    window.haouscommentmore1 = true;
+    window.hapuscomment1.bind('hapuscomment1', function (data) {
         if (data.message && data.message !== "") {
-            if (window.canFetchTyping3) {
-                getChat.classList.remove('hidden');
-                clearTimeout(window.typingTimeout3);
-                window.typingTimeout3 = setTimeout(() => {
-                    window.canFetchTyping3 = true;
+            if (window.haouscommentmore1) {
+                const getwrapper = document.querySelector(`.wrappercom3-${data.commentid}`);
+                const getreply1 = document.querySelector(`.reply-${data.commentid}`);
+                getwrapper.remove();
+                getreply1.remove();
+                clearTimeout(window.hapuscommenttime1);
+                window.hapuscommenttime1 = setTimeout(() => {
+                    window.haouscommentmore1 = true;
                 }, 1000);
             }
         }

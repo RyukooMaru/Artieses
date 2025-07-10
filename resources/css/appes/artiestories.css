@@ -827,8 +827,8 @@ h2 {
   .card-artiestories1 {
     border-radius: 12px;
     padding-top: 20px;
-    min-width: 100%;
-    margin-left: calc(25% + 1%);
+    min-width: 80%;
+    margin-left: calc(25% + 2%);
     box-shadow: none;
   }
   .artiestories-card1 {

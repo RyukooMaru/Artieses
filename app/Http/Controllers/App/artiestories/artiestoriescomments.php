@@ -169,7 +169,6 @@ class artiestoriescomments extends Controller
                 );
                 if ($response->successful()) {
                     $geminiResultText = $response->json('candidates.0.content.parts.0.text');
-
                     preg_match('/\{.*\}/s', $geminiResultText, $matches);
                     $analysisResult = null;
                     if (!empty($matches[0])) {

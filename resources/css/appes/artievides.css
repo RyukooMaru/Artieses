@@ -33,8 +33,8 @@
     margin-bottom: 20px;
     border-radius: 12px;
     padding-top: 10px;
-    min-width: 100%;
-    margin-left: calc(25% + 1%);
+    min-width: 80%;
+    margin-left: calc(25% + 2%);
   }
   .artievides-card {
     border-radius: 15px;
