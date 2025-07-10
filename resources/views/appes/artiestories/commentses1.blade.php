@@ -66,6 +66,15 @@
             @else
                 <p class="comment001">{{ $comment->commentses }}</p>
             @endif
+            @php
+                $isUserOwner = $comment->userComments->username === session('username');
+                $loggedInUser = \App\Models\Users::where('username', session('username'))->first();
+                $isAdmin = $loggedInUser && $loggedInUser->admin;
+            @endphp
+            @if ($isUserOwner || $isAdmin)
+                <img class="delete-content" id="delete-comment-{{ $storyCode }}" data-light="{{ asset('partses/deletelm.png') }}" data-dark="{{ asset('partses/deletedm.png') }}">
+            @else
+            @endif
         </div>
     </div>
     <div class="wrappercom2 wrappercom2-{{ $commentlagi }}" id="wrappercom2-{{ $commentlagi }}">
@@ -79,6 +88,7 @@
             <div class="dibales lagi-{{ $commentlagi }} hidden" id="lagi-{{ $commentlagi }}">
                 <div class="brcmt2 hidden" id="divbrcmt2-{{ $commentlagi }}">
                     <p id="brcmt2-{{ $commentlagi }}"></p>
+                    <p id="Alert-Toxic1-{{ $commentlagi }}"></p>
                 </div>
                 <img src="{{ asset('partses/import.png') }}" class="iclikestoryimp1" id="importbtn1-{{ $commentlagi }}">
                 <input type="file" accept="image/*" id="filepicker1-{{ $commentlagi }}" class="hidden" />
@@ -130,8 +140,18 @@
                                 <p class="comment001">{!! $reply->comment !!}</p>
                             @else
                                 <p class="comment001">{{ $reply->comment }}</p>
+                            @endif                            
+                            @php
+                                $isUserOwner = $reply->userBalcom->username === session('username');
+                                $loggedInUser = \App\Models\Users::where('username', session('username'))->first();
+                                $isAdmin = $loggedInUser && $loggedInUser->admin;
+                            @endphp
+                            @if ($isUserOwner || $isAdmin)
+                                <img class="delete-content" id="delete-comment-{{ $storyCode }}" data-light="{{ asset('partses/deletelm.png') }}" data-dark="{{ asset('partses/deletedm.png') }}">
+                            @else
                             @endif
                         </div>
+                        
                     </div>
                     <div class="wrappercom3 wrappercom3-{{ $commentlagi }}">
                         @include('appes.artiestories.rcm1')

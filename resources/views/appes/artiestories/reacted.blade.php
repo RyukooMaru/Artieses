@@ -6,7 +6,6 @@
     $getreactsedih = $check->where('reaksi', 'sedih')->first();
     $getreactmarah = $check->where('reaksi', 'marah')->first();
     $getreactketawa = $check->where('reaksi', 'ketawa')->first();
-    
     $reactions = [
         'suka' => $getreactsuka,
         'marah' => $getreactmarah,

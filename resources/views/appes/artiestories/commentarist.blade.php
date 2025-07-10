@@ -66,6 +66,7 @@
             <div class="chat chat-{{ $storyCode }}">
                 <div class="brcmt hidden" id="divbrcmt-{{ $storyCode }}">
                     <p id="brcmt-{{ $storyCode }}"></p>
+                    <p id="Alert-Toxic-{{ $storyCode }}"></p>
                 </div>
                 <img src="{{ asset('partses/import.png') }}" class="iclikestoryimp" id="importbtn-{{ $storyCode }}">
                 <input type="text" class="inpcom inpcom-{{ $storyCode }}" id="inpcom-{{ $storyCode }}" placeholder="Kirim komentar..." required/>

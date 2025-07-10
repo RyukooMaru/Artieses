@@ -20,7 +20,7 @@ class ArtievidesMainShow extends Controller
                                 $queryBuilder->where(function ($q) use ($reqplat) {
                                             $q->where('codevides', $reqplat);
                                 });
-                    })->firstOrFail();
+                    })->get();
         if ($cekcontent->isEmpty()) {
             $fullPath = $request->path();
             return view('blankpage', ['requested' => $fullPath]);

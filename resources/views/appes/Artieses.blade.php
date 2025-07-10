@@ -175,6 +175,29 @@
         }
     });
   </script><!-- tangkap delete(last) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteBtns = document.querySelectorAll('[id^="delete-comment-"]');
+        deleteBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const idAttr = btn.id;
+                const storyId = idAttr.replace('delete-comment-', '');
+                if (!storyId) {
+                    return;
+                }
+                fetch('/delete-konten', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    },
+                    body: JSON.stringify({ artiestoriesid: storyId })
+                })
+                .then(res => res.json())
+            });
+        });
+    });
+  </script>
   @include('appes.artiestories.js.reactfront')<!-- react story -->
   @include('appes.artiestories.js.commentarist0')<!-- give reacted artietories(front) -->
   @include('appes.artiestories.js.commentarist01')<!-- give reacted artietories(back) -->

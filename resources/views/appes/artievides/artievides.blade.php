@@ -55,7 +55,7 @@
       </div>
     @endif
     <a href="{{ route('profiles.show', ['username' => $username]) }}">
-      <p class="h5-artievides">{{ $username }}</p>
+      <p class="h5-artievides">{{ Str::limit($username, 15) }}</p>
     </a>
     <h3 class="h3-artievides">{{ Str::limit($video->judul, 15) }}</h3>
     <p class="date-artievides" style="margin-top: 30px;">

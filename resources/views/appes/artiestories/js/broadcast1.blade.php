@@ -104,7 +104,14 @@
                         },
                         body: JSON.stringify({ message, coderies })
                     })
-                    .then(res => res.json())
+                    .then(res => {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                        return res.json().then(errorData => {
+                            throw errorData; 
+                        });
+                    })
                     .then(data => {
                         inputEl.value = '';
                         console.log('kekirim ga?', data);
@@ -113,6 +120,18 @@
                             sessionStorage.setItem('alert', data.alert);
                             sessionStorage.setItem('form', data.form);
                             window.location.href = data.redirect;
+                        }
+                    })
+                    .catch(error => {
+                        if (error.itsToxic) {
+                            const brcmt = document.getElementById(`divbrcmt-${error.coderies}`);
+                            const alertToxic = document.getElementById(`Alert-Toxic-${error.coderies}`);
+                            brcmt.classList.remove('hidden');
+                            alertToxic.innerText = '(Kamu kasar sekali!)';
+                            setTimeout(() => {
+                                alertToxic.innerText = '';
+                                brcmt.classList.add('hidden');
+                            }, 3000);
                         }
                     })
                     .finally(() => {

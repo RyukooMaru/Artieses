@@ -3,7 +3,7 @@
     <div class="card-artiestories1" id="card-artiestories-{{ $storyCode }}">
         @include('appes.artiestories.brecreies')
         <a href="{{ route('profiles.show', ['username' => $story->usericonStories->username]) }}">
-            <p class="p-artiestories">{{ $story->usericonStories->username }}</p>
+            <p class="p-artiestories">{{  Str::limit($story->usericonStories->username, 15) }}</p>
         </a>
         @php
             $images = $story->images->sortBy('artiestoriestypeid');

@@ -43,16 +43,38 @@
                 },
                 body: formData
             })
-            .then(res => res.json())
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return res.json().then(errorData => {
+                    throw errorData; 
+                });
+            })
             .then(data => {
                 if (handleAuthRedirect(data)) return;
                 inputOL.value = '';
                 fileInput1.value = '';
                 delprev1?.remove();
                 clearBtn1?.classList.add('hidden');
-                console.log('kekirim ga?');
+                if (!data.logged_in) {
+                    sessionStorage.setItem('alert', data.alert);
+                    sessionStorage.setItem('form', data.form);
+                    window.location.href = data.redirect;
+                }
             })
-            .catch(error => console.error('Error:', error))
+            .catch(error => {
+                if (error.itsToxic) {
+                    const brcmt = document.getElementById(`divbrcmt2-${error.commentartiestoriesid}`);
+                    const alertToxic = document.getElementById(`Alert-Toxic1-${error.commentartiestoriesid}`);
+                    brcmt.classList.remove('hidden');
+                    alertToxic.innerText = 'Kamu kasar sekali!';
+                    setTimeout(() => {
+                        alertToxic.innerText = '';
+                        brcmt.classList.add('hidden');
+                    }, 3000);
+                }
+            })
             .finally(restoreButton);
         } else if (message1.length > 0) {
             fetch('/enter-typing1', {
@@ -63,14 +85,36 @@
                 },
                 body: JSON.stringify({ message1, storyCode1 })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return res.json().then(errorData => {
+                    throw errorData; 
+                });
+            })
             .then(data => {
-                console.log('kekirim ga?');
+                if (!data.logged_in) {
+                    sessionStorage.setItem('alert', data.alert);
+                    sessionStorage.setItem('form', data.form);
+                    window.location.href = data.redirect;
+                }
                 if (handleAuthRedirect(data)) return;
                 inputOL.value = '';
                 clearBtn1?.classList.add('hidden');
             })
-            .catch(error => console.error('Error:', error))
+            .catch(error => {
+                if (error.itsToxic) {
+                    const brcmt = document.getElementById(`divbrcmt2-${data.commentartiestoriesid}`)
+                    const alertToxic = document.getElementById(`Alert-Toxic1-${data.commentartiestoriesid}`);
+                    brcmt.classList.remove('hidden');
+                    alertToxic.innerText = 'Kamu kasar sekali!';
+                    setTimeout(() => {
+                        alertToxic.innerText = '';
+                        brcmt.classList.add('hidden');
+                    }, 3000);
+                }
+            })
             .finally(restoreButton);
         } else {
             restoreButton();

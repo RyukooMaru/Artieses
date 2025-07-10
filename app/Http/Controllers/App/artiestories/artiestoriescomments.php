@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use App\Models\BalcomStories;
 use Illuminate\Http\Request;
 use App\Models\ComStories;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Process;
 
 class artiestoriescomments extends Controller
 {
@@ -102,51 +104,130 @@ class artiestoriescomments extends Controller
                 $fileid = $this->uploadToGoogleDrive($file);
                 $path = url("/konten/" . $fileid);
                 $inputcomments = '<img src="' . $path . '" class="imgcom">';
+                $comstories = ComStories::create([
+                            'userid' => $requscom,
+                            'coderies' => $coderies,
+                            'commentses' => $inputcomments,
+                        ]);
+                $message = $inputcomments;
+                $improfil = session('improfil', 'default.png');
+                $created_at = $comstories->created_at;
+                $comstoriesid = $comstories->commentartiestoriesid;
+                $now = \Carbon\Carbon::now();
+                $diffInMinutes001 = $created_at->diffInMinutes($now);
+                $diffInHours001 = $created_at->diffInHours($now);
+                $diffInDays001 = $created_at->diffInDays($now);
+                $diffInWeeks001 = $created_at->diffInWeeks($now);
+                $diffInMonths001 = $created_at->diffInMonths($now);
+                $diffInYears001 = $created_at->diffInYears($now);
+                $diffInMinutes = (int) $diffInMinutes001;
+                $diffInHours = (int) $diffInHours001;
+                $diffInDays = (int) $diffInDays001;
+                $diffInWeeks = (int) $diffInWeeks001;
+                $diffInMonths = (int) $diffInMonths001;
+                $diffInYears = (int) $diffInYears001;
+                if ($diffInMinutes < 60) {
+                    $timeAgo = $diffInMinutes . ' menit yang lalu';
+                } elseif ($diffInHours < 24) {
+                    $timeAgo = $diffInHours . ' jam yang lalu';
+                } elseif ($diffInDays < 7) {
+                    $timeAgo = $diffInDays . ' hari yang lalu';
+                } elseif ($diffInWeeks < 4) {
+                    $timeAgo = $diffInWeeks . ' minggu yang lalu';
+                } elseif ($diffInMonths < 12) {
+                    $timeAgo = $diffInMonths . ' bulan yang lalu';
+                } else {
+                    $timeAgo = $diffInYears . ' tahun yang lalu';
+                }
+                broadcast(new UserTyping($username, $message, $filename,$improfil, $coderies, $timeAgo, $comstoriesid));
+                return response()->json([
+                    'status' => $coderies,
+                    'filename' => $filename,
+                    'message' => $inputcomments
+                ]);
             }
-            if (!$request->hasFile('fileInput')) {
+            else if ($request->input('message')) {
                 $inputcomments = $request->input('message');
+                $apiKey = env('GEMINI_API');
+                $prompt = 'Anda adalah seorang moderator konten yang cerdas. Tugas Anda adalah menganalisis teks untuk mendeteksi apakah teks tersebut merupakan PENGHINAAN atau SERANGAN PERSONAL yang menggunakan nama binatang. ' .
+                    'Jika teks hanya menyebut nama binatang tanpa konteks menghina, loloskan saja. ' .
+                    'Contoh yang harus dianggap toksik (is_toxic: true): "Kamu anjing", "Dasar monyet", "Otak udang". ' .
+                    'Contoh yang harus dianggap aman (is_toxic: false): "Anjing", "Saya punya kucing", "Monyet makan pisang". ' .
+                    'Sekarang, analisis teks berikut dan berikan respons HANYA dalam format JSON yang ketat dengan kunci "is_toxic" (boolean) dan "reason" (string). ' .
+                    'Teksnya adalah: "' . $inputcomments . '"';
+                $response = Http::connectTimeout(120)->timeout(120)->post(
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . $apiKey,
+                    [
+                        'contents' => [
+                            [
+                                'parts' => [
+                                    ['text' => $prompt]
+                                ]
+                            ]
+                        ]
+                    ]
+                );
+                if ($response->successful()) {
+                    $geminiResultText = $response->json('candidates.0.content.parts.0.text');
+
+                    preg_match('/\{.*\}/s', $geminiResultText, $matches);
+                    $analysisResult = null;
+                    if (!empty($matches[0])) {
+                        $analysisResult = json_decode($matches[0], true);
+                    }
+                    if (isset($analysisResult['is_toxic']) && $analysisResult['is_toxic'] == true) {
+                        return response()->json([
+                            'itsToxic' => true,
+                            'coderies' => $coderies,
+                            'message' => $analysisResult['reason'] ?? 'Komentar mengandung kata-kata yang tidak pantas.'
+                        ], 422);
+                    }
+                    $comstories = ComStories::create([
+                                'userid' => $requscom,
+                                'coderies' => $coderies,
+                                'commentses' => $inputcomments,
+                                'gemini result' => $geminiResultText
+                            ]);
+                    $message = $inputcomments;
+                    $improfil = session('improfil', 'default.png');
+                    $created_at = $comstories->created_at;
+                    $comstoriesid = $comstories->commentartiestoriesid;
+                    $now = \Carbon\Carbon::now();
+                    $diffInMinutes001 = $created_at->diffInMinutes($now);
+                    $diffInHours001 = $created_at->diffInHours($now);
+                    $diffInDays001 = $created_at->diffInDays($now);
+                    $diffInWeeks001 = $created_at->diffInWeeks($now);
+                    $diffInMonths001 = $created_at->diffInMonths($now);
+                    $diffInYears001 = $created_at->diffInYears($now);
+                    $diffInMinutes = (int) $diffInMinutes001;
+                    $diffInHours = (int) $diffInHours001;
+                    $diffInDays = (int) $diffInDays001;
+                    $diffInWeeks = (int) $diffInWeeks001;
+                    $diffInMonths = (int) $diffInMonths001;
+                    $diffInYears = (int) $diffInYears001;
+                    if ($diffInMinutes < 60) {
+                        $timeAgo = $diffInMinutes . ' menit yang lalu';
+                    } elseif ($diffInHours < 24) {
+                        $timeAgo = $diffInHours . ' jam yang lalu';
+                    } elseif ($diffInDays < 7) {
+                        $timeAgo = $diffInDays . ' hari yang lalu';
+                    } elseif ($diffInWeeks < 4) {
+                        $timeAgo = $diffInWeeks . ' minggu yang lalu';
+                    } elseif ($diffInMonths < 12) {
+                        $timeAgo = $diffInMonths . ' bulan yang lalu';
+                    } else {
+                        $timeAgo = $diffInYears . ' tahun yang lalu';
+                    }
+                    broadcast(new UserTyping($username, $message, $filename,$improfil, $coderies, $timeAgo, $comstoriesid));
+                    return response()->json([
+                        'status' => $coderies,
+                        'filename' => $filename,
+                        'message' => $inputcomments
+                    ]);
+                } else {
+                    return response()->json(['error' => 'Gagal menghubungi layanan analisis.'], 500);
+                }
             }
-            $comstories = ComStories::create([
-                'userid' => $requscom,
-                'coderies' => $coderies,
-                'commentses' => $inputcomments,
-            ]);
-            $message = $inputcomments;
-            $improfil = session('improfil', 'default.png');
-            $created_at = $comstories->created_at;
-            $comstoriesid = $comstories->commentartiestoriesid;
-            $now = \Carbon\Carbon::now();
-            $diffInMinutes001 = $created_at->diffInMinutes($now);
-            $diffInHours001 = $created_at->diffInHours($now);
-            $diffInDays001 = $created_at->diffInDays($now);
-            $diffInWeeks001 = $created_at->diffInWeeks($now);
-            $diffInMonths001 = $created_at->diffInMonths($now);
-            $diffInYears001 = $created_at->diffInYears($now);
-            $diffInMinutes = (int) $diffInMinutes001;
-            $diffInHours = (int) $diffInHours001;
-            $diffInDays = (int) $diffInDays001;
-            $diffInWeeks = (int) $diffInWeeks001;
-            $diffInMonths = (int) $diffInMonths001;
-            $diffInYears = (int) $diffInYears001;
-            if ($diffInMinutes < 60) {
-                $timeAgo = $diffInMinutes . ' menit yang lalu';
-            } elseif ($diffInHours < 24) {
-                $timeAgo = $diffInHours . ' jam yang lalu';
-            } elseif ($diffInDays < 7) {
-                $timeAgo = $diffInDays . ' hari yang lalu';
-            } elseif ($diffInWeeks < 4) {
-                $timeAgo = $diffInWeeks . ' minggu yang lalu';
-            } elseif ($diffInMonths < 12) {
-                $timeAgo = $diffInMonths . ' bulan yang lalu';
-            } else {
-                $timeAgo = $diffInYears . ' tahun yang lalu';
-            }
-            broadcast(new UserTyping($username, $message, $filename,$improfil, $coderies, $timeAgo, $comstoriesid));
-            return response()->json([
-                'status' => $coderies,
-                'filename' => $filename,
-                'message' => $inputcomments
-            ]);
         }
     }
     public function storeGG1(Request $request)
@@ -155,56 +236,131 @@ class artiestoriescomments extends Controller
             $requscom = session('userid');
             $username = session('username');
             $inputcomments = '';
+            $reqplat = $request->input('storyCode1');
             $filename = null;
             if (!$request->input('message1') && $request->hasFile('fileInput1')) {
                 $file = $request->file('fileInput1');
                 $fileid = $this->uploadToGoogleDrive($file);
                 $path = url("/konten/" . $fileid);
                 $inputcomments = '<img src="' . $path . '" class="imgcom">';
+                $comstories = BalcomStories::create([
+                    'userid' => $requscom,
+                    'commentartiestoriesid' => $reqplat,
+                    'comment' => $inputcomments,
+                ]);
+                $message = $inputcomments;
+                $improfil = session('improfil');
+                $created_at = $comstories->created_at;
+                $comstoriesid = $comstories->balcomstoriesid;
+                $now = \Carbon\Carbon::now();
+                $diffInMinutes001 = $created_at->diffInMinutes($now);
+                $diffInHours001 = $created_at->diffInHours($now);
+                $diffInDays001 = $created_at->diffInDays($now);
+                $diffInWeeks001 = $created_at->diffInWeeks($now);
+                $diffInMonths001 = $created_at->diffInMonths($now);
+                $diffInYears001 = $created_at->diffInYears($now);
+                $diffInMinutes = (int) $diffInMinutes001;
+                $diffInHours = (int) $diffInHours001;
+                $diffInDays = (int) $diffInDays001;
+                $diffInWeeks = (int) $diffInWeeks001;
+                $diffInMonths = (int) $diffInMonths001;
+                $diffInYears = (int) $diffInYears001;
+                if ($diffInMinutes < 60) {
+                    $timeAgo = $diffInMinutes . ' menit yang lalu';
+                } elseif ($diffInHours < 24) {
+                    $timeAgo = $diffInHours . ' jam yang lalu';
+                } elseif ($diffInDays < 7) {
+                    $timeAgo = $diffInDays . ' hari yang lalu';
+                } elseif ($diffInWeeks < 4) {
+                    $timeAgo = $diffInWeeks . ' minggu yang lalu';
+                } elseif ($diffInMonths < 12) {
+                    $timeAgo = $diffInMonths . ' bulan yang lalu';
+                } else {
+                    $timeAgo = $diffInYears . ' tahun yang lalu';
+                }
+                $userid = session('userid');
+                $jumlah = BalcomStories::where('commentartiestoriesid', $reqplat)->count();
+                broadcast(new UserTyping1($userid, $username, $message, $comstoriesid, $improfil, $timeAgo, $filename, $jumlah, $reqplat));
+                return response()->json(['logged_in' => true, 'username' => $username, 'userid' => $userid, 'message' => $inputcomments, 'commentartiestoriesid' => $reqplat, 'improfil' => $improfil, 'created_at' => $timeAgo, 'balcomstoriesid' => $comstoriesid,'jumlah' => $jumlah]);
             }
             if (!$request->hasFile('fileInput1')) {
-                $reqplat = $request->input('storyCode1');
                 $inputcomments = $request->input('message1');
+                
+                $apiKey = env('GEMINI_API');
+                $prompt = 'Anda adalah seorang moderator konten yang cerdas. Tugas Anda adalah menganalisis teks untuk mendeteksi apakah teks tersebut merupakan PENGHINAAN atau SERANGAN PERSONAL yang menggunakan nama binatang. ' .
+                    'Jika teks hanya menyebut nama binatang tanpa konteks menghina, loloskan saja. ' .
+                    'Contoh yang harus dianggap toksik (is_toxic: true): "Kamu anjing", "Dasar monyet", "Otak udang". ' .
+                    'Contoh yang harus dianggap aman (is_toxic: false): "Anjing", "Saya punya kucing", "Monyet makan pisang". ' .
+                    'Sekarang, analisis teks berikut dan berikan respons HANYA dalam format JSON yang ketat dengan kunci "is_toxic" (boolean) dan "reason" (string). ' .
+                    'Teksnya adalah: "' . $inputcomments . '"';
+                $response = Http::timeout(120)->post(
+                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . $apiKey,
+                    [
+                        'contents' => [
+                            [
+                                'parts' => [
+                                    ['text' => $prompt]
+                                ]
+                            ]
+                        ]
+                    ]
+                );
+                if ($response->successful()) {
+                    $geminiResultText = $response->json('candidates.0.content.parts.0.text');
+
+                    preg_match('/\{.*\}/s', $geminiResultText, $matches);
+                    $analysisResult = null;
+                    if (!empty($matches[0])) {
+                        $analysisResult = json_decode($matches[0], true);
+                    }
+                    if (isset($analysisResult['is_toxic']) && $analysisResult['is_toxic'] == true) {
+                        return response()->json([
+                            'itsToxic' => true,
+                            'commentartiestoriesid' => $reqplat,
+                            'message' => $analysisResult['reason'] ?? 'Komentar mengandung kata-kata yang tidak pantas.'
+                        ], 422);
+                    }                    
+                    $comstories = BalcomStories::create([
+                        'userid' => $requscom,
+                        'commentartiestoriesid' => $reqplat,
+                        'comment' => $inputcomments,
+                    ]);
+                    $message = $inputcomments;
+                    $improfil = session('improfil');
+                    $created_at = $comstories->created_at;
+                    $comstoriesid = $comstories->balcomstoriesid;
+                    $now = \Carbon\Carbon::now();
+                    $diffInMinutes001 = $created_at->diffInMinutes($now);
+                    $diffInHours001 = $created_at->diffInHours($now);
+                    $diffInDays001 = $created_at->diffInDays($now);
+                    $diffInWeeks001 = $created_at->diffInWeeks($now);
+                    $diffInMonths001 = $created_at->diffInMonths($now);
+                    $diffInYears001 = $created_at->diffInYears($now);
+                    $diffInMinutes = (int) $diffInMinutes001;
+                    $diffInHours = (int) $diffInHours001;
+                    $diffInDays = (int) $diffInDays001;
+                    $diffInWeeks = (int) $diffInWeeks001;
+                    $diffInMonths = (int) $diffInMonths001;
+                    $diffInYears = (int) $diffInYears001;
+                    if ($diffInMinutes < 60) {
+                        $timeAgo = $diffInMinutes . ' menit yang lalu';
+                    } elseif ($diffInHours < 24) {
+                        $timeAgo = $diffInHours . ' jam yang lalu';
+                    } elseif ($diffInDays < 7) {
+                        $timeAgo = $diffInDays . ' hari yang lalu';
+                    } elseif ($diffInWeeks < 4) {
+                        $timeAgo = $diffInWeeks . ' minggu yang lalu';
+                    } elseif ($diffInMonths < 12) {
+                        $timeAgo = $diffInMonths . ' bulan yang lalu';
+                    } else {
+                        $timeAgo = $diffInYears . ' tahun yang lalu';
+                    }
+                    $userid = session('userid');
+                    $jumlah = BalcomStories::where('commentartiestoriesid', $reqplat)->count();
+                    broadcast(new UserTyping1($userid, $username, $message, $comstoriesid, $improfil, $timeAgo, $filename, $jumlah, $reqplat));
+                    return response()->json(['logged_in' => true, 'username' => $username, 'userid' => $userid, 'message' => $inputcomments, 'commentartiestoriesid' => $reqplat, 'improfil' => $improfil, 'created_at' => $timeAgo, 'balcomstoriesid' => $comstoriesid,'jumlah' => $jumlah]);
+                }
             }
-            $comstories = BalcomStories::create([
-                'userid' => $requscom,
-                'commentartiestoriesid' => $reqplat,
-                'comment' => $inputcomments,
-            ]);
-            $message = $inputcomments;
-            $improfil = session('improfil');
-            $created_at = $comstories->created_at;
-            $comstoriesid = $comstories->balcomstoriesid;
-            $now = \Carbon\Carbon::now();
-            $diffInMinutes001 = $created_at->diffInMinutes($now);
-            $diffInHours001 = $created_at->diffInHours($now);
-            $diffInDays001 = $created_at->diffInDays($now);
-            $diffInWeeks001 = $created_at->diffInWeeks($now);
-            $diffInMonths001 = $created_at->diffInMonths($now);
-            $diffInYears001 = $created_at->diffInYears($now);
-            $diffInMinutes = (int) $diffInMinutes001;
-            $diffInHours = (int) $diffInHours001;
-            $diffInDays = (int) $diffInDays001;
-            $diffInWeeks = (int) $diffInWeeks001;
-            $diffInMonths = (int) $diffInMonths001;
-            $diffInYears = (int) $diffInYears001;
-            if ($diffInMinutes < 60) {
-                $timeAgo = $diffInMinutes . ' menit yang lalu';
-            } elseif ($diffInHours < 24) {
-                $timeAgo = $diffInHours . ' jam yang lalu';
-            } elseif ($diffInDays < 7) {
-                $timeAgo = $diffInDays . ' hari yang lalu';
-            } elseif ($diffInWeeks < 4) {
-                $timeAgo = $diffInWeeks . ' minggu yang lalu';
-            } elseif ($diffInMonths < 12) {
-                $timeAgo = $diffInMonths . ' bulan yang lalu';
-            } else {
-                $timeAgo = $diffInYears . ' tahun yang lalu';
-            }
-            $userid = session('userid');
-            $jumlah = BalcomStories::where('commentartiestoriesid', $reqplat)->count();
-            broadcast(new UserTyping1($userid, $username, $message, $comstoriesid, $improfil, $timeAgo, $filename, $jumlah, $reqplat));
-            return response()->json(['logged_in' => true, 'username' => $username, 'userid' => $userid, 'message' => $inputcomments, 'commentartiestoriesid' => $reqplat, 'improfil' => $improfil, 'created_at' => $timeAgo, 'balcomstoriesid' => $comstoriesid,'jumlah' => $jumlah]);
         }
     }
 }

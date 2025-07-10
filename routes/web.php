@@ -200,7 +200,7 @@ use Google\Service\Drive as Google_Service_Drive;
                                 $queryBuilder->where(function ($q) use ($reqplat) {
                                             $q->where('coderies', $reqplat);
                                 });
-                    })->firstOrFail();
+                    })->get();
         if ($cekcontent->isEmpty()) {
             abort(404);
         }
@@ -224,9 +224,10 @@ use Google\Service\Drive as Google_Service_Drive;
                                 $queryBuilder->where(function ($q) use ($reqplat) {
                                             $q->where('coderies', $reqplat);
                                 });
-                    })->firstOrFail();
+                    })->get();
         if ($cekcontent->isEmpty()) {
-            abort(404);
+            $fullPath = $request->path();
+            return view('blankpage', ['requested' => $fullPath]);
         }
         if (!session('isLoggedIn')) {
                 $videos = Artievides::with('usericonVides')
