@@ -10,17 +10,17 @@
         window.hapuscomment = window.pusher02.subscribe('hapuscomment');
     }
     window.hapuscommenttime = null;
-    window.haouscommentmore = true;
+    window.hapuscommentmore = true;
     window.hapuscomment.bind('hapuscomment', function (data) {
-        if (window.haouscommentmore) {
-            const getwrapper = document.querySelector(`.commentwrapcom-${data.commentid}`);
-            if (getwrapper) {
+        if (data.id) {
+            if (window.hapuscommentmore) {
+                const getwrapper = document.getElementById(`commentwrapcom-${data.id}`);
                 getwrapper.remove();
+                clearTimeout(window.hapuscommenttime);
+                window.hapuscommenttime = setTimeout(() => {
+                    window.hapuscommentmore = true;
+                }, 1000);
             }
-            clearTimeout(window.hapuscommenttime);
-            window.hapuscommenttime = setTimeout(() => {
-                window.haouscommentmore = true;
-            }, 1000);
         }
     });
   </script>

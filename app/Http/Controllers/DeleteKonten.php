@@ -2,11 +2,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artiestories;
-use App\Models\Artievides;
+use App\Models\BalcomStories;
 use App\Models\ComStories;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use App\Events\hapuscomment;
+use App\Events\hapuscomment1;
 
 class DeleteKonten extends Controller
 {
@@ -23,11 +24,13 @@ class DeleteKonten extends Controller
             broadcast(new hapuscomment($id));
             return response()->json(['success' => true, 'commentid' => $id]);
         }
-        if($request->json('artievidesid')){
-            $video = Artievides::where('codevides', $request->json('artievidesid'))->first();
-            if ($video) {
-                $pemilik = $video->usericonvides->username;
-            }
+        if($request->json('id1')){
+            $comment = BalcomStories::where('balcomstoriesid', $request->json('id1'))->first();
+            $id1 = $comment->balcomstoriesid;
+            $id = $comment->commentartiestoriesid;
+            $comment->forceDelete();
+            broadcast(new hapuscomment1($id1, $id));
+            return response()->json(['success' => true, 'commentid' => $id1, 'akarid' => $id]);
         }
         if($request->json('artiestoriesid')){
             $story = Artiestories::where('coderies', $request->json('artiestoriesid'))->first();

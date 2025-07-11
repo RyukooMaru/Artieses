@@ -85,30 +85,32 @@
                 <p class="urungkan001 urungkansaja-{{ $commentlagi }} hidden" id="urungkansaja-{{ $commentlagi }}">Urungkan</p>
                 <p class="captionStoriess gg12">{{ $timeAgo }}</p>
             </div>
-            <div class="dibales lagi-{{ $commentlagi }} hidden" id="lagi-{{ $commentlagi }}">
-                <div class="brcmt2 hidden" id="divbrcmt2-{{ $commentlagi }}">
-                    <p id="brcmt2-{{ $commentlagi }}"></p>
-                    <p id="Alert-Toxic1-{{ $commentlagi }}"></p>
+            <div class="replies replies-{{ $commentlagi }} hidden" id="seerpl2-{{ $commentlagi }}">
+                <div class="dibales lagi-{{ $commentlagi }}" id="lagi-{{ $commentlagi }}">
+                    <div class="brcmt2 hidden" id="divbrcmt2-{{ $commentlagi }}">
+                        <p id="brcmt2-{{ $commentlagi }}"></p>
+                        <p id="Alert-Toxic1-{{ $commentlagi }}"></p>
+                    </div>
+                    <img src="{{ asset('partses/import.png') }}" class="iclikestoryimp1" id="importbtn1-{{ $commentlagi }}">
+                    <input type="file" accept="image/*" id="filepicker1-{{ $commentlagi }}" class="hidden" />
+                    <input type="text" class="inpbalassaja inpbalassaja-{{ $commentlagi }}" id="inpbalassaja-{{ $commentlagi }}" placeholder="Kirim komentar..." required />
+                    <input type="hidden" value="{{ $commentlagi }}" id="inpbalassajahidden-{{ $commentlagi }}">
+                    <button type="button" class="close-dibales close-dibales-{{ $commentlagi }} hidden" id="close-dibales-{{ $commentlagi }}"x>&times;</button>
+                    <button type="submit" class="btnimg-sendcom btnimg-sendcom-{{ $commentlagi }}" id="btnimg-sendcom-{{ $commentlagi }}">
+                        <img class="iclikescmt1" src="{{ asset('partses/sendcomdm.png') }}">
+                    </button>
                 </div>
-                <img src="{{ asset('partses/import.png') }}" class="iclikestoryimp1" id="importbtn1-{{ $commentlagi }}">
-                <input type="file" accept="image/*" id="filepicker1-{{ $commentlagi }}" class="hidden" />
-                <input type="text" class="inpbalassaja inpbalassaja-{{ $commentlagi }}" id="inpbalassaja-{{ $commentlagi }}" placeholder="Kirim komentar..." required />
-                <input type="hidden" value="{{ $commentlagi }}" id="inpbalassajahidden-{{ $commentlagi }}">
-                <button type="button" class="close-dibales close-dibales-{{ $commentlagi }} hidden" id="close-dibales-{{ $commentlagi }}"x>&times;</button>
-                <button type="submit" class="btnimg-sendcom btnimg-sendcom-{{ $commentlagi }}" id="btnimg-sendcom-{{ $commentlagi }}">
-                    <img class="iclikescmt1" src="{{ asset('partses/sendcomdm.png') }}">
-                </button>
             </div>
         @else 
             <div class="balaskan001" id="balaskan001-{{ $commentlagi }}">
                 @include('appes.artiestories.rcm')
                 <p class="balaskan002" id="seerpl11-{{ $commentlagi }}">Lihat({{ count($comment->replies) }})</p>
-                <p class="urungkan001 hidden" id="seerpl01-{{ $commentlagi }}">Tutup({{ count($comment->replies) }}) </p>
+                <p class="urungkan001 hidden" id="seerpl01-{{ $commentlagi }}">Tutup({{ count($comment->replies) }})</p>
                 <p class="captionStoriess gg12">{{ $timeAgo }}</p>
             </div>
             <div class="replies replies-{{ $commentlagi }} hidden" id="seerpl2-{{ $commentlagi }}">
                 @foreach ($comment->replies as $reply)
-                    <div class="reply reply-{{ $commentlagi }}">
+                    <div class="reply reply-{{ $commentlagi }}" id="reply-{{ $reply->balcomstoriesid }}">
                         @php
                             $username = $reply->userBalcom->username ?? 'defaultuser';
                             $improfil = $reply->userBalcom->improfil ?? 'default.png';
@@ -147,13 +149,13 @@
                                 $isAdmin = $loggedInUser && $loggedInUser->admin;
                             @endphp
                             @if ($isUserOwner || $isAdmin)
-                                <img class="delete-content" id="delete-comment1-{{ $commentlagi }}" data-light="{{ asset('partses/deletelm.png') }}" data-dark="{{ asset('partses/deletedm.png') }}">
+                                <img class="delete-content" id="delete-comment1-{{ $reply->balcomstoriesid }}" data-light="{{ asset('partses/deletelm.png') }}" data-dark="{{ asset('partses/deletedm.png') }}">
                             @else
                             @endif
                         </div>
                         
                     </div>
-                    <div class="wrappercom3 wrappercom3-{{ $commentlagi }}">
+                    <div class="wrappercom3 wrappercom3-{{ $commentlagi }}" id="wrappercom3-{{ $reply->balcomstoriesid }}">
                         @include('appes.artiestories.rcm1')
                         @include('appes.artiestories.cek2')
                     </div>

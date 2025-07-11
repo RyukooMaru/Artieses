@@ -19,6 +19,7 @@
                 window.canFetchTyping3 = false;
                 const reply = document.createElement('div');
                 reply.className = `reply reply-${data.reqplat}`;
+                reply.id = `reply-${data.comstoriesid}`
                 const aprofil = document.createElement('a');
                 aprofil.href = `/profiles/${data.username}`;
                 const imgprofil = document.createElement('img');
@@ -42,6 +43,7 @@
                     messageprof.innerText = tempDiv.innerText;
                 }
                 const wrappercom3 = document.createElement('div');
+                wrappercom3.id = `wrappercom3-${data.comstoriesid}`
                 wrappercom3.className = `wrappercom3 wrappercom3-${data.reqplat}`;
                 const reacted = document.createElement('div');
                 reacted.className = `srcard4 srcard5-${data.comstoriesid} hidden`;
@@ -62,38 +64,59 @@
                 reactedimg1.setAttribute('data-reaksi4', 'suka');
                 reactedimg1.setAttribute('data-artiestoriesid4', `${data.comstoriesid}`);
                 const reactedimg2 = document.createElement('img');
-                reactedimg2.src = '{{ asset('partses/reaksi/suka.png') }}';
+                reactedimg2.src = '{{ asset('partses/reaksi/senang.png') }}';
                 reactedimg2.className = `iclikestory reaksi-btn4-${data.comstoriesid}`;
-                reactedimg2.setAttribute('data-reaksi4', 'suka');
+                reactedimg2.setAttribute('data-reaksi4', 'senang');
                 reactedimg2.setAttribute('data-artiestoriesid4', `${data.comstoriesid}`);
                 const reactedimg3 = document.createElement('img');
-                reactedimg3.src = '{{ asset('partses/reaksi/suka.png') }}';
+                reactedimg3.src = '{{ asset('partses/reaksi/ketawa.png') }}';
                 reactedimg3.className = `iclikestory reaksi-btn4-${data.comstoriesid}`;
-                reactedimg3.setAttribute('data-reaksi4', 'suka');
+                reactedimg3.setAttribute('data-reaksi4', 'ketawa');
                 reactedimg3.setAttribute('data-artiestoriesid4', `${data.comstoriesid}`);
                 const reactedimg4 = document.createElement('img');
-                reactedimg4.src = '{{ asset('partses/reaksi/suka.png') }}';
+                reactedimg4.src = '{{ asset('partses/reaksi/sedih.png') }}';
                 reactedimg4.className = `iclikestory reaksi-btn4-${data.comstoriesid}`;
-                reactedimg4.setAttribute('data-reaksi4', 'suka');
+                reactedimg4.setAttribute('data-reaksi4', 'sedih');
                 reactedimg4.setAttribute('data-artiestoriesid4', `${data.comstoriesid}`);
                 const reactedimg5 = document.createElement('img');
-                reactedimg5.src = '{{ asset('partses/reaksi/suka.png') }}';
+                reactedimg5.src = '{{ asset('partses/reaksi/marah.png') }}';
                 reactedimg5.className = `iclikestory reaksi-btn4-${data.comstoriesid}`;
-                reactedimg5.setAttribute('data-reaksi4', 'suka');
+                reactedimg5.setAttribute('data-reaksi4', 'marah');
                 reactedimg5.setAttribute('data-artiestoriesid4', `${data.comstoriesid}`);
                 const reactedp = document.createElement('p');
                 reactedp.className = `rbtnry5-${data.comstoriesid}`;
                 reactedp.id = `rbtnry5-${data.comstoriesid}`;
-                reactedp.innerText = 'suka';
+                reactedp.innerText = 'Suka';
                 const createdate = document.createElement('p');
                 createdate.className = `captionStoriess gg2`;
                 createdate.innerHTML = `${data.timeAgo}`;
                 const getChat = document.getElementById(`lagi-${data.reqplat}`);
+                getChat.classList.remove('hidden');
                 const balas = document.getElementById(`seerpl11-${data.reqplat}`);
                 const urungkan = document.getElementById(`seerpl01-${data.reqplat}`);
                 reply.append(aprofil, dispcard);
                 aprofil.appendChild(imgprofil);
-                dispcard.append(aname,messageprof);
+                const deletecomment = document.createElement('img')
+                deletecomment.className = `delete-content`;
+                deletecomment.id = `delete-comment1-${data.comstoriesid}`;
+                deletecomment.setAttribute('data-light', `{{ asset('partses/deletelm.png') }}`);
+                deletecomment.setAttribute('data-dark', `{{ asset('partses/deletedm.png') }}`);
+                deletecomment.src = "{{ asset('partses/deletedm.png')}}";
+                deletecomment.addEventListener('click', function () {
+                    const idAttr = deletecomment.id;
+                    const storyId = idAttr.replace('delete-comment1-', '');
+                    if (!storyId) return;
+                    fetch('/delete-konten', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        },
+                        body: JSON.stringify({ id1: storyId })
+                    })
+                    .then(res => res.json())
+                });
+                dispcard.append(aname,messageprof, deletecomment);
                 aname.appendChild(nameprofil);
                 wrappercom3.append(reacted, reactedp, createdate);
                 reacted.append(reacted1, reacted2, reacted3, reacted4, reacted5);
@@ -103,9 +126,11 @@
                 reacted4.appendChild(reactedimg4);
                 reacted5.appendChild(reactedimg5);
                 const getreplies = document.getElementById(`seerpl2-${data.reqplat}`);
+                console.log(getreplies);
                 if (!balas) {
                     const balas1 = document.getElementById(`balaskansaja-${data.reqplat}`);
                     const urungkan1 = document.getElementById(`urungkansaja-${data.reqplat}`);
+                    getreplies.remove();
                     const replies = document.createElement('div');
                     replies.className = `replies replies-${data.reqplat}`;
                     replies.id = `seerpl2-${data.reqplat}`;
@@ -168,6 +193,27 @@
                         getreplies.append(reply, wrappercom3, getChat);
                     };
                 };
+                function setupHoverListeners(rbtrny5, srcard5) {
+                    let hideTimeout;
+                    function showCard() {
+                        clearTimeout(hideTimeout);
+                        srcard5.classList.remove('hidden');
+                        rbtrny5.classList.add('hidden');
+                    }
+                    function hideCard() {
+                        hideTimeout = setTimeout(() => {
+                            if (!rbtrny5.matches(':hover') && !srcard5.matches(':hover')) {
+                                srcard5.classList.add('hidden');
+                                rbtrny5.classList.remove('hidden');
+                            }
+                        }, 250);
+                    }
+                    rbtrny5.addEventListener('mouseenter', showCard);
+                    rbtrny5.addEventListener('mouseleave', hideCard);
+                    srcard5.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+                    srcard5.addEventListener('mouseleave', hideCard);
+                }
+                setupHoverListeners(reactedp, reacted);
                 getChat.classList.remove('hidden');
                 clearTimeout(window.typingTimeout3);
                 window.typingTimeout3 = setTimeout(() => {

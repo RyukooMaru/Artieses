@@ -32,8 +32,7 @@
     margin-bottom: 20px;
     border-radius: 12px;
     padding-top: 10px;
-    min-width: 80%;
-    margin-left: calc(25% + 2%);
+    width: 70% !important;
   }
   .input-group button {
     min-width: 100% !important;

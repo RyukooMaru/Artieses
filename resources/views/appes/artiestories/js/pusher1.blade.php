@@ -73,7 +73,7 @@
                     urungkansaja.id = `urungkansaja-${data.comstoriesid}`;
                     urungkansaja.innerText = 'Urungkan';
                     const dibaleslagi = document.createElement('div');
-                    dibaleslagi.className = `dibales lagi-${data.comstoriesid} hidden`;
+                    dibaleslagi.className = `dibales lagi-${data.comstoriesid}`;
                     dibaleslagi.id = `lagi-${data.comstoriesid}`;
                     const inpbalassaja = document.createElement('input');
                     inpbalassaja.type = 'text';
@@ -106,15 +106,96 @@
                     brort.id = `divbrcmt2-${data.comstoriesid}`;
                     const brortp = document.createElement('p');
                     brortp.id = `brcmt2-${data.comstoriesid}`;
+                    const srcard3 = document.createElement('div');
+                    srcard3.className = `srcard3 srcard-${data.comstoriesid} hidden`;
+                    srcard3.id = `srcard3-${data.comstoriesid}`;
+                    const reactedjava = document.createElement('a');
+                    reactedjava.href = `javascript:void(0)`;
+                    const reactedjava1 = document.createElement('a');
+                    reactedjava1.href = `javascript:void(0)`;
+                    const reactedjava2 = document.createElement('a');
+                    reactedjava2.href = `javascript:void(0)`;
+                    const reactedjava3 = document.createElement('a');
+                    reactedjava3.href = `javascript:void(0)`;
+                    const reactedjava4 = document.createElement('a');
+                    reactedjava4.href = `javascript:void(0)`;
+                    const reactedimg = document.createElement('img');
+                    reactedimg.src = '{{ asset('partses/reaksi/suka.png') }}';
+                    reactedimg.className = `iclikestoriesemote3 reaksi-btn2 reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg.id = `reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg.setAttribute('data-reaksi2', 'suka');
+                    reactedimg.setAttribute('data-artiestoriesid2', `${data.comstoriesid}`);
+                    const reactedimg1 = document.createElement('img');
+                    reactedimg1.src = '{{ asset('partses/reaksi/senang.png') }}';
+                    reactedimg1.className = `iclikestoriesemote3 reaksi-btn2 reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg1.id = `reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg1.setAttribute('data-reaksi2', 'senang');
+                    reactedimg1.setAttribute('data-artiestoriesid2', `${data.comstoriesid}`);
+                    const reactedimg2 = document.createElement('img');
+                    reactedimg2.src = '{{ asset('partses/reaksi/ketawa.png') }}';
+                    reactedimg2.className = `iclikestoriesemote3 reaksi-btn2 reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg2.id = `reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg2.setAttribute('data-reaksi2', 'ketawa');
+                    reactedimg2.setAttribute('data-artiestoriesid2', `${data.comstoriesid}`);
+                    const reactedimg3 = document.createElement('img');
+                    reactedimg3.src = '{{ asset('partses/reaksi/sedih.png') }}';
+                    reactedimg3.className = `iclikestoriesemote3 reaksi-btn2 reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg3.id = `reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg3.setAttribute('data-reaksi2', 'sedih');
+                    reactedimg3.setAttribute('data-artiestoriesid2', `${data.comstoriesid}`);
+                    const reactedimg4 = document.createElement('img');
+                    reactedimg4.src = '{{ asset('partses/reaksi/marah.png') }}';
+                    reactedimg4.className = `iclikestoriesemote3 reaksi-btn2 reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg4.id = `reaksi-btn2-${data.comstoriesid}`;
+                    reactedimg4.setAttribute('data-reaksi2', 'marah');
+                    reactedimg4.setAttribute('data-artiestoriesid2', `${data.comstoriesid}`);
+                    const getreplies = document.createElement('div');
+                    getreplies.className = `replies replies-${data.comstoriesid} hidden`;
+                    getreplies.id = `seerpl2-${data.comstoriesid}`;
+                    const deletecomment = document.createElement('img');
+                    deletecomment.className = `delete-content`;
+                    deletecomment.id = `delete-comment-${data.comstoriesid}`;
+                    deletecomment.setAttribute('data-light', `{{ asset('partses/deletelm.png') }}`);
+                    deletecomment.setAttribute('data-dark', `{{ asset('partses/deletedm.png') }}`);
+                    deletecomment.src = "{{ asset('partses/deletedm.png')}}";
+                    deletecomment.addEventListener('click', function () {
+                        const idAttr = deletecomment.id;
+                        const storyId = idAttr.replace('delete-comment-', '');
+                        if (!storyId) return;
+                        fetch('/delete-konten', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            },
+                            body: JSON.stringify({ id: storyId })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                const getwrapper = document.querySelector(`.commentwrapcom-${data.commentid}`);
+                                if (getwrapper) {
+                                    getwrapper.remove();
+                                }
+                            }
+                        });
+                    });
                     container.appendChild(commentwrapcom001);
+                    reactedjava.appendChild(reactedimg);
+                    reactedjava1.appendChild(reactedimg1);
+                    reactedjava2.appendChild(reactedimg2);
+                    reactedjava3.appendChild(reactedimg3);
+                    reactedjava4.appendChild(reactedimg4);
+                    srcard3.append(reactedjava, reactedjava1, reactedjava2, reactedjava3, reactedjava4);
                     commentwrapcom001.append(card, wrappercom2);
                     card.append(aharen, dispcard);
                     aharen.appendChild(img);
-                    dispcard.append(ddispcanam, pComment);
+                    dispcard.append(ddispcanam, pComment, deletecomment);
                     ddispcanam.appendChild(aharen1);
                     aharen1.appendChild(pName);
-                    wrappercom2.append(balaskan001, dibaleslagi);
-                    balaskan001.append(suka, balaskan, urungkansaja, created);
+                    wrappercom2.append(balaskan001, getreplies);
+                    getreplies.appendChild(dibaleslagi);
+                    balaskan001.append(srcard3, suka, balaskan, urungkansaja, created);
                     dibaleslagi.append(brort, imgupload, inpfile, inpbalassaja, inpbalassajahidden, submitDibales);
                     brort.appendChild(brortp);
                     submitDibales.appendChild(dibalesIMG);
@@ -242,6 +323,27 @@
                         preview.appendChild(delimg);
                         dibalesContainer.prepend(preview);
                     }
+                    function setupHoverListeners(rbtrny3, srcard3) {
+                        let hideTimeout;
+                        function showCard() {
+                            clearTimeout(hideTimeout);
+                            srcard3.classList.remove('hidden');
+                            rbtrny3.classList.add('hidden');
+                        }
+                        function hideCard() {
+                            hideTimeout = setTimeout(() => {
+                                if (!rbtrny3.matches(':hover') && !srcard3.matches(':hover')) {
+                                    srcard3.classList.add('hidden');
+                                    rbtrny3.classList.remove('hidden');
+                                }
+                            }, 250);
+                        }
+                        rbtrny3.addEventListener('mouseenter', showCard);
+                        rbtrny3.addEventListener('mouseleave', hideCard);
+                        srcard3.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+                        srcard3.addEventListener('mouseleave', hideCard);
+                    }
+                    setupHoverListeners(suka, srcard3);
                     setupSendButtonListener(submitDibales, inpbalassaja, inpbalassajahidden, inpfile, data.comstoriesid);
                     setupImageUpload(imgupload, data.comstoriesid, inpfile, inpbalassaja); 
                   }

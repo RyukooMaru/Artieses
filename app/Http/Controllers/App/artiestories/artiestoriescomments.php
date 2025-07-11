@@ -46,7 +46,7 @@ class artiestoriescomments extends Controller
             ]);
         }
         $username = session('username');
-        $reqplat = $request->input('comentses1');
+        $reqplat = $request->input('storyCode1');
         $message = $request->input('message1');
         broadcast(new BroadcastTyping1($username, $reqplat, $message));
         return response()->json([
@@ -143,6 +143,7 @@ class artiestoriescomments extends Controller
                 return response()->json([
                     'status' => $coderies,
                     'filename' => $filename,
+                    'comstoriesid' => $comstoriesid,
                     'message' => $inputcomments
                 ]);
             }
@@ -184,8 +185,7 @@ class artiestoriescomments extends Controller
                     $comstories = ComStories::create([
                                 'userid' => $requscom,
                                 'coderies' => $coderies,
-                                'commentses' => $inputcomments,
-                                'gemini result' => $geminiResultText
+                                'commentses' => $inputcomments
                             ]);
                     $message = $inputcomments;
                     $improfil = session('improfil', 'default.png');
@@ -306,7 +306,6 @@ class artiestoriescomments extends Controller
                 );
                 if ($response->successful()) {
                     $geminiResultText = $response->json('candidates.0.content.parts.0.text');
-
                     preg_match('/\{.*\}/s', $geminiResultText, $matches);
                     $analysisResult = null;
                     if (!empty($matches[0])) {

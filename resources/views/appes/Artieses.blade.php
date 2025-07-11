@@ -229,6 +229,8 @@
         });
     });
   </script><!-- Delete Comment Balas -->
+  @include('appes.artiestories.js.pusherapuscomment')<!-- react story -->
+  @include('appes.artiestories.js.pusherapuscomment0')<!-- react story -->
   @include('appes.artiestories.js.reactfront')<!-- react story -->
   @include('appes.artiestories.js.commentarist0')<!-- give reacted artietories(front) -->
   @include('appes.artiestories.js.commentarist01')<!-- give reacted artietories(back) -->

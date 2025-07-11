@@ -4,16 +4,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const id = rbtnry4.id.replace('rbtnry4-', '');
         const button = document.getElementById('rbtnry4-' + id);
         const srcard4 = document.getElementById('srcard4-' + id);
+        const reacter = document.getElementById('iclikeswrapimg-' + id)
+
         let hideTimeout;
+
         function showCard() {
             clearTimeout(hideTimeout);
             srcard4.classList.remove('hidden');
+            reacter.classList.add('hidden');
             button.classList.add('hidden');
         }
+
         function hideCard() {
             hideTimeout = setTimeout(() => {
                 if (!button.matches(':hover') && !srcard4.matches(':hover')) {
                     srcard4.classList.add('hidden');
+                    reacter.classList.remove('hidden');
                     button.classList.remove('hidden');
                 }
             }, 250);

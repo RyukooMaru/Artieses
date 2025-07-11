@@ -141,11 +141,13 @@
     });
     document.addEventListener('focusin', function(event) {
         const inputOL = event.target;
+        window.canFetchTyping05 = true;
         if (!inputOL.id || !inputOL.id.startsWith('inpbalassaja-')) return;
         if (inputOL.dataset.listenersAttached) return;
         const targetid = inputOL.id.replace('inpbalassaja-', '');
         const clearBtn1 = document.getElementById(`close-dibales-${targetid}`);
         const commentses1 = document.getElementById(`inpbalassajahidden-${targetid}`);
+        const storyCode1 = commentses1.value.trim();
         let typingTimeout = null;
         inputOL.addEventListener('input', () => {
             clearBtn1?.classList.toggle('hidden', inputOL.value.trim().length === 0);
@@ -159,6 +161,32 @@
                 const sendButton = document.getElementById(`btnimg-sendcom-${targetid}`);
                 if (sendButton) {
                     handleSendComment(sendButton);
+                }
+            } else {
+                const message1 = inputOL.value.trim();
+                if (window.canFetchTyping05) {
+                    window.canFetchTyping05 = false;
+                    fetch('/broadcast-typing1', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ message1, storyCode1 })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.logged_in) {
+                            console.log('kekirim ga?', data);
+                            sessionStorage.setItem('alert', data.alert);
+                            sessionStorage.setItem('form', data.form);
+                            window.location.href = data.redirect;
+                        }
+                    });
+                    clearTimeout(window.typingTimeout5);
+                    window.typingTimeout5 = setTimeout(() => {
+                        window.canFetchTyping05 = true;
+                    }, 1000);
                 }
             }
         });
