@@ -223,8 +223,6 @@ class artiestoriescomments extends Controller
                         'filename' => $filename,
                         'message' => $inputcomments
                     ]);
-                } else {
-                    return response()->json(['error' => 'Gagal menghubungi layanan analisis.'], 500);
                 }
             }
         }
@@ -284,7 +282,6 @@ class artiestoriescomments extends Controller
             }
             if (!$request->hasFile('fileInput1')) {
                 $inputcomments = $request->input('message1');
-                
                 $apiKey = env('GEMINI_API');
                 $prompt = 'Anda adalah seorang moderator konten yang cerdas. Tugas Anda adalah menganalisis teks untuk mendeteksi apakah teks tersebut merupakan PENGHINAAN atau SERANGAN PERSONAL yang menggunakan nama binatang. ' .
                     'Jika teks hanya menyebut nama binatang tanpa konteks menghina, loloskan saja. ' .

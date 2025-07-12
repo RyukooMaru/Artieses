@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }, 250);
         }
-
         button.addEventListener('mouseenter', showCard);
         button.addEventListener('mouseleave', hideCard);
         srcard2.addEventListener('mouseleave', hideCard);

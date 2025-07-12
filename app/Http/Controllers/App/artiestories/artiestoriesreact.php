@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\App\artiestories;
-
 use App\Events\pusherreact;
 use App\Events\pusherreact1;
 use App\Helpers\AuthHelper;
@@ -79,7 +77,7 @@ class artiestoriesreact extends Controller
             ]);
             $message = 'Reaksi berhasil ditambahkan';
         }
-        broadcast(new pusherreact(session('username'), $validated['artiestoriesid'], $validated['reaksi']));
+        broadcast(new pusherreact(session('username'), $validated['commentartiestoriesid'], $validated['reaksi']));
         return response()->json([
             'logged_in' => true,
             'success' => true,

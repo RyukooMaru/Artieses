@@ -46,7 +46,7 @@
             @include('appes.artiestories.cek')
             @include('appes.artiestories.reacted2')
             <div class="rbtnry001">
-                @include('appes.artiestories.reacted')
+                @include('appes.artiestories.reacted0')
                 <button class="rbtnry cbtnry1-{{ $storyCode }}">
                     <img class="iclikestory" loading="lazy"
                     data-light="{{ asset('partses/commentlm.png') }}"

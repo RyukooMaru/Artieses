@@ -21,7 +21,7 @@
             data-dark="{{ asset('partses/likedm.png') }}">
     </button>
 @else
-    <div class="iclikeswrap1" id="rbtnry1-{{ $storyCode }}">
+    <div class="iclikeswrap1" id="rbtnry2-{{ $storyCode }}">
         <div class="iclikeswrap" id="iclikeswrap-{{ $storyCode }}">
         @foreach($check as $reaksi)
             <img src="{{ asset('partses/reaksi/' . $reaksi . '.png') }}" id="iclikeswraperact-{{ $reaksi }}-{{ $storyCode }}" class="iclikestories">

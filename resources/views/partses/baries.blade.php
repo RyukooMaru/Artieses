@@ -99,11 +99,11 @@
                 <span>Buat</span>
             </a>
             <div class="cardbu" id="cardbu">
-                <!-- <button id="show-artiekeles" class="nav-item">
+                <button id="show-artiekeles" class="nav-item">
                     <img class="icon-img" loading="lazy" data-light="{{ asset('partses/artiekeles.png') }}" data-dark="{{ asset('partses/artiekelesdm.png') }}">
                     <span>Artiekeles(BETA)</span>
-                </button> -->
-                <!-- @include('appes.artiekeles') -->
+                </button>
+                @include('appes.artiekeles')
                 <button id="show-artievides" class="nav-item">
                     <img class="icon-img" loading="lazy" data-light="{{ asset('partses/artievides.png') }}" data-dark="{{ asset('partses/artievidesdm.png') }}">
                     <span>Artievides</span>
