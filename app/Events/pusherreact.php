@@ -9,33 +9,28 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 
-class refr implements ShouldBroadcast
+class pusherreact implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
     public $username;
     public $reqplat;
     public $reactfront;
-
     public function __construct($username, $reqplat, $reactfront)
     {
         $this->username = $username;
         $this->reqplat = $reqplat;
         $this->reactfront = $reactfront;
     }
-
     public function broadcastOn(): array
     {
         return [
-            new Channel('refr'),
+            new Channel('pusherreact'),
         ];
     }
-
     public function broadcastAs()
     {
-        return 'refr';
+        return 'pusherreact';
     }
-
     public function broadcastWith()
     {
         return [

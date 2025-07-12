@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\App\artiestories;
 
-use App\Events\rebc;
-use App\Events\recm;
-use App\Events\refr;
+use App\Events\pusherreact;
 use App\Helpers\AuthHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -42,10 +40,11 @@ class artiestoriesreact extends Controller
             ]);
             $message = 'Reaksi berhasil ditambahkan';
         }
-        broadcast(new refr(session('username'), $validated['artiestoriesid'], $validated['reaksi']));
+        broadcast(new pusherreact(session('username'), $validated['artiestoriesid'], $validated['reaksi']));
         return response()->json([
             'logged_in' => true,
             'success' => true,
+            'reqplat' => $validated['artiestoriesid'],
             'reaksi' => $validated['reaksi'],
             'message' => $message,
             'data' => $created,
