@@ -82,7 +82,6 @@ body.sidebar-collapsed .card-main {
   }
   .wrapper > * {
     width: 70% !important;
-    padding-left: 2%;
     align-self: center;
   }
   body.sidebar-collapsed .card-main {
