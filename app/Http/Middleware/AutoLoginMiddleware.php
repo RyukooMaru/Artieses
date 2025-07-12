@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Http\Middleware;
-
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Session;
 use App\Models\PersistentLogin;
 use App\Models\Users;
-
 class AutoLoginMiddleware
 {
     public function handle(Request $request, Closure $next): Response
@@ -27,11 +24,12 @@ class AutoLoginMiddleware
             if ($user) {
                 session([
                     'isLoggedIn' => true,
-                    'userid'     => $user->userid,
-                    'username'   => $user->username,
-                    'nameuse'    => $user->nameuse,
-                    'email'      => $user->email,
-                    'improfil'   => $user->improfil,
+                    'userid' => $user->userid,
+                    'username' => $user->username,
+                    'nameuse' => $user->nameuse,
+                    'bio' => $user->bio,
+                    'email' => $user->email,
+                    'improfil' => $user->improfil,
                 ]);
             }
         }

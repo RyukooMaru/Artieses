@@ -4,15 +4,13 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Artieses</title>
-  @vite(['resources/css/appes/appes.css', 
-        'resources/css/appes/artiekeles.css',
+  @vite(['resources/css/appes/appes.css',
         'resources/css/appes/artievides.css',
         'resources/css/appes/artiestories.css',
         'resources/js/appes/togglemode.js',
         'resources/js/appes/artiestories.js',
         'resources/js/appes/artievides.js',
         'resources/js/appes/artievides1.js',
-        'resources/js/appes/artiekeles.js',
         ])
   <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
   <link rel="icon" href="{{ asset('partses/favicon.ico') }}">
@@ -40,16 +38,15 @@
             @elseif ($item['type'] === 'story')
                 @php $story = $item['data']; @endphp
                 @include('appes.artiestories.artiestories', ['story' => $story])
-            @elseif ($item['type'] === 'article')
+            <!-- @elseif ($item['type'] === 'article')
                 @php $article = $item['data']; @endphp
                 <div class="card-article">
                     <h3>{{ $article->judul }}</h3>
                     <p>{{ Str::limit(strip_tags($article->konten), 100) }}</p>
-                </div>
+                </div> -->
             @endif
         @endforeach
         <div id="loader" class="text-center my-4" style="display: none;">
-            <span>Memuat konten...</span>
         </div>
     </div>
   </div>

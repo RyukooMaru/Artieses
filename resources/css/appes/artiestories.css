@@ -4,6 +4,13 @@
   width: 31.13%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+.card-artiestories1 p {
+  max-height: none;
+  max-width: none;
+}
+.card-artiestories1 > * {
+  overflow: hidden;
+}
 .image-container {
   display: flex;
   justify-content: center;
@@ -273,7 +280,6 @@ h2 {
 }
 .p-artiestories {
   font-size: 22px;
-  width: 300px;
   margin-top: -35px;
   margin-left: 70px;
 }
