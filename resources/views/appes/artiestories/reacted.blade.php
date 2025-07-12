@@ -15,7 +15,11 @@
     ];
 @endphp
 @if($check->isEmpty()) 
-    <div class="iclikeswrap1" id="iclikeswrap1-{{ $storyCode }}"></div>
+    <button class="rbtnry rbtnry-{{ $storyCode }}" id="rbtnry1-{{ $storyCode }}">
+        <img class="iclikestory" loading="lazy" id="nullreact1-{{ $storyCode }}"
+            data-light="{{ asset('partses/likelm.png') }}"
+            data-dark="{{ asset('partses/likedm.png') }}">
+    </button>
 @else
     <div class="iclikeswrap1" id="iclikeswrap1-{{ $storyCode }}">
         <div class="iclikeswrap" id="iclikeswrap-{{ $storyCode }}">

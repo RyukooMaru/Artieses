@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App\artiestories;
 
 use App\Events\pusherreact;
+use App\Events\pusherreact1;
 use App\Helpers\AuthHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -40,7 +41,6 @@ class artiestoriesreact extends Controller
             ]);
             $message = 'Reaksi berhasil ditambahkan';
         }
-        broadcast(new pusherreact(session('username'), $validated['artiestoriesid'], $validated['reaksi']));
         return response()->json([
             'logged_in' => true,
             'success' => true,
@@ -79,7 +79,7 @@ class artiestoriesreact extends Controller
             ]);
             $message = 'Reaksi berhasil ditambahkan';
         }
-        broadcast(new recm(session('username'), $validated['commentartiestoriesid'], $validated['reaksi']));
+        broadcast(new pusherreact(session('username'), $validated['artiestoriesid'], $validated['reaksi']));
         return response()->json([
             'logged_in' => true,
             'success' => true,
@@ -117,7 +117,7 @@ class artiestoriesreact extends Controller
             ]);
             $message = 'Reaksi berhasil ditambahkan';
         }
-        broadcast(new rebc(session('username'), $validated['balcomstoriesid'], $validated['reaksi']));
+        broadcast(new pusherreact1(session('username'), $validated['balcomstoriesid'], $validated['reaksi']));
         return response()->json([
             'logged_in' => true,
             'success' => true,

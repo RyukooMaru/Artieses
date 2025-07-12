@@ -44,14 +44,9 @@
             </a>
             <p class="captionStories">{{ $story->caption }}</p>
             @include('appes.artiestories.cek')
-            @include('appes.artiestories.reacted')
             @include('appes.artiestories.reacted2')
             <div class="rbtnry001">
-                <button class="rbtnry rbtnry2-{{ $storyCode }}" id="rbtnry2-{{ $storyCode }}">
-                    <img class="iclikestory" loading="lazy" id="nullreact2-{{ $storyCode }}"
-                        data-light="{{ asset('partses/likelm.png') }}"
-                        data-dark="{{ asset('partses/likedm.png') }}">
-                </button>
+                @include('appes.artiestories.reacted')
                 <button class="rbtnry cbtnry1-{{ $storyCode }}">
                     <img class="iclikestory" loading="lazy"
                     data-light="{{ asset('partses/commentlm.png') }}"

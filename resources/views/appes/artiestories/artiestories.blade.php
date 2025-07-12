@@ -90,14 +90,9 @@
                 });
             });
         </script>
-        @include('appes.artiestories.reacted')
         <div class="artiestories1" style="margin-left:10px; margin-top:10px;">
             @include('appes.artiestories.reacted1')
-            <button class="rbtnry rbtnry-{{ $storyCode }}" id="rbtnry1-{{ $storyCode }}">
-                <img class="iclikestory" loading="lazy" id="nullreact1-{{ $storyCode }}"
-                    data-light="{{ asset('partses/likelm.png') }}"
-                    data-dark="{{ asset('partses/likedm.png') }}">
-            </button>
+            @include('appes.artiestories.reacted')
             <div class="commentarist-containe">
                 @include('appes.artiestories.commentarist')
             </div>
