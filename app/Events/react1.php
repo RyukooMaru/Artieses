@@ -1,15 +1,11 @@
 <?php
-
 namespace App\Events;
-
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-
-
-class pusherreact1 implements ShouldBroadcast
+class react1 implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $username;
@@ -24,12 +20,12 @@ class pusherreact1 implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('pusherreact1'),
+            new Channel('react1'),
         ];
     }
     public function broadcastAs()
     {
-        return 'pusherreact1';
+        return 'react1';
     }
     public function broadcastWith()
     {
@@ -40,4 +36,3 @@ class pusherreact1 implements ShouldBroadcast
         ];
     }
 }
-

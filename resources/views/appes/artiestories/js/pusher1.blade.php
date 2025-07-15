@@ -33,7 +33,8 @@
                     const aharen1 = document.createElement('a');
                     aharen1.href = `/profiles/${data.username}`;
                     const img = document.createElement('img');
-                    img.src = `${data.username}/profil/${data.improfil}`;
+                    const BASE_URL = "{{ url('/') }}";
+                    img.src = `${BASE_URL}/konten/${data.improfil}`;
                     img.className = 'creatorstories';
                     const dispcard = document.createElement('div');
                     dispcard.className = 'dispcard';
@@ -214,12 +215,53 @@
                         submitButton.addEventListener('click', function(event) {
                             event.preventDefault();
                             const previewImageContainer = document.querySelector(`#divbrcmt2-${targetId} .image-preview1`);
+                            handleSendComment(submitButton, inputElement, hiddenInputElement, fileInputElement, previewImageContainer, targetId);
                         });
                         inputElement.addEventListener('keydown', (e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                                 e.preventDefault(); 
                                 const previewImageContainer = document.querySelector(`#divbrcmt2-${targetId} .image-preview1`);
+                                handleSendComment(submitButton, inputElement, hiddenInputElement, fileInputElement, previewImageContainer, targetId);
                             }
+                        });
+                    }
+                    function handleSendComment(buttonElement, inputOL, commentses1, fileInput1, delprev1, targetid) {
+                        if (buttonElement.disabled) return;
+                        const message1 = inputOL.value.trim();
+                        const storyCode1 = commentses1.value.trim();
+                        const hasImage = fileInput1?.files.length > 0;
+                        if (!hasImage && message1.length === 0) {
+                            return;
+                        }
+                        buttonElement.disabled = true;
+                        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+                        const formData = new FormData();
+                        formData.append('storyCode1', storyCode1);
+                        formData.append('message1', message1);
+                        if (hasImage) {
+                            formData.append('fileInput1', fileInput1.files[0]);
+                        }
+                        fetch('/enter-typing1', {
+                            method: 'POST',
+                            headers: { 'X-CSRF-TOKEN': csrfToken },
+                            body: formData
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!data.logged_in) {
+                                window.location.href = data.redirect;
+                                return;
+                            }
+                            inputOL.value = '';
+                            if (fileInput1) fileInput1.value = '';
+                            delprev1?.remove();
+                            dibaleslagi.classList.add('hidden');
+                            balaskan.classList.remove('hidden');
+                            urungkansaja.classList.add('hidden');
+                        })
+                        .catch(error => console.error('Error:', error))
+                        .finally(() => {
+                            setTimeout(() => { buttonElement.disabled = false; }, 300);
                         });
                     }
                     function setupImageUpload(importButton, storyCode1, fileInputElement, inputElement) {

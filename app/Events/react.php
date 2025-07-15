@@ -9,7 +9,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 
-class pusherreact implements ShouldBroadcast
+class react implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $username;
@@ -24,12 +24,12 @@ class pusherreact implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('pusherreact'),
+            new Channel('react'),
         ];
     }
     public function broadcastAs()
     {
-        return 'pusherreact';
+        return 'react';
     }
     public function broadcastWith()
     {

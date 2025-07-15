@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\App\artiestories;
-
 use App\Events\BroadcastTyping;
 use App\Events\BroadcastTyping1;
 use App\Events\UserTyping;
@@ -13,7 +11,6 @@ use Illuminate\Http\Request;
 use App\Models\ComStories;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
-
 class artiestoriescomments extends Controller
 {
     public function broadcast(Request $request) {
@@ -56,7 +53,6 @@ class artiestoriescomments extends Controller
             'message' =>  $message
         ]);
     }
-    
     private function uploadToGoogleDrive($file)
     {
         $credentialsPath = base_path(env('GOOGLE_CREDENTIALS_PATH'));

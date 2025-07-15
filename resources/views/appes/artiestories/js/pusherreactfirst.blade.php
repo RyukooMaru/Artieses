@@ -1,19 +1,19 @@
 
   <script>
-    if (typeof window.pusherreact === 'undefined') {
-        window.pusherreact = new Pusher("{{ config('broadcasting.connections.pusher.key') }}", {
+    if (typeof window.react === 'undefined') {
+        window.react = new Pusher("{{ config('broadcasting.connections.pusher.key') }}", {
             cluster: "{{ config('broadcasting.connections.pusher.options.cluster') }}",
             forceTLS: true
         });
     }
-    if (typeof window.pusherreact === 'undefined') {
-        window.pusherreact = window.pusherreact.subscribe('pusherreact');
+    if (typeof window.react === 'undefined') {
+        window.react = window.react.subscribe('react');
     }
-    window.pusherreacttime = null;
-    window.pusherreactmore = true;
-    window.pusherreact.bind('pusherreact', function (data) {
+    window.reacttime = null;
+    window.reactmore = true;
+    window.react.bind('react', function (data) {
         if (data.reqplat) {
-            if (window.pusherreactmore) {
+            if (window.reactmore) {
                 const p = document.getElementById(`rbtnry3-${data.reqplat}`);
                 p.remove();
                 let cekr4 = document.getElementById(`rbtnry4-${data.reqplat}`);
@@ -33,9 +33,9 @@
                         cekr4.appendChild(rimg);
                     }
                 }
-                clearTimeout(window.pusherreacttime);
-                window.pusherreacttime = setTimeout(() => {
-                    window.pusherreactmore = true;
+                clearTimeout(window.reacttime);
+                window.reacttime = setTimeout(() => {
+                    window.reactmore = true;
                 }, 1000);
             }
         }

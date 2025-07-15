@@ -23,7 +23,8 @@
                 const aprofil = document.createElement('a');
                 aprofil.href = `/profiles/${data.username}`;
                 const imgprofil = document.createElement('img');
-                imgprofil.src = `${data.username}/profil/${data.improfil}`;
+                const BASE_URL = "{{ url('/') }}";
+                imgprofil.src = `${BASE_URL}/konten/${data.improfil}`;
                 imgprofil.className = `creatorstories`;
                 const dispcard = document.createElement('div');
                 dispcard.className = 'dispcard';

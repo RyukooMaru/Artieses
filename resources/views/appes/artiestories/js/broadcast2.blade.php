@@ -176,7 +176,6 @@
                    .then(res => res.json())
                    .then(data => {
                        if (!data.logged_in) {
-                           console.log('kekirim ga?', data);
                            sessionStorage.setItem('alert', data.alert);
                            sessionStorage.setItem('form', data.form);
                            window.location.href = data.redirect;
