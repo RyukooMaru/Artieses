@@ -15,7 +15,6 @@ class Subs extends Model
         return $this->belongsTo(Users::class, 'subscriber', 'userid');
     }
 
-    // Relasi ke user yang di-subscribe
     public function subscribingUser()
     {
         return $this->belongsTo(Users::class, 'subscribing', 'userid');

@@ -5,8 +5,6 @@
             btn.addEventListener('click', function () {
                 const reaksi2 = this.getAttribute('data-reaksi2');
                 const storyId2 = this.getAttribute('data-artiestoriesid2');
-                console.log('Reaksi:', reaksi2);
-                console.log('Story ID:', storyId2);
                 if (reaksi2 && storyId2) {
                     fetch("{{ route('uprcm1') }}", {
                         method: 'POST',
@@ -29,16 +27,13 @@
                             window.location.href = data.redirect;
                             return;
                         }
-                        console.log(data.message);
                         if (data.csrf) {
                             document.querySelector('meta[name="csrf-token"]').setAttribute('content', data.csrf);
                         }
                     })
                     .catch(err => {
-                        console.error('Fetch error:', err);
                     });
                 } else {
-                    console.error('Reaksi atau Story ID tidak valid!');
                 }
             });
         });

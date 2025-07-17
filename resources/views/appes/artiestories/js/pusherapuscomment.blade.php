@@ -12,8 +12,11 @@
     window.hapuscommenttime1 = null;
     window.haouscommentmore1 = true;
     window.hapuscomment1.bind('hapuscomment1', function (data) {
+        console.log(`muncul`);
         if (data.id1) {
+            console.log(`muncul`);
             if (window.haouscommentmore1) {
+                console.log(`muncul`);
                 const getwrapper = document.getElementById(`wrappercom3-${data.id1}`);
                 const getreply1 = document.getElementById(`reply-${data.id1}`);
                 const lihat = document.getElementById(`seerpl11-${data.id}`);

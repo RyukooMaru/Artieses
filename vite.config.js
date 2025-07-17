@@ -9,6 +9,7 @@ export default defineConfig({
             input: [
                 'resources/css/captchaes/captchaes.css',
                 'resources/css/appes/appes.css',
+                'resources/css/appes/searches.css',
                 'resources/css/appes/artiekeles.css',
                 'resources/css/appes/artiestories.css',
                 'resources/css/appes/artieprofil.css',

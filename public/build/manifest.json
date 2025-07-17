@@ -34,6 +34,11 @@
     "src": "resources/css/appes/mainartievides.css",
     "isEntry": true
   },
+  "resources/css/appes/searches.css": {
+    "file": "assets/searches-S0HqxVXk.css",
+    "src": "resources/css/appes/searches.css",
+    "isEntry": true
+  },
   "resources/css/authes/authes.css": {
     "file": "assets/authes-BdPuOF0N.css",
     "src": "resources/css/authes/authes.css",
