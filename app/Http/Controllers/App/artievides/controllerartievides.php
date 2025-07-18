@@ -11,17 +11,37 @@ use Google_Service_Drive;
 use Google_Service_Drive_DriveFile;
 use Illuminate\Support\Facades\Http;
 use Google_Service_Drive_Permission;
+use Illuminate\Support\Facades\Session;
 
 class controllerartievides extends Controller
 {
-    private function uploadToGoogleDriveDirect($file)
+    private function uploadToGoogleDriveWithOAuth($file)
     {
-        $credentialsPath = base_path(env('GOOGLE_CREDENTIALS_PATH'));
-        $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
         $client = new \Google_Client();
-        $client->setAuthConfig($credentialsPath);
-        $client->addScope(\Google_Service_Drive::DRIVE);
+        $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
+        $client->setRedirectUri(env('GOOGLE_OAUTH_REDIRECT_URI'));
+        $client->addScope(Google_Service_Drive::DRIVE);
+        $client->setAccessType('offline');
+        $token = session('google_token');
+
+        if (!$token) {
+            throw new \Exception("User belum login ke Google.");
+        }
+
+        $client->setAccessToken($token);
+        if ($client->isAccessTokenExpired()) {
+            if ($client->getRefreshToken()) {
+                $newToken = $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+                session(['google_token' => $client->getAccessToken()]);
+            } else {
+                if ($client->isAccessTokenExpired()) {
+                    return redirect('/login-google');
+                }
+            }
+        }
         $service = new \Google_Service_Drive($client);
+        $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
         $tempName = 'temp_' . time() . '.' . $file->getClientOriginalExtension();
         $fileMetadata = new \Google_Service_Drive_DriveFile([
             'name' => $tempName,
@@ -45,9 +65,9 @@ class controllerartievides extends Controller
             'role' => 'reader',
         ]);
         $service->permissions->create($uploadedFile->id, $permission);
+
         return $uploadedFile->id;
     }
-
 
     public function uploadFile(Request $request)
     {
@@ -105,8 +125,8 @@ class controllerartievides extends Controller
         $randomString = generateUniqueCodevides();
         $video = $request->file('video');
         $thumbnail = $request->file('thumbnail');
-        $videoFileId = $this->uploadToGoogleDriveDirect($video);
-        $thumbFileId = $this->uploadToGoogleDriveDirect($thumbnail);
+        $videoFileId = $this->uploadToGoogleDriveWithOAuth($video);
+        $thumbFileId = $this->uploadToGoogleDriveWithOAuth($thumbnail);
         Artievides::create([
             'userid' => session('userid'),
             'codevides' => $randomString,
