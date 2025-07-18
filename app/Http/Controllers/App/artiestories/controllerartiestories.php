@@ -100,12 +100,36 @@ class controllerartiestories extends Controller
     }
     private function uploadToGoogleDrive($file)
     {
-        $credentialsPath = base_path(env('GOOGLE_CREDENTIALS_PATH'));
         $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
+
         $client = new \Google_Client();
-        $client->setAuthConfig($credentialsPath);
+        $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
+        $client->setRedirectUri(env('GOOGLE_OAUTH_REDIRECT_URI'));
         $client->addScope(\Google_Service_Drive::DRIVE);
+        $client->setAccessType('offline');
+
+        $token = session('google_token');
+        if (!$token) {
+            if ($client->isAccessTokenExpired()) {
+                return redirect('/login-google');
+            }
+        }
+
+        $client->setAccessToken($token);
+        if ($client->isAccessTokenExpired()) {
+            if ($client->getRefreshToken()) {
+                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+                session(['google_token' => $client->getAccessToken()]);
+            } else {
+                if ($client->isAccessTokenExpired()) {
+                    return redirect('/login-google');
+                }
+            }
+        }
+
         $service = new \Google_Service_Drive($client);
+
         $tempName = 'temp_' . time() . '.' . $file->getClientOriginalExtension();
         $fileMetadata = new \Google_Service_Drive_DriveFile([
             'name' => $tempName,
@@ -120,16 +144,19 @@ class controllerartiestories extends Controller
             'uploadType' => 'multipart',
             'fields' => 'id',
         ]);
+
         $newName = $uploadedFile->id . '.' . $file->getClientOriginalExtension();
         $updateMetadata = new \Google_Service_Drive_DriveFile([
             'name' => $newName
         ]);
         $service->files->update($uploadedFile->id, $updateMetadata);
+
         $permission = new \Google_Service_Drive_Permission([
             'type' => 'anyone',
             'role' => 'reader',
         ]);
         $service->permissions->create($uploadedFile->id, $permission);
+
         return $uploadedFile->id;
     }
 }
