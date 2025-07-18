@@ -81,6 +81,33 @@ use Google\Service\Drive as Google_Service_Drive;
             abort(500, 'Terjadi kesalahan saat mengakses file Google Drive');
         }
     });
+    
+    Route::get('/login-google', function () {
+        $client = new Google_Client();
+        $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
+        $client->setRedirectUri(route('google.callback'));
+        $client->addScope(Google_Service_Drive::DRIVE_FILE);
+        $client->setAccessType('offline');
+        $client->setPrompt('consent');
+
+        return redirect($client->createAuthUrl());
+    });
+    Route::get('/oauth2callback', function (Request $request) {
+        $client = new Google_Client();
+        $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
+        $client->setRedirectUri(route('google.callback'));
+
+        if ($request->has('code')) {
+            $token = $client->fetchAccessTokenWithAuthCode($request->code);
+            Session::put('google_token', $token);
+
+            return 'Login berhasil. Token disimpan.';
+        }
+
+        return 'Error: Tidak ada kode';
+    })->name('google.callback');
 #
     // Route::get('/check-limits', function (Request $request) {
     //     return [
