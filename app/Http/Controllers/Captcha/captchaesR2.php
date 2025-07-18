@@ -16,16 +16,38 @@ class captchaesR2 extends Controller
 {
     private function uploadToGoogleDrive($localPath, $finalFileName)
     {
-        $credentialsPath = base_path(env('GOOGLE_CREDENTIALS_PATH'));
         $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
+
         $client = new \Google_Client();
-        $client->setAuthConfig($credentialsPath);
-        $client->addScope(\Google_Service_Drive::DRIVE);
+        $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
+        $client->setRedirectUri(env('GOOGLE_OAUTH_REDIRECT_URI'));
+        $client->addScope(Google_Service_Drive::DRIVE);
+        $client->setAccessType('offline');
+
+        $token = session('google_token');
+        if (!$token) {
+            throw new \Exception("User belum login ke Google.");
+        }
+
+        $client->setAccessToken($token);
+
+        if ($client->isAccessTokenExpired()) {
+            if ($client->getRefreshToken()) {
+                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+                session(['google_token' => $client->getAccessToken()]);
+            } else {
+                throw new \Exception("Token expired dan tidak ada refresh token.");
+            }
+        }
+
         $service = new \Google_Service_Drive($client);
+
         $fileMetadata = new \Google_Service_Drive_DriveFile([
             'name' => $finalFileName,
             'parents' => [$mainFolderId],
         ]);
+
         $content = file_get_contents($localPath);
         $mimeType = mime_content_type($localPath);
 
@@ -35,11 +57,13 @@ class captchaesR2 extends Controller
             'uploadType' => 'multipart',
             'fields' => 'id',
         ]);
+
         $permission = new \Google_Service_Drive_Permission([
             'type' => 'anyone',
             'role' => 'reader',
         ]);
         $service->permissions->create($uploadedFile->id, $permission);
+
         return $uploadedFile->id;
     }
 
