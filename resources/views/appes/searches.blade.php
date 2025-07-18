@@ -99,7 +99,7 @@
                             </div>
                         @elseif ($item['type'] === 'story')
                             @php $story = $item['data']; @endphp
-                            <div class="filter-item" data-type="story" data-date="{{ $video->created_at->toDateString() }}" data-category="{{ strtolower($story->kseo) }}">
+                            <div class="filter-item" data-type="story" data-date="{{ $story->created_at->toDateString() }}" data-category="{{ strtolower($story->kseo) }}">
                             @include('appes.artiestories.artiestories', ['story' => $story])
                             </div>
                         @elseif ($item['type'] === 'article')
