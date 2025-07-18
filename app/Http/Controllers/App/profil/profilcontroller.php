@@ -105,14 +105,37 @@ class profilcontroller extends Controller
         $request->validate([
             'foto' => 'required|mimes:jpeg,jpg,png,gif,webp'
         ]);
+
         $user = Users::where('username', $username)->firstOrFail();
         $file = $request->file('foto');
-        $credentialsPath = base_path(env('GOOGLE_CREDENTIALS_PATH'));
+
         $mainFolderId = '1dAtghVH4G3rgOoypIkdqUKAh6uslcHIQ';
-        $client = new Google_Client();
-        $client->setAuthConfig($credentialsPath);
+
+        $client = new \Google_Client();
+        $client->setClientId(env('GOOGLE_OAUTH_CLIENT_ID'));
+        $client->setClientSecret(env('GOOGLE_OAUTH_CLIENT_SECRET'));
+        $client->setRedirectUri(env('GOOGLE_OAUTH_REDIRECT_URI'));
         $client->addScope(Google_Service_Drive::DRIVE);
-        $service = new Google_Service_Drive($client);
+        $client->setAccessType('offline');
+
+        $token = session('google_token');
+        if (!$token) {
+            return response()->json(['error' => 'Belum login Google'], 401);
+        }
+        $client->setAccessToken($token);
+
+        if ($client->isAccessTokenExpired()) {
+            if ($client->getRefreshToken()) {
+                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+                session(['google_token' => $client->getAccessToken()]);
+            } else {
+                if ($client->isAccessTokenExpired()) {
+                    return redirect('/login-google');
+                }
+            }
+        }
+
+        $service = new \Google_Service_Drive($client);
         if ($user->improfil) {
             $oldFileId = $user->improfil;
             try {
@@ -148,6 +171,8 @@ class profilcontroller extends Controller
         $user->improfil = $uploadedFile->id;
         $user->save();
         session(['improfil' => $uploadedFile->id]);
+
         return response()->json(['success' => true]);
     }
+
 }
